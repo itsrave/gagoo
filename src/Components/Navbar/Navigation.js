@@ -7,12 +7,15 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import LoginDropdown from "./LoginDropdown";
 import {NavItem} from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import {Link} from "react-router-dom";
 
 class Navigation extends Component {
   render() {
     return (
+        <Container>
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">Gagoo</Navbar.Brand>
+          <Link to='/'><Navbar.Brand>Gagoo</Navbar.Brand></Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -29,11 +32,14 @@ class Navigation extends Component {
             <NavDropdown id='basic-nav-dropdown' title="Zaloguj">
               <LoginDropdown />
             </NavDropdown>
-            <Nav.Link>
-              Zarejestruj
-            </Nav.Link>
+            <Link to='/register'>
+              <Nav.Item>
+                Zarejestruj
+              </Nav.Item>
+            </Link>
           </Navbar.Collapse>
         </Navbar>
+        </Container>
     );
   }
 }

@@ -8,11 +8,11 @@ class FooterComponent extends Component {
   render() {
     return (
         <footer className="footer">
-          <Container fluid>
-            <div className='links'>
+          <Container fluid className='bg-dark'>
+            <div className='links justify-content-md-center'>
               <Row>
-                <Col md={2}>
-                  <ul>
+                <Col>
+                  <ul className='text-md-left'>
                     <li>Strona główna</li>
                     <li>Ogłoszenia</li>
                     <li>Kategorie</li>
@@ -20,9 +20,8 @@ class FooterComponent extends Component {
                     <li>Kontakt</li>
                   </ul>
                 </Col>
-                <Col />
-                <Col md={2}>
-                  <ul>
+                <Col>
+                  <ul className='text-md-right'>
                     <li>Home</li>
                     <li>Home</li>
                     <li>Home</li>

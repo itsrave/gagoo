@@ -7,10 +7,9 @@ class AdCard extends Component {
         <Card>
           <Card.Img variant="top" src="https://i.picsum.photos/id/737/260/160.jpg" />
           <Card.Body>
-            <Card.Title>Card title that wraps to a new line</Card.Title>
+            <Card.Title>Uturbiony golf3 tdi 1.6</Card.Title>
             <Card.Text>
-              This is a longer card with supporting text below as a natural lead-in to
-              additional content. This content is a little bit longer.
+              4500zł
             </Card.Text>
           </Card.Body>
         </Card>

@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import LoginDropdown from "./LoginDropdown";
+import {NavItem} from "react-bootstrap";
 
 class Navigation extends Component {
   render() {
@@ -28,10 +29,9 @@ class Navigation extends Component {
             <NavDropdown id='basic-nav-dropdown' title="Zaloguj">
               <LoginDropdown />
             </NavDropdown>
-            <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <Button variant="outline-success">Szukaj</Button>
-            </Form>
+            <Nav.Link>
+              Zarejestruj
+            </Nav.Link>
           </Navbar.Collapse>
         </Navbar>
     );

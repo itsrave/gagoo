@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Container, Jumbotron} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+import Cards from "../Various/Cards";
 
 class Homepage extends Component {
   render() {
     return (
+        <>
         <Jumbotron fluid>
           <Container>
             <h1>Części</h1>
@@ -17,6 +19,8 @@ class Homepage extends Component {
             </p>
           </Container>
         </Jumbotron>
+          <Cards />
+          </>
     );
   }
 }

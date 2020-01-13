@@ -9,7 +9,7 @@ import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 class SearchBar extends Component {
   render() {
     return (
-        <Container fluid className='search-bar'>
+        <Container className='search-bar my-3'>
           <Form className='search-form'>
             <Form.Row className='justify-content-md-center'>
               <Col xs={4}>

@@ -7,6 +7,8 @@ import FooterComponent from "./Components/Footer/FooterComponent";
 import SearchBar from "./Components/SearchBar";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import RegisterPage from "./Components/Pages/RegisterPage";
+import LoginPage from "./Components/Pages/LoginPage";
+import AdPage from "./Components/Pages/AdPage";
 
 
 function App() {
@@ -14,9 +16,11 @@ function App() {
         <div className="App bg-light">
           <Navigation />
           <SearchBar />
-          <Switch>
+          <Switch className='main-content'>
             <Route path='/' component={Homepage} exact/>
             <Route path='/register' component={RegisterPage}/>
+            <Route path='/login' component={LoginPage}/>
+            <Route path='/adpage' component={AdPage}/>
           </Switch>
           <FooterComponent />
         </div>

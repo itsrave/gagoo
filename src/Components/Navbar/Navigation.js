@@ -14,31 +14,33 @@ class Navigation extends Component {
   render() {
     return (
         <Container>
-        <Navbar bg="light" expand="lg">
-          <Link to='/'><Navbar.Brand>Gagoo</Navbar.Brand></Link>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Ogloszenia</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-            <NavDropdown id='basic-nav-dropdown' title="Zaloguj">
-              <LoginDropdown />
-            </NavDropdown>
-            <Link to='/register'>
-              <Nav.Item>
-                Zarejestruj
-              </Nav.Item>
-            </Link>
-          </Navbar.Collapse>
-        </Navbar>
+          <Navbar bg="light" expand="lg">
+            <Link to='/'><Navbar.Brand>Gagoo</Navbar.Brand></Link>
+            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="#home">Home</Nav.Link>
+                <Nav.Link href="#link">Link</Nav.Link>
+                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.1">Ogloszenia</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                  <NavDropdown.Divider/>
+                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+              <Link to='/login'>
+                <Nav.Link>
+                  Zaloguj
+                </Nav.Link>
+              </Link>
+              <Link to='/register'>
+                <Nav.Link>
+                  Zarejestruj
+                </Nav.Link>
+              </Link>
+            </Navbar.Collapse>
+          </Navbar>
         </Container>
     );
   }

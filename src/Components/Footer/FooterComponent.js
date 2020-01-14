@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 class FooterComponent extends Component {
   render() {
     return (
-        <footer className="footer mt-3">
+        <footer className="footer">
           <Container fluid className='bg-dark'>
             <div className='links justify-content-md-center'>
               <Row>

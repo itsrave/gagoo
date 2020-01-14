@@ -8,7 +8,8 @@ import SearchBar from "./Components/SearchBar";
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import RegisterPage from "./Components/Pages/RegisterPage";
 import LoginPage from "./Components/Pages/LoginPage";
-import AdPage from "./Components/Pages/AdPage";
+import OfferPage from "./Components/Pages/OfferPage";
+import OffersPage from "./Components/Pages/OffersPage";
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
             <Route path='/' component={Homepage} exact/>
             <Route path='/register' component={RegisterPage}/>
             <Route path='/login' component={LoginPage}/>
-            <Route path='/adpage' component={AdPage}/>
+            <Route path='/adpage' component={OfferPage}/>
+            <Route path='/offers' component={OffersPage}/>
           </Switch>
           <FooterComponent />
         </div>

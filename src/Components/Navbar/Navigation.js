@@ -9,8 +9,26 @@ import LoginDropdown from "./LoginDropdown";
 import {NavItem} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
+import IsGuest from "../User/IsGuest";
 
 class Navigation extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLogged: false,
+    }
+  }
+
+  renderGreeting() {
+    if (this.state.isLogged === true) {
+      return <IsGuest />;
+    }
+    else {
+      return <IsGuest />;
+    }
+  }
+
   render() {
     return (
         <Container>
@@ -19,7 +37,7 @@ class Navigation extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
+                <Link to='/offers'>Przeglądaj oferty</Link>
                 <Nav.Link href="#link">Link</Nav.Link>
                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Ogloszenia</NavDropdown.Item>
@@ -29,16 +47,7 @@ class Navigation extends Component {
                   <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
-              <Link to='/login'>
-                <Nav.Link>
-                  Zaloguj
-                </Nav.Link>
-              </Link>
-              <Link to='/register'>
-                <Nav.Link>
-                  Zarejestruj
-                </Nav.Link>
-              </Link>
+              { this.renderGreeting() }
             </Navbar.Collapse>
           </Navbar>
         </Container>

@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 class FooterComponent extends Component {
+  // TODO Better footer
   render() {
     return (
         <footer className="footer">

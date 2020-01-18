@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMapMarkerAlt, faClock } from "@fortawesome/free-solid-svg-icons";
 
 class AdListItem extends Component {
+
   render() {
     return (
           <Card>

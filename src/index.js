@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter } from "react-router-dom";
+import CookiesProvider from "react-cookie/cjs/CookiesProvider";
 
 
 ReactDOM.render(
     <HashRouter>
+      <CookiesProvider>
         <App />
-    </HashRouter>, 
+      </CookiesProvider>
+    </HashRouter>,
     document.getElementById('root')
 );
 

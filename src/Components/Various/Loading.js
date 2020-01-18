@@ -1,0 +1,17 @@
+import React, {Component} from 'react';
+import ReactLoading from 'react-loading';
+import './Loading.css'
+
+class Loading extends Component {
+  render() {
+    return (
+        <div className='loading'>
+          <div className='loading-image-container'>
+            <ReactLoading className='loading-image' type='spin' color='#000000' height={'100%'} width={'100%'} />
+          </div>
+        </div>
+    );
+  }
+}
+
+export default Loading;

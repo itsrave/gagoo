@@ -2,31 +2,42 @@ import React, {Component} from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
-import Button from "react-bootstrap/Button";
-import LoginDropdown from "./LoginDropdown";
-import {NavItem} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
 import IsGuest from "../User/IsGuest";
+import IsUser from "../User/IsUser";
+import axios from "axios";
 
 class Navigation extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      isLogged: false,
+      token: this.props.token,
+      username: this.getUserName()
     }
   }
+  componentDidMount() {
+    this.setState({ token: this.props.token })
+  }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+      const newProps = this.props;
+      if(prevProps.token !== newProps.token) {
+        this.setState({ token: newProps.token })
+      }
+  }
 
+  getUserName() {
+    axios
+        .get('https://jsonplaceholder.typicode.com/users/1')
+        .then(res => this.setState({username: res.data.username}));
+  }
   renderGreeting() {
-    if (this.state.isLogged === true) {
-      return <IsGuest />;
+    console.log(this.state.token, 2);
+    if (this.state.token !== undefined) {
+      return <IsUser username={this.state.username} />;
     }
-    else {
-      return <IsGuest />;
-    }
+    return <IsGuest />;
+
   }
 
   render() {
@@ -44,7 +55,7 @@ class Navigation extends Component {
                   <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                   <NavDropdown.Divider/>
-                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.4">Aaaaa</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
               { this.renderGreeting() }

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import PropTypes from 'prop-types'
 
@@ -14,7 +13,7 @@ class IsUser extends Component {
             <NavDropdown.Item href="#action/3.2">Moje ogłoszenia</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">Ustawienia</NavDropdown.Item>
             <NavDropdown.Divider/>
-            <NavDropdown.Item href="#action/3.4">Wyloguj</NavDropdown.Item>
+            <NavDropdown.Item onClick={this.props.onLogout}>Wyloguj</NavDropdown.Item>
           </NavDropdown>
         </>
     );

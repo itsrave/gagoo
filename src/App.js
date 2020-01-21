@@ -12,6 +12,7 @@ import OfferPage from "./Components/Pages/OfferPage";
 import OffersPage from "./Components/Pages/OffersPage";
 import {withCookies, Cookies} from 'react-cookie';
 import {instanceOf} from "prop-types";
+import Toast from "react-bootstrap/Toast";
 
 
 class App extends Component {
@@ -28,6 +29,11 @@ class App extends Component {
   componentDidMount() {
     this.getToken()
   }
+  handleLogout() {
+    const { cookies } = this.props;
+    cookies.remove('token');
+    this.getToken()
+  }
 
   getToken() {
     const { cookies } = this.props;
@@ -36,12 +42,12 @@ class App extends Component {
   render() {
     return (
           <div className="App bg-light">
-            <Navigation token={this.state.token} />
+            <Navigation token={this.state.token} onLogout={() => this.handleLogout()} />
             <SearchBar />
             <Switch className='main-content'>
               <Route path='/' component={Homepage} exact/>
               <Route path='/register' component={RegisterPage}/>
-              <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} passToken={this.getToken} />} />
+              <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.getToken} />} />
               <Route path='/adpage' component={OfferPage}/>
               <Route path='/offers' component={OffersPage}/>
             </Switch>

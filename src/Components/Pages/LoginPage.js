@@ -8,7 +8,7 @@ import Loading from "../Various/Loading";
 import {instanceOf} from "prop-types";
 import Alert from "react-bootstrap/Alert";
 import {Redirect} from "react-router-dom";
-
+import path from "../../api";
 
 class LoginPage extends Component {
   static propTypes = {
@@ -52,12 +52,12 @@ class LoginPage extends Component {
       return
     }
     axios
-        .post('http://127.0.0.1:8000/api/login_check', user)
+        .post(path + 'api/login_check', user)
         .then(res => {
           const {cookies} = this.props;
           cookies.set('token', res.data.token, {path: '/'});
           this.setState({succesfulLogin: true, isLoading: false, redirect: true});
-          this.props.passToken()
+          this.props.setToken()
         })
         .catch(err => {
           if (err.response.status === 401) {

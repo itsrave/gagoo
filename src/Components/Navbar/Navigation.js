@@ -31,8 +31,8 @@ class Navigation extends Component {
       }
   }
   handleLogout() {
+    this.setState({redirect: true});
     this.props.onLogout();
-    this.setState({token: '', username: '', redirect: true});
   }
   getUserName() {
     axios

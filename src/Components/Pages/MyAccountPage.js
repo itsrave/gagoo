@@ -11,6 +11,7 @@ class MyAccountPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+
       offersActive: false,
       settingsActive: false,
     }
@@ -44,7 +45,7 @@ class MyAccountPage extends Component {
   };
   renderTab() {
     if (this.props.match.params.reference === 'settings') {
-      return <Settings />
+      return <Settings token={this.props.token} />
     } else {
       return <h1>nie ma</h1>
     }

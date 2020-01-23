@@ -31,6 +31,17 @@ class LoginPage extends Component {
       redirect: false,
     }
   }
+  getInitialState() {
+    this.setState({
+      isLoading: false,
+      usernameWarning: false,
+      passwordWarning: false,
+      wrongCredentials: false,
+      unexpectedError: false,
+      succesfulLogin: false,
+      redirect: false,
+    })
+  }
   componentDidMount() {
     if (this.props.token !== undefined){
       this.setState({redirect: true})
@@ -38,6 +49,7 @@ class LoginPage extends Component {
   }
 
   onSubmit() {
+    this.getInitialState();
     this.toggleLoading();
     let user = {
       username: this.username.current.value,
@@ -56,8 +68,8 @@ class LoginPage extends Component {
         .then(res => {
           const {cookies} = this.props;
           cookies.set('token', res.data.token, {path: '/'});
-          this.setState({succesfulLogin: true, isLoading: false, redirect: true});
           this.props.setToken()
+          this.setState({succesfulLogin: true, isLoading: false, redirect: true});
         })
         .catch(err => {
           if (err.response.status === 401) {
@@ -72,7 +84,7 @@ class LoginPage extends Component {
   toggleLoading() {
     this.setState({isLoading: !this.state.isLoading});
   }
-
+  // TODO submit on form
   render() {
     return (
         <Container className='my-3'>

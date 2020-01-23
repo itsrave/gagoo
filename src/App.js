@@ -21,21 +21,25 @@ class App extends Component {
   };
   constructor(props) {
     super(props);
-    this.getToken = this.getToken.bind(this);
+    this.setToken = this.setToken.bind(this);
     this.state = {
       token: '',
     }
   }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.state.token !== prevState.token) {
+      this.setToken()
+    }
+  }
   componentDidMount() {
-    this.getToken()
+    this.setToken()
   }
   handleLogout() {
     const { cookies } = this.props;
     cookies.remove('token');
-    this.getToken()
+    this.setToken()
   }
-
-  getToken() {
+  setToken() {
     const { cookies } = this.props;
     this.setState({token: cookies.get('token')})
   }
@@ -47,10 +51,10 @@ class App extends Component {
             <Switch className='main-content'>
               <Route path='/' component={Homepage} exact/>
               <Route path='/register' component={RegisterPage}/>
-              <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.getToken} />} />
+              <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.setToken} />} />
               <Route path='/offerpage' component={OfferPage}/>
               <Route path='/offers' component={OffersPage}/>
-              <Route path='/account/:reference' component={MyAccountPage}/>
+              <Route path='/account/:reference' render={(props) => <MyAccountPage {...props} token={this.state.token} />}/>
             </Switch>
             <FooterComponent />
           </div>

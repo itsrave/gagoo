@@ -37,34 +37,7 @@ class OfferPage extends Component {
             </Carousel>
             </Col>
             <Col md={4}>
-              <Card>
-              <Card.Body>
-                <Card.Title>Pinuś</Card.Title>
-                <Card.Text>
-                  Miastko
-                </Card.Text>
-              </Card.Body>
-              <ListGroup className="list-group-flush">
-                <ListGroupItem>
-                  <Row>
-                    <Col md={1}><FontAwesomeIcon icon={faDollarSign}/></Col>
-                    <Col md={8}>4500zł</Col>
-                  </Row>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <Row>
-                    <Col md={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
-                    <Col md={8}>+07000</Col>
-                  </Row>
-                </ListGroupItem>
-                <ListGroupItem>
-                  <Row>
-                    <Col md={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
-                    <Col md={8}>pinus@miastko.pl</Col>
-                  </Row>
-                </ListGroupItem>
-              </ListGroup>
-            </Card>
+
             </Col>
           </Row>
         </Container>

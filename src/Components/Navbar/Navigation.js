@@ -3,17 +3,19 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import IsGuest from "../User/IsGuest";
 import IsUser from "../User/IsUser";
 import axios from "axios";
 import Loading from "../Various/Loading";
-import {Col} from "react-bootstrap";
+import { LinkContainer } from 'react-router-bootstrap'
+import './Navigation.css'
 
 class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      redirect: false,
       isLoading: false,
       token: this.props.token,
       username: this.getUserName()
@@ -30,7 +32,7 @@ class Navigation extends Component {
   }
   handleLogout() {
     this.props.onLogout();
-    this.setState({token: '', username: ''});
+    this.setState({token: '', username: '', redirect: true});
   }
   getUserName() {
     axios
@@ -53,8 +55,9 @@ class Navigation extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <Link to='/offers'>Przeglądaj oferty</Link>
-                <Nav.Link href="#link">Link</Nav.Link>
+                <LinkContainer to='/offers'>
+                  <Nav.Link>Przeglądaj oferty</Nav.Link>
+                </LinkContainer>
                 <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#action/3.1">Ogloszenia</NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -69,6 +72,7 @@ class Navigation extends Component {
               </Nav>
             </Navbar.Collapse>
           </Navbar>
+          { this.state.redirect && <Redirect to="/" />}
         </Container>
     );
   }

@@ -12,7 +12,7 @@ import OfferPage from "./Components/Pages/OfferPage";
 import OffersPage from "./Components/Pages/OffersPage";
 import {withCookies, Cookies} from 'react-cookie';
 import {instanceOf} from "prop-types";
-import Toast from "react-bootstrap/Toast";
+import MyAccountPage from "./Components/Pages/MyAccountPage";
 
 
 class App extends Component {
@@ -48,8 +48,9 @@ class App extends Component {
               <Route path='/' component={Homepage} exact/>
               <Route path='/register' component={RegisterPage}/>
               <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.getToken} />} />
-              <Route path='/adpage' component={OfferPage}/>
+              <Route path='/offerpage' component={OfferPage}/>
               <Route path='/offers' component={OffersPage}/>
+              <Route path='/account/:reference' component={MyAccountPage}/>
             </Switch>
             <FooterComponent />
           </div>

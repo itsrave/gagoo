@@ -3,7 +3,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {Col, Container} from "react-bootstrap";
 import Loading from "../Various/Loading";
+import axios from 'axios'
 import Alert from "react-bootstrap/Alert";
+import path from "../../api";
+import {Link} from "react-router-dom";
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -21,31 +24,58 @@ class RegisterPage extends Component {
       passwordEmpty: false,
       passwordWarning: false,
       passwordWrong: false,
+      succesfulRegister: false,
+      isLoading: false,
+      emailTaken: false,
+      emailWrong: false,
+      usernameTaken: false,
+      emailTakenMessage: '',
+      emailWrongMessage: '',
+      usernameTakenMessage: '',
     }
   }
 
   onSubmit() {
+    this.setState({isLoading: true});
     let user = {
       email: this.email.current.value,
       username: this.username.current.value,
       password: this.password.current.value
     };
     if (user.email === '') {
-      this.setState({emailWarning: true});
+      this.setState({emailWarning: true, isLoading: false});
       return
     }
     if (user.username === '') {
-      this.setState({usernameWarning: true});
+      this.setState({usernameWarning: true, isLoading: false});
+      return
     }
     if (user.password === '') {
-      this.setState({passwordEmpty: true})
+      this.setState({passwordEmpty: true, isLoading: false});
+      return
     }
-    if (user.password < 7) {
-      this.setState({passwordWarning: true})
+    if (user.password.length < 7 || user.password.length > 40) {
+      this.setState({passwordWarning: true, isLoading: false});
+      return
     }
     if (user.password !== this.passwordrepeat.current.value) {
-      this.setState({passwordWrong: true})
+      this.setState({passwordWrong: true, isLoading: false});
+      return;
     }
+    axios
+        .post(path + 'user/register', user)
+        .then(res => {
+          this.setState({succesfulRegister: true, isLoading: false});
+        })
+        .catch(err => {
+          console.log(err.response.data.detail);
+          if (err.response.status === 400) {
+            this.setState({wrongCredentials: true, isLoading: false});
+          } else {
+            this.setState({unexpectedError: true, isLoading: false});
+            console.log(err);
+          }
+        });
   }
   render() {
     return (
@@ -56,13 +86,20 @@ class RegisterPage extends Component {
               <Form.Control type="email" ref={this.email} placeholder="Email"/>
               {this.state.emailWarning &&
               <Alert variant='warning' dismissible onClose={() => this.setState({emailWarning: false})}>Email nie może być pusty</Alert>}
+              {this.state.emailTaken &&
+              <Alert variant='danger' dismissible onClose={() => this.setState({emailWarning: false})}>{this.state.emailTakenMessage}</Alert>}
+              {this.state.emailWrong &&
+              <Alert variant='danger' dismissible onClose={() => this.setState({emailWrong: false})}>{this.state.emailWrongMessage}</Alert>}
             </Form.Group>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Nazwa użytkownika</Form.Label>
-                <Form.Control type="email" ref={this.username} placeholder="Nazwa użytkownika"/>
+                <Form.Control type="text" ref={this.username} placeholder="Nazwa użytkownika"/>
                 {this.state.usernameWarning &&
                 <Alert variant='warning' dismissible onClose={() => this.setState({usernameWarning: false})}>Nazwa
                   użytkownika nie może być pusta.</Alert>}
+                {this.state.usernameTaken &&
+                <Alert variant='danger' dismissible onClose={() => this.setState({usernameTaken: false})}>{this.state.usernameTakenMessage}</Alert>}
+
               </Form.Group>
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Hasło</Form.Label>
@@ -70,7 +107,7 @@ class RegisterPage extends Component {
                 {this.state.passwordEmpty &&
                 <Alert variant='warning' dismissible onClose={() => this.setState({passwordEmpty: false})}>Hasło nie może być puste</Alert>}
               {this.state.passwordWarning &&
-                <Alert variant='danger' dismissible onClose={() => this.setState({passwordWarning: false})}>Hasło nie może być krótsze niż 7 znaków</Alert>}
+                <Alert variant='danger' dismissible onClose={() => this.setState({passwordWarning: false})}>Hasło nie może być krótsze niż 7 i nie dłuższe niż 40 znaków</Alert>}
               </Form.Group>
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Powtórz hasło</Form.Label>
@@ -82,10 +119,14 @@ class RegisterPage extends Component {
               <Form.Group controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="Akceptuje regulamin serwisu"/>
               </Form.Group>
+              {this.state.succesfulRegister &&
+              <Alert variant='success' dismissible onClose={() => this.setState({succesfulRegister: false})}>
+                Rejestracja pomyślna, możesz się teraz <Link to='/login'>zalogować</Link>.
+              </Alert>}
               <Button variant="primary" onClick={this.onSubmit}>
                 Zarejestruj
               </Button>
-              {/*<Loading />*/}
+              {this.state.isLoading && <Loading/>}
             </Col>
           </Form>
         </Container>

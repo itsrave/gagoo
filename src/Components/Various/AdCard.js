@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 class AdCard extends Component {
   render() {
     return (
-        <Link to='/adpage'>
+        <Link to='/offerpage'>
           <Card>
           <Card.Img variant="top" src="https://i.picsum.photos/id/737/260/160.jpg"/>
           <Card.Body>

@@ -10,6 +10,7 @@ import axios from "axios";
 import Loading from "../Various/Loading";
 import { LinkContainer } from 'react-router-bootstrap'
 import './Navigation.css'
+import path from "../../api";
 
 class Navigation extends Component {
   constructor(props) {
@@ -17,17 +18,21 @@ class Navigation extends Component {
     this.state = {
       redirect: false,
       isLoading: false,
-      token: this.props.token,
-      username: this.getUserName()
+      token: undefined,
+      username: '...'
     }
   }
   componentDidMount() {
-    this.setState({ token: this.props.token })
+    this.setState({ token: this.props.token });
   }
+  // TODO buggy username fetch
   componentDidUpdate(prevProps, prevState, snapshot) {
       const newProps = this.props;
       if(prevProps.token !== newProps.token) {
-        this.setState({ token: newProps.token })
+        this.setState({ token: newProps.token });
+        if (this.state.token !== undefined) {
+          this.getUserName()
+        }
       }
   }
   handleLogout() {
@@ -35,9 +40,16 @@ class Navigation extends Component {
     this.props.onLogout();
   }
   getUserName() {
+    const AuthStr = 'Bearer ' + this.props.token;
     axios
-        .get('https://jsonplaceholder.typicode.com/users/1')
-        .then(res => this.setState({username: res.data.username}));
+        .get(path + 'api/user/get-data',{ headers: { Authorization: AuthStr } })
+        .then(res => {
+          this.setState({username: res.data.username});
+        })
+        .catch(err => {
+          this.setState({username: 'user'});
+          console.log(err);
+        });
   }
   renderGreeting() {
     if (this.state.token !== undefined) {

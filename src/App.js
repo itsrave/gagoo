@@ -14,7 +14,7 @@ import {withCookies, Cookies} from 'react-cookie';
 import {instanceOf} from "prop-types";
 import MyAccountPage from "./Components/Pages/MyAccountPage";
 
-
+// TODO REWORK COOKIES
 class App extends Component {
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired

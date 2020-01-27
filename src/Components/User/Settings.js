@@ -13,6 +13,7 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.Form = React.createRef();
     this.state = {
       isLoading: false,
       userData: {
@@ -34,6 +35,11 @@ class Settings extends Component {
     }
   }
   componentDidMount() {
+    this.setState({isLoading: true});
+    this.getUserData();
+    setTimeout(function() {
+      this.setState({isLoading: false});
+    }.bind(this), 2000)
   }
   getUserData() {
     const AuthStr = 'Bearer ' + this.props.token;
@@ -52,13 +58,12 @@ class Settings extends Component {
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
-          console.log(res)
           setTimeout(function() {
             this.setState({isLoading: false});
           }.bind(this), 2000)
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
           this.setState({isLoading: false});
         })
   }
@@ -71,7 +76,7 @@ class Settings extends Component {
     this.setState({
       userData: userData
     });
-  }
+  };
   render() {
     return (
         <Container className='my-3'>
@@ -92,15 +97,28 @@ class Settings extends Component {
               </Form.Group>
               <Form.Group as={Row} controlId="formName">
                 <Form.Label column md={5}>Imię: </Form.Label>
-                <Col md={7}><Form.Control type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleChange} value={this.state.userData.name} /></Col>
+                <Col md={7}><Form.Control required type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleChange} value={this.state.userData.name} />
+                </Col>
               </Form.Group>
               <Form.Group as={Row} controlId="formPhone">
                 <Form.Label column md={5}>Numer telefonu: </Form.Label>
-                <Col md={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleChange} value={this.state.userData.phoneNumber} /></Col>
+                <Col md={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleChange} value={this.state.userData.phoneNumber} />
+                </Col>
               </Form.Group>
             <Form.Group as={Row} controlId="formCity">
               <Form.Label column md={5}>Miasto: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="Wpisz miasto" name={'city'} onChange={this.handleChange} /></Col>
+              <Col md={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="formState">
+              <Form.Label column md={5}>Województwo: </Form.Label>
+              <Col md={7}><Form.Control type="text" placeholder="Wpisz województwo" name={'state'} onChange={this.handleChange} />
+              </Col>
+            </Form.Group>
+            <Form.Group as={Row} controlId="formZipCode">
+              <Form.Label column md={5}>Kod pocztowy: </Form.Label>
+              <Col md={7}><Form.Control type="text" placeholder="Wpisz kod pocztowy" name={'zipCode'} onChange={this.handleChange} />
+              </Col>
             </Form.Group>
             {this.state.isLoading && <Loading/>}
             <Button variant="primary" onClick={this.handleSubmit}>

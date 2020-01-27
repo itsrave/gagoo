@@ -84,7 +84,6 @@ class LoginPage extends Component {
   toggleLoading() {
     this.setState({isLoading: !this.state.isLoading});
   }
-  // TODO submit on form
   render() {
     return (
         <Container className='my-3'>

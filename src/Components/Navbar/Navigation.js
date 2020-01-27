@@ -11,6 +11,9 @@ import Loading from "../Various/Loading";
 import { LinkContainer } from 'react-router-bootstrap'
 import './Navigation.css'
 import path from "../../api";
+import Button from "react-bootstrap/Button";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 
 class Navigation extends Component {
   constructor(props) {
@@ -18,25 +21,32 @@ class Navigation extends Component {
     this.state = {
       redirect: false,
       isLoading: false,
-      token: undefined,
+      token: this.props.token || undefined,
       username: '...'
     }
   }
+  getInitialState() {
+    this.setState({
+      redirect: false,
+      isLoading: false,
+      token: this.props.token || undefined,
+      username: '...'
+    })
+  }
   componentDidMount() {
     this.setState({ token: this.props.token });
+    this.getUserName()
   }
-  // TODO buggy username fetch
   componentDidUpdate(prevProps, prevState, snapshot) {
       const newProps = this.props;
       if(prevProps.token !== newProps.token) {
         this.setState({ token: newProps.token });
-        if (this.state.token !== undefined) {
-          this.getUserName()
-        }
+        this.getUserName()
       }
   }
   handleLogout() {
-    this.setState({redirect: true});
+    this.getInitialState();
+    // this.setState({redirect: true});
     this.props.onLogout();
   }
   getUserName() {
@@ -47,7 +57,7 @@ class Navigation extends Component {
           this.setState({username: res.data.username});
         })
         .catch(err => {
-          this.setState({username: 'user'});
+          this.setState({username: '...'});
           console.log(err);
         });
   }
@@ -77,6 +87,14 @@ class Navigation extends Component {
                   <NavDropdown.Divider/>
                   <NavDropdown.Item href="#action/3.4">Aaaaa</NavDropdown.Item>
                 </NavDropdown>
+              </Nav>
+              <Nav>
+                <LinkContainer to='/addoffer'>
+                  <Nav.Link><Button variant="primary">
+                    <FontAwesomeIcon icon={faPlusSquare} />  Dodaj ogłoszenie
+                  </Button></Nav.Link>
+                </LinkContainer>
+
               </Nav>
               <Nav>
                 { this.renderGreeting() }

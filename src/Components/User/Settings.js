@@ -7,6 +7,7 @@ import axios from 'axios'
 import path from "../../api";
 import Loading from "../Various/Loading";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 
 
 class Settings extends Component {
@@ -22,6 +23,8 @@ class Settings extends Component {
         name: '',
         phoneNumber: '',
         city: '',
+        state: '',
+        zipCode: '',
       }
     }
   }
@@ -51,6 +54,7 @@ class Settings extends Component {
           console.log(err);
         });
   }
+
   handleSubmit(e) {
     this.setState({isLoading: true});
     const AuthStr = 'Bearer ' + this.props.token;
@@ -117,9 +121,11 @@ class Settings extends Component {
             </Form.Group>
             <Form.Group as={Row} controlId="formZipCode">
               <Form.Label column md={5}>Kod pocztowy: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="Wpisz kod pocztowy" name={'zipCode'} onChange={this.handleChange} />
+              <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleChange} />
               </Col>
             </Form.Group>
+            {this.state.error &&
+            <Alert variant='danger' dismissible onClose={() => this.setState({error: false})}>{this.state.errorMessage}</Alert>}
             {this.state.isLoading && <Loading/>}
             <Button variant="primary" onClick={this.handleSubmit}>
               Zaktualizuj dane

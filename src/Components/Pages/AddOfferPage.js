@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import {Row} from "react-bootstrap";
+import FileUploader from "../Various/FileUploader";
 
 class AddOfferPage extends Component {
   getUploadParams = ({ meta }) => { return { url: 'https://httpbin.org/post' } }
@@ -59,6 +60,7 @@ class AddOfferPage extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label><h3>Zdjęcia</h3></Form.Label>
+                  <FileUploader />
                   <Form.Text className="text-muted">
                     Oferty ze zdjęciami otrzymują nawet trzy razy więcej odpowiedzi.
                   </Form.Text>

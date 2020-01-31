@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import {Row} from "react-bootstrap";
 import FileUploader from "../Various/FileUploader";
+import CategoryChooser from "../Various/CategoryChooser";
 
 class AddOfferPage extends Component {
   getUploadParams = ({ meta }) => { return { url: 'https://httpbin.org/post' } }
@@ -36,15 +37,8 @@ class AddOfferPage extends Component {
                       <option>5</option>
                     </Form.Control>
                   </Col>
-                  <Col>
-                    <Form.Label>Stan</Form.Label>
-                    <Form.Control as="select">
-                      <option>Używane</option>
-                      <option>Nowe</option>
-                      <option>Uszkodzone</option>
-                    </Form.Control>
-                  </Col>
                 </Form.Group>
+                <CategoryChooser />
                 <Form.Group as={Row}>
                   <Col>
                     <Form.Label>Cena</Form.Label>
@@ -52,6 +46,14 @@ class AddOfferPage extends Component {
                       <Col md={11}><Form.Control type="text" /></Col>
                       <Form.Label>zł</Form.Label>
                     </Row>
+                  </Col>
+                  <Col>
+                    <Form.Label>Stan</Form.Label>
+                    <Form.Control as="select">
+                      <option>Używane</option>
+                      <option>Nowe</option>
+                      <option>Uszkodzone</option>
+                    </Form.Control>
                   </Col>
                 </Form.Group>
                 <Form.Group>

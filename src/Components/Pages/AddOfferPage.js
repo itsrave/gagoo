@@ -26,19 +26,12 @@ class AddOfferPage extends Component {
                   <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" />
                 </Form.Group>
 
-                <Form.Group as={Row}>
+                <Form.Group>
+                  <Form.Label>Kategoria</Form.Label>
                   <Col>
-                    <Form.Label>Kategoria</Form.Label>
-                    <Form.Control as="select">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                    </Form.Control>
+                    <CategoryChooser />
                   </Col>
                 </Form.Group>
-                <CategoryChooser />
                 <Form.Group as={Row}>
                   <Col>
                     <Form.Label>Cena</Form.Label>

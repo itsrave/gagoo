@@ -14,6 +14,7 @@ import {withCookies, Cookies} from 'react-cookie';
 import {instanceOf} from "prop-types";
 import MyAccountPage from "./Components/Pages/MyAccountPage";
 import AddOfferPage from "./Components/Pages/AddOfferPage";
+import CategoryChooser from "./Components/Various/CategoryChooser";
 
 // TODO REWORK COOKIES
 class App extends Component {
@@ -57,6 +58,7 @@ class App extends Component {
               <Route path='/offerpage' component={OfferPage}/>
               <Route path='/offers' component={OffersPage}/>
               <Route path='/addoffer' component={AddOfferPage}/>
+              <Route path='/cat' component={CategoryChooser}/>/>
               <Route path='/account/:reference' render={(props) => <MyAccountPage {...props} token={this.state.token} />}/>
             </Switch>
             <FooterComponent />

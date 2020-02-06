@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import Container from "react-bootstrap/Container";
 import CategoryItem from "./CategoryItem";
-import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Modal} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+
+const leftPadding = {
+  paddingLeft: '15px'
+};
 
 class CategoryChooser extends Component {
   constructor(props) {
@@ -445,36 +447,43 @@ class CategoryChooser extends Component {
           ]
         }
       ],
+      mainSelectedName: '',
       mainSelectedId: '',
+      selectedName: '',
       selectedId: '',
+      subSelectedName: '',
       subSelectedId: ''
     }
   }
-
-  componentDidMount() {
-    const categories = this.state.cats;
-    console.log(categories);
-  }
   handleMainClick(e) {
-    const id = e.target.getAttribute('uniqueId');
-    // const selectedCategory = this.state.cats.filter(obj => {
-    //   return obj.uniqueId === id
-    // })[0];
-    this.setState({mainSelectedId: id})
+    const id = e.target.getAttribute('uniqueid');
+    const categories = this.state.cats;
+    const name = categories.filter(obj => {
+      return obj.uniqueId === id
+    })[0].name;
+    this.setState({mainSelectedId: id, mainSelectedName: name})
   }
   handleClick(e) {
-    const id = e.target.getAttribute('uniqueId');
-    // const selectedCategory = this.state.cats.filter(obj => {
-    //   return obj.uniqueId === id
-    // })[0];
-    this.setState({selectedId: id})
+    const id = e.target.getAttribute('uniqueid');
+    const categories = this.state.cats;
+    const name = categories.filter(obj => {
+      return obj.uniqueId === this.state.mainSelectedId
+    })[0].children.filter(obj => {
+      return obj.uniqueId === id
+    })[0].name;
+    this.setState({selectedId: id, selectedName: name})
   }
   handleSubClick(e) {
-    const id = e.target.getAttribute('uniqueId');
-    // const selectedCategory = this.state.cats.filter(obj => {
-    //   return obj.uniqueId === id
-    // })[0];
-    this.setState({subSelectedId: id})
+    const id = e.target.getAttribute('uniqueid');
+    const categories = this.state.cats;
+    const name = categories.filter(obj => {
+      return obj.uniqueId === this.state.mainSelectedId
+    })[0].children.filter(obj => {
+      return obj.uniqueId === this.state.selectedId
+    })[0].children.filter(obj => {
+      return obj.uniqueId === id
+    })[0].name;
+    this.setState({subSelectedId: id, subSelectedName: name})
   }
   renderMainCategories() {
     const categories = this.state.cats;
@@ -502,26 +511,49 @@ class CategoryChooser extends Component {
       const categories = this.state.cats;
       const children = categories.filter(obj => {
         return obj.uniqueId === this.state.mainSelectedId
+      })[0].children.filter(obj => {
+        return obj.uniqueId === this.state.selectedId
       })[0].children;
       return children.map((category, index) => (
-          <CategoryItem active={category.uniqueId === this.state.selectedId} key={index} name={category.name} uniqueId={category.uniqueId} handleClick={this.handleClick}/>
+          <CategoryItem active={category.uniqueId === this.state.subSelectedId} key={index} name={category.name} uniqueId={category.uniqueId} handleClick={this.handleSubClick}/>
       ))
     }
   };
 
   render() {
     return (
-        <Row>
-          <ListGroup as={Col}>
-            {this.renderMainCategories()}
-          </ListGroup>
-          <ListGroup as={Col}>
-            {this.renderCategories()}
-          </ListGroup>
-          <ListGroup as={Col}>
-            {this.renderSubCategories()}
-          </ListGroup>
-        </Row>
+          <Modal show={this.props.opened} onHide={this.props.toggleModal} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Header>
+                  <Col md={4}>
+                    Wybierz kategorie
+                  </Col>
+                  <Col md={4}>
+                    {this.state.mainSelectedName}
+                  </Col>
+                  <Col md={4}>
+                    {this.state.selectedName}
+                  </Col>
+            </Modal.Header>
+            <Modal.Body as={Row}>
+                <ListGroup style={leftPadding} as={Col} md={4}>
+                  {this.renderMainCategories()}
+                </ListGroup>
+                <ListGroup as={Col} md={4}>
+                  {this.renderCategories()}
+                </ListGroup>
+                <ListGroup as={Col} md={4}>
+                  {this.renderSubCategories()}
+                </ListGroup>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.props.toggleModal}>
+                Zamknij
+              </Button>
+              <Button variant="primary"  onClick={this.props.toggleModal}>
+                Wybierz
+              </Button>
+            </Modal.Footer>
+          </Modal>
     );
   }
 }

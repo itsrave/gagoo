@@ -8,11 +8,24 @@ import FileUploader from "../Various/FileUploader";
 import CategoryChooser from "../Various/CategoryChooser";
 
 class AddOfferPage extends Component {
-  getUploadParams = ({ meta }) => { return { url: 'https://httpbin.org/post' } }
-  handleChangeStatus = ({ meta, file }, status) => { console.log(status, meta, file) }
-  handleSubmit = (files, allFiles) => {
-    console.log(files.map(f => f.meta))
-    allFiles.forEach(f => f.remove())
+  constructor(props) {
+    super(props);
+    this.handleModal = this.handleModal.bind(this);
+    this.state = {
+      isModalOpen: false,
+      userData: {
+        email: 'przykład@przykład.pl',
+        username: 'Nazwa użytkownika',
+        name: '',
+        phoneNumber: '',
+        city: '',
+        state: '',
+        zipCode: '',
+      }
+    }
+  }
+  handleModal() {
+    this.setState({isModalOpen: !this.state.isModalOpen});
   }
   render() {
     return (
@@ -28,9 +41,14 @@ class AddOfferPage extends Component {
 
                 <Form.Group>
                   <Form.Label>Kategoria</Form.Label>
-                  <Col>
-                    <CategoryChooser />
-                  </Col>
+                  <Row>
+                    <Col>
+                      <Button variant="primary" onClick={this.handleModal}>
+                        Dodaj ogłoszenie
+                      </Button>
+                    </Col>
+                  </Row>
+                  <CategoryChooser opened={this.state.isModalOpen} toggleModal={this.handleModal} />
                 </Form.Group>
                 <Form.Group as={Row}>
                   <Col>
@@ -43,8 +61,9 @@ class AddOfferPage extends Component {
                   <Col>
                     <Form.Label>Stan</Form.Label>
                     <Form.Control as="select">
-                      <option>Używane</option>
+                      <option>-</option>
                       <option>Nowe</option>
+                      <option>Używane</option>
                       <option>Uszkodzone</option>
                     </Form.Control>
                   </Col>
@@ -62,7 +81,31 @@ class AddOfferPage extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label><h3>Twoje dane</h3></Form.Label>
-                  <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" />
+                  <Form.Group as={Row} controlId="formName">
+                    <Form.Label column md={5}>Imię: </Form.Label>
+                    <Col md={7}><Form.Control required type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleChange} value={this.state.userData.name} />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} controlId="formPhone">
+                    <Form.Label column md={5}>Numer telefonu: </Form.Label>
+                    <Col md={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleChange} value={this.state.userData.phoneNumber} />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} controlId="formCity">
+                    <Form.Label column md={5}>Miasto: </Form.Label>
+                    <Col md={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} controlId="formState">
+                    <Form.Label column md={5}>Województwo: </Form.Label>
+                    <Col md={7}><Form.Control type="text" placeholder="Wpisz województwo" name={'state'} onChange={this.handleChange} />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} controlId="formZipCode">
+                    <Form.Label column md={5}>Kod pocztowy: </Form.Label>
+                    <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleChange} />
+                    </Col>
+                  </Form.Group>
                   <Form.Text className="text-muted">
                     Twoje dane zostaną zapisane w ustawieniach, możesz je później zmienić.
                   </Form.Text>

@@ -4,7 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 class CategoryItem extends Component {
   render() {
     return (
-        <ListGroup.Item active={this.props.active} uniqueId={this.props.uniqueId} onClick={this.props.handleClick}>{this.props.name}</ListGroup.Item>
+        <ListGroup.Item active={this.props.active} uniqueid={this.props.uniqueId} onClick={this.props.handleClick}>{this.props.name}</ListGroup.Item>
     );
   }
 }

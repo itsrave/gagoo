@@ -25,6 +25,7 @@ class Settings extends Component {
         city: '',
         state: '',
         zipCode: '',
+        avatar: '',
       }
     }
   }
@@ -86,7 +87,7 @@ class Settings extends Component {
         <Container className='my-3'>
           <Row>
           <Col md={4}>
-            <UserCard />
+            <UserCard userData={this.state.userData} />
             {this.state.isLoading && <Loading/>}
           </Col>
           <Form as={Col} md={4}>
@@ -111,17 +112,17 @@ class Settings extends Component {
               </Form.Group>
             <Form.Group as={Row} controlId="formCity">
               <Form.Label column md={5}>Miasto: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} />
+              <Col md={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} value={this.state.userData.city} />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formState">
               <Form.Label column md={5}>Województwo: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="Wpisz województwo" name={'state'} onChange={this.handleChange} />
-              </Col>
+              {/*<Col md={7}><Form.Control type="text" placeholder="Wpisz województwo" name={'state'} onChange={this.handleChange} value={this.state.userData.state} />*/}
+              {/*</Col>*/}
             </Form.Group>
             <Form.Group as={Row} controlId="formZipCode">
               <Form.Label column md={5}>Kod pocztowy: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleChange} />
+              <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleChange} value={this.state.userData.zipCode} />
               </Col>
             </Form.Group>
             {this.state.error &&
@@ -131,11 +132,11 @@ class Settings extends Component {
               Zaktualizuj dane
             </Button>
           </Form>
-            <PasswordChange />
+            <PasswordChange token={this.props.token} />
           </Row>
         </Container>
     );
   }
 }
-
+// TODO validacjaaa
 export default Settings;

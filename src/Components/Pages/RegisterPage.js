@@ -95,7 +95,6 @@ class RegisterPage extends Component {
                 this.setState({emailMessage: emailMsg, emailWarningMessage: err.response.data.email !== '', isLoading: false});
               });
             }
-            console.log(err.response.data.username)
             if (err.response.data.username !== undefined) {
               err.response.data.username.map((message) => {
                 let usernameMsg = this.state.usernameMessage;

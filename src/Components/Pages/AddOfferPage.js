@@ -27,6 +27,16 @@ class AddOfferPage extends Component {
   handleModal() {
     this.setState({isModalOpen: !this.state.isModalOpen});
   }
+  handleChange = (event) => {
+    const userData = this.state.userData;
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    userData[name] = value;
+    this.setState({
+      userData: userData
+    });
+  };
   render() {
     return (
         <Container className="my-3">

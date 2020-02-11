@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Form from "react-bootstrap/Form";
 import {Col, Container, Row} from "react-bootstrap";
-import UserCard from "../Various/UserCard";
+import UserCard from "./UserCard";
 import PasswordChange from "../Various/PasswordChange";
 import axios from 'axios'
 import path from "../../api";

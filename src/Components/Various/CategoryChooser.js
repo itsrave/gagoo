@@ -62,6 +62,7 @@ class CategoryChooser extends Component {
     this.setState({mainSelectedId: id, mainSelectedName: name})
   }
   handleClick(e) {
+    this.setState({subSelectedId: '', subSelectedName: ''});
     const id = e.target.getAttribute('uniqueid');
     const categories = this.state.cats;
     const name = categories.filter(obj => {
@@ -144,10 +145,7 @@ class CategoryChooser extends Component {
                 </ListGroup>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={this.props.toggleModal}>
-                Zamknij
-              </Button>
-              <Button variant="primary"  onClick={this.props.toggleModal}>
+              <Button variant="primary" onClick={() => {this.props.category(this.state.subSelectedId === '' ? this.state.selectedId : this.state.subSelectedId, [this.state.mainSelectedName, this.state.selectedName, this.state.subSelectedName]);  this.props.toggleModal();}}>
                 Wybierz
               </Button>
             </Modal.Footer>

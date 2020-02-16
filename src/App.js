@@ -57,7 +57,7 @@ class App extends Component {
               <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.setToken} />} />
               <Route path='/offerpage' component={OfferPage}/>
               <Route path='/offers' component={OffersPage}/>
-              <Route path='/addoffer' component={AddOfferPage}/>
+              <Route path='/addoffer' render={(props) => <AddOfferPage {...props} token={this.state.token} />}/>
               <Route path='/cat' component={CategoryChooser}/>/>
               <Route path='/account/:reference' render={(props) => <MyAccountPage {...props} token={this.state.token} />}/>
             </Switch>

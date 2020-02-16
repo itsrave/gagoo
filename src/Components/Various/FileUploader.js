@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import ImageUploader from 'react-images-upload';
 import './FileUploader.css'
+import FormData from "form-data";
+import axios from "axios";
+import path from "../../api";
 
 class FileUploader extends Component {
   constructor(props) {
@@ -8,12 +11,9 @@ class FileUploader extends Component {
     this.state = { pictures: [] };
     this.onDrop = this.onDrop.bind(this);
   }
-  onDrop(picture) {
-    this.setState({
-      pictures: this.state.pictures.concat(picture),
-    });
+  onDrop(pictureFiles, pictureDataURLs) {
+    this.props.handlePictures(pictureDataURLs)
   }
-
   render() {
     return (
         <ImageUploader

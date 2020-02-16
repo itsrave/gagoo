@@ -14,6 +14,7 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getUserData = this.getUserData.bind(this);
     this.Form = React.createRef();
     this.state = {
       isLoading: false,
@@ -63,9 +64,7 @@ class Settings extends Component {
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
-          setTimeout(function() {
-            this.setState({isLoading: false});
-          }.bind(this), 2000)
+          this.setState({isLoading: false});
         })
         .catch(err => {
           console.log(err);
@@ -87,7 +86,7 @@ class Settings extends Component {
         <Container className='my-3'>
           <Row>
           <Col md={4}>
-            <UserCard userData={this.state.userData} />
+            <UserCard update={this.getUserData} token={this.props.token} userData={this.state.userData} />
             {this.state.isLoading && <Loading/>}
           </Col>
           <Form as={Col} md={4}>

@@ -9,7 +9,7 @@ import {faUser, faEnvelope, faPhoneAlt, faMapMarker} from "@fortawesome/free-sol
 import path from "../../api";
 import './UserCard.css'
 import axios from "axios";
-import FormData from 'form-data'
+import Forxsata from 'form-data'
 import Alert from "react-bootstrap/Alert";
 import Loading from "../Various/Loading";
 import Form from "react-bootstrap/Form";
@@ -44,7 +44,7 @@ class UserCard extends Component {
     e.stopPropagation();
     e.preventDefault();
     let file = e.target.files[0];
-    let data = new FormData();
+    let data = new Forxsata();
     data.append('avatar', file, file.fileName);
     const AuthStr = 'Bearer ' + this.props.token;
     axios
@@ -62,35 +62,35 @@ class UserCard extends Component {
     return (
         <>
           <Card>
-            <Card.Header className={'avatar d-flex justify-content-sm-center'}>
+            <Card.Header className={'avatar d-flex justify-content-center'}>
               <Card.Img onClick={() => this.avatar.click()} style={{objectFit: 'cover', width: '200px', height: '200px' }} variant="top" className='rounded-circle avatar-image' src={path + "upload/av/" + this.state.userData.avatar} />
               <input type="file" id="file" onChange={this.handleAvatarChange} ref={(ref) => this.avatar = ref} style={{display: 'none'}}/>
             </Card.Header>
             <Card.Body>
               <Card.Title>
                 <Row>
-                  <Col md={1}><FontAwesomeIcon icon={faUser}/></Col>
-                  <Col md={8}>{this.state.userData.name}</Col>
+                  <Col xs={1}><FontAwesomeIcon icon={faUser}/></Col>
+                  <Col xs={8}>{this.state.userData.name}</Col>
                 </Row>
               </Card.Title>
               <div>
                 <Row>
-                  <Col md={1}><FontAwesomeIcon icon={faMapMarker}/></Col>
-                  <Col md={8}>{this.state.userData.city}</Col>
+                  <Col xs={1}><FontAwesomeIcon icon={faMapMarker}/></Col>
+                  <Col xs={8}>{this.state.userData.city}</Col>
                 </Row>
               </div>
             </Card.Body>
             <ListGroup className="list-group-flush">
               <ListGroupItem>
                 <Row>
-                  <Col md={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
-                  <Col md={8}>{this.state.userData.phoneNumber}</Col>
+                  <Col xs={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
+                  <Col xs={8}>{this.state.userData.phoneNumber}</Col>
                 </Row>
               </ListGroupItem>
               <ListGroupItem>
                 <Row>
-                  <Col md={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
-                  <Col md={8}>{this.state.userData.email}</Col>
+                  <Col xs={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
+                  <Col xs={8}>{this.state.userData.email}</Col>
                 </Row>
               </ListGroupItem>
             </ListGroup>

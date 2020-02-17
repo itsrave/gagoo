@@ -15,23 +15,26 @@ class AdListItem extends Component {
           <Card>
             <Row className='no-gutters'>
               <LinkContainer to='/offerpage' className='offer-image'>
-                <Card.Img variant="left" src="https://i.picsum.photos/id/737/260/160.jpg"/>
+                <Col lg={4}>
+                    <Card.Img src="https://i.picsum.photos/id/737/260/160.jpg"/>
+                </Col>
               </LinkContainer>
-            <Card.Body>
-              <Link to={'/offerpage'}><Card.Title>Uturbiony golf3 tdi 1.6</Card.Title></Link>
-              <Card.Text><FontAwesomeIcon icon={faDollarSign} /> 4500zł</Card.Text>
-              <Card.Text className="text-muted">Kategoria > Subkategoria</Card.Text>
-              <Card.Footer className="text-muted">
-                <Row>
-                  <Col md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> Miastko</Col>
-                  <Col md={3}><FontAwesomeIcon icon={faClock}/> Wczoraj</Col>
-                  <Col md={3}><FontAwesomeIcon icon={faWrench}/> Nowy</Col>
-                  <Col md={3}><FontAwesomeIcon icon={faInfo}/> 2312321321</Col>
-                </Row>
-              </Card.Footer>
-            </Card.Body>
+              <Col lg={8}>
+                <Card.Body>
+                  <Link to={'/offerpage'}><Card.Title>Uturbiony golf3 tdi 1.6</Card.Title></Link>
+                  <Card.Text><FontAwesomeIcon icon={faDollarSign} /> 4500zł</Card.Text>
+                  <Card.Text className="text-muted">Kategoria > Subkategoria</Card.Text>
+                </Card.Body>
+              </Col>
             </Row>
-
+            <Card.Footer className="text-muted">
+              <Row>
+                <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> Miastko</Col>
+                <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> Wczoraj</Col>
+                <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> Nowy</Col>
+                <Col className="py-1" md={3}><FontAwesomeIcon icon={faInfo}/> 2312321321</Col>
+              </Row>
+            </Card.Footer>
           </Card>
     );
   }

@@ -12,7 +12,7 @@ class SearchBar extends Component {
         <Container className='search-bar my-3'>
           <Form className='search-form'>
             <Form.Row className='justify-content-md-center'>
-              <Col xs={4}>
+              <Col md={4} className='my-1 my-md-0'>
                 <InputGroup>
                   <InputGroup.Prepend>
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
@@ -20,7 +20,7 @@ class SearchBar extends Component {
                   <Form.Control className="mr-sm-2" placeholder='Czego szukasz?'/>
                 </InputGroup>
               </Col>
-              <Col xs={3}>
+              <Col md={3} className='my-1 my-md-0'>
                 <InputGroup>
                   <InputGroup.Prepend>
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faMapMarkedAlt} /></InputGroup.Text>
@@ -28,7 +28,7 @@ class SearchBar extends Component {
                   <Form.Control className="mr-sm-2" placeholder='Lokalizacja'/>
                 </InputGroup>
               </Col>
-              <Col xs={1}>
+              <Col md={1} className="text-center my-1 my-md-0">
                 <Button variant="info">Szukaj</Button>
               </Col>
             </Form.Row>

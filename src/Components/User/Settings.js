@@ -10,6 +10,25 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 
 
+const states = [
+  'dolnośląskie',
+  'kujawsko-pomorskie',
+  'lubelskie',
+  'lubuskie',
+  'łódzkie',
+  'małopolskie',
+  'mazowieckie',
+  'opolskie',
+  'podkarpackie',
+  'podlaskie',
+  'pomorskie',
+  'śląskie',
+  'świętokrzyskie',
+  'warmińsko-mazurskie',
+  'wielkopolskie',
+  'zachodniopomorskie'
+];
+
 class Settings extends Component {
   constructor(props) {
     super(props);
@@ -18,9 +37,11 @@ class Settings extends Component {
     this.Form = React.createRef();
     this.state = {
       isLoading: false,
+      validateMessage: false,
+      success: false,
       userData: {
-        email: 'przykład@przykład.pl',
-        username: 'Nazwa użytkownika',
+        email: '',
+        username: '',
         name: '',
         phoneNumber: '',
         city: '',
@@ -56,18 +77,38 @@ class Settings extends Component {
           console.log(err);
         });
   }
-
   handleSubmit(e) {
-    this.setState({isLoading: true});
-    const AuthStr = 'Bearer ' + this.props.token;
+    this.setState({isLoading: true, validateMessage: false, success: false,});
     const userData = this.state.userData;
+    if (userData.name === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.phoneNumber === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.city === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.state === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.zipCode === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    const AuthStr = 'Bearer ' + this.props.token;
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
-          this.setState({isLoading: false});
+          console.log(res.data);
+          this.setState({isLoading: false, success: true});
         })
         .catch(err => {
-          console.log(err);
+          console.log(err.response.data);
           this.setState({isLoading: false});
         })
   }
@@ -85,53 +126,59 @@ class Settings extends Component {
     return (
         <Container className='my-3'>
           <Row>
-          <Col md={4}>
+          <Col className='pb-3' lg={4}>
             <UserCard update={this.getUserData} token={this.props.token} userData={this.state.userData} />
             {this.state.isLoading && <Loading/>}
           </Col>
-          <Form as={Col} md={4}>
-            <Form.Label as={Row} column md={12}><h3>Twoje dane</h3></Form.Label>
+          <Form as={Col} className='pb-3' lg={4}>
+            <Form.Label as={Row} column lg={12}><h3>Twoje dane</h3></Form.Label>
               <Form.Group as={Row} controlId="formEmail">
-                <Form.Label column md={5}>Email: </Form.Label>
-                <Col md={7}><Form.Control plaintext readOnly value={this.state.userData.email}/></Col>
+                <Form.Label column lg={5}>Email: </Form.Label>
+                <Col lg={7}><Form.Control plaintext readOnly value={this.state.userData.email}/></Col>
               </Form.Group>
               <Form.Group as={Row} controlId="formUsername">
-                <Form.Label column md={5}>Nazwa użytkownika: </Form.Label>
-                <Col md={7}><Form.Control plaintext readOnly value={this.state.userData.username}/></Col>
+                <Form.Label column lg={5}>Nazwa użytkownika: </Form.Label>
+                <Col lg={7}><Form.Control plaintext readOnly value={this.state.userData.username}/></Col>
               </Form.Group>
               <Form.Group as={Row} controlId="formName">
-                <Form.Label column md={5}>Imię: </Form.Label>
-                <Col md={7}><Form.Control required type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleChange} value={this.state.userData.name} />
+                <Form.Label column lg={5}>Imię: </Form.Label>
+                <Col lg={7}><Form.Control required type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleChange} value={this.state.userData.name} />
                 </Col>
               </Form.Group>
               <Form.Group as={Row} controlId="formPhone">
-                <Form.Label column md={5}>Numer telefonu: </Form.Label>
-                <Col md={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleChange} value={this.state.userData.phoneNumber} />
+                <Form.Label column lg={5}>Numer telefonu: </Form.Label>
+                <Col lg={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleChange} value={this.state.userData.phoneNumber} />
                 </Col>
               </Form.Group>
             <Form.Group as={Row} controlId="formCity">
-              <Form.Label column md={5}>Miasto: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} value={this.state.userData.city} />
+              <Form.Label column lg={5}>Miasto: </Form.Label>
+              <Col lg={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} value={this.state.userData.city} />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formState">
-              <Form.Label column md={5}>Województwo: </Form.Label>
-              {/*<Col md={7}><Form.Control type="text" placeholder="Wpisz województwo" name={'state'} onChange={this.handleChange} value={this.state.userData.state} />*/}
-              {/*</Col>*/}
-            </Form.Group>
-            <Form.Group as={Row} controlId="formZipCode">
-              <Form.Label column md={5}>Kod pocztowy: </Form.Label>
-              <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleChange} value={this.state.userData.zipCode} />
+              <Form.Label column lg={5}>Województwo: </Form.Label>
+              <Col lg={7}>
+                <Form.Control as="select" name={'state'} placeholder="Wpisz województwo" onChange={this.handleChange} value={this.state.userData.state} >
+                  <option value="" selected>Wybierz województwo</option>
+                  {states.map((state, i) => <option key={i}>{state}</option>)}
+                </Form.Control>
               </Col>
             </Form.Group>
-            {this.state.error &&
-            <Alert variant='danger' dismissible onClose={() => this.setState({error: false})}>{this.state.errorMessage}</Alert>}
+            <Form.Group as={Row} controlId="formZipCode">
+              <Form.Label column lg={5}>Kod pocztowy: </Form.Label>
+              <Col lg={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleChange} value={this.state.userData.zipCode} />
+              </Col>
+            </Form.Group>
+            {this.state.validateMessage &&
+            <Alert variant='warning' dismissible onClose={() => this.setState({validateMessage: false})}>Pola nie mogą być puste.</Alert>}
+            {this.state.success &&
+            <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>Zaktualizowano dane pomyślnie.</Alert>}
             {this.state.isLoading && <Loading/>}
             <Button variant="primary" onClick={this.handleSubmit}>
               Zaktualizuj dane
             </Button>
           </Form>
-            <PasswordChange token={this.props.token} />
+            <PasswordChange className='pb-3' lg={4} token={this.props.token} />
           </Row>
         </Container>
     );

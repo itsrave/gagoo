@@ -25,10 +25,10 @@ class OfferPage extends Component {
                 </Card.Body>
                 <Card.Footer className="text-muted">
                   <Row>
-                    <Col md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> Miastko</Col>
-                    <Col md={3}><FontAwesomeIcon icon={faClock}/> Wczoraj</Col>
-                    <Col md={3}><FontAwesomeIcon icon={faWrench}/> Nowy</Col>
-                    <Col md={3}><FontAwesomeIcon icon={faInfo}/> 2312321321</Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> Miastko</Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> Wczoraj</Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> Nowy</Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faInfo}/> 2312321321</Col>
                   </Row>
                 </Card.Footer>
                 <Card.Body>
@@ -49,7 +49,11 @@ class OfferPage extends Component {
             <Col md={4}>
               <UserCardAdpage />
               <Container className={'pt-2'}>
-                <Button variant="primary">Pokaż ogłoszenia użytkownika</Button>
+                <Row>
+                  <Col className="text-center">
+                    <Button variant="primary">Pokaż ogłoszenia użytkownika</Button>
+                  </Col>
+                </Row>
               </Container>
             </Col>
           </Row>

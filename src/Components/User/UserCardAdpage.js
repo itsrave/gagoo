@@ -34,28 +34,28 @@ class UserCardAdpage extends Component {
           <Card.Body>
             <Card.Title>
               <Row>
-                <Col md={1}><FontAwesomeIcon icon={faUser}/></Col>
-                <Col md={10}>{this.state.userData.name}</Col>
+                <Col xs={1}><FontAwesomeIcon icon={faUser}/></Col>
+                <Col xs={10}>{this.state.userData.name}</Col>
               </Row>
             </Card.Title>
             <div>
               <Row>
-                <Col md={1}><FontAwesomeIcon icon={faMapMarker}/></Col>
-                <Col md={10}>{this.state.userData.city}</Col>
+                <Col xs={1}><FontAwesomeIcon icon={faMapMarker}/></Col>
+                <Col xs={8}>{this.state.userData.city}</Col>
               </Row>
             </div>
           </Card.Body>
           <ListGroup className="list-group-flush">
             <ListGroupItem>
               <Row>
-                <Col md={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
-                <Col md={10}>{this.state.userData.phoneNumber}</Col>
+                <Col xs={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
+                <Col xs={8}>{this.state.userData.phoneNumber}</Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem>
               <Row>
-                <Col md={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
-                <Col md={10}>{this.state.userData.email}</Col>
+                <Col xs={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
+                <Col xs={8}>{this.state.userData.email}</Col>
               </Row>
             </ListGroupItem>
           </ListGroup>

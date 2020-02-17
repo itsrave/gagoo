@@ -70,23 +70,23 @@ class PasswordChange extends Component {
   }
   render() {
     return (
-        <Form as={Col} md={4}>
-          <Form.Label as={Row} column md={12}><h3>Zmień hasło</h3></Form.Label>
+        <Form as={Col} lg={4}>
+          <Form.Label as={Row} column lg={12}><h3>Zmień hasło</h3></Form.Label>
             <Form.Group as={Row} controlId="formCurrentPassword">
-              <Form.Label column md={5}>Obecne hasło:</Form.Label>
-              <Col md={7}><Form.Control name="oldPassword" type="password" placeholder="Wpisz obecne hasło" onChange={this.handleChange} /></Col>
+              <Form.Label column lg={5}>Obecne hasło:</Form.Label>
+              <Col lg={7}><Form.Control name="oldPassword" type="password" placeholder="Wpisz obecne hasło" onChange={this.handleChange} /></Col>
             </Form.Group>
           {this.state.errorsResponse.oldPassword !== undefined &&
           <Alert variant='danger' dismissible onClose={() => this.setState({error: false})}>{this.state.errorsResponse.oldPassword}</Alert>}
             <Form.Group as={Row} controlId="formNewPassword">
-            <Form.Label column md={5}>Nowe hasło:</Form.Label>
-            <Col md={7}><Form.Control name="newPassword" type="password" placeholder="Wpisz nowe hasło" onChange={this.handleChange} /></Col>
+            <Form.Label column lg={5}>Nowe hasło:</Form.Label>
+            <Col lg={7}><Form.Control name="newPassword" type="password" placeholder="Wpisz nowe hasło" onChange={this.handleChange} /></Col>
           </Form.Group>
           {this.state.errorsResponse.rawPassword !== undefined &&
           <Alert variant='danger' dismissible onClose={() => this.setState({error: false})}>{this.state.errorsResponse.rawPassword}</Alert>}
           <Form.Group as={Row} controlId="formCurrentPasswordRepeat">
-            <Form.Label column md={5}>Potwórz hasło:</Form.Label>
-            <Col md={7}><Form.Control type="password" name="passwordRepeat" placeholder="Powtórz hasło" onChange={this.handleChange}  /></Col>
+            <Form.Label column lg={5}>Potwórz hasło:</Form.Label>
+            <Col lg={7}><Form.Control type="password" name="passwordRepeat" placeholder="Powtórz hasło" onChange={this.handleChange}  /></Col>
           </Form.Group>
           {this.state.errorsResponse.newPassword !== undefined &&
           <Alert variant='danger' dismissible onClose={() => this.setState({error: false})}>{this.state.errorsResponse.newPassword}</Alert>}

@@ -10,12 +10,34 @@ import axios from "axios";
 import path from "../../api";
 import FormData from "form-data";
 import Loading from "../Various/Loading";
+import Alert from "react-bootstrap/Alert";
+
+const states = [
+  'dolnośląskie',
+  'kujawsko-pomorskie',
+  'lubelskie',
+  'lubuskie',
+  'łódzkie',
+  'małopolskie',
+  'mazowieckie',
+  'opolskie',
+  'podkarpackie',
+  'podlaskie',
+  'pomorskie',
+  'śląskie',
+  'świętokrzyskie',
+  'warmińsko-mazurskie',
+  'wielkopolskie',
+  'zachodniopomorskie'
+];
 
 class AddOfferPage extends Component {
   constructor(props) {
     super(props);
     this.handleModal = this.handleModal.bind(this);
     this.state = {
+      validateMessage: false,
+      success: false,
       isModalOpen: false,
       isLoading: false,
       categoryChosen: '',
@@ -26,11 +48,11 @@ class AddOfferPage extends Component {
         price: undefined,
         condition: undefined,
         categoryUid: undefined,
-        photos: []
+        photos: ["15e4672604768d1581675104.jpeg"]
       },
       userData: {
-        email: 'przykład@przykład.pl',
-        username: 'Nazwa użytkownika',
+        email: '',
+        username: '',
         name: '',
         phoneNumber: '',
         city: '',
@@ -40,7 +62,10 @@ class AddOfferPage extends Component {
     }
   }
   componentDidMount() {
-    this.getUserData()
+    this.setState({isLoading: true});
+    this.getUserData();
+    this.setState({isLoading: false});
+
   }
   getUserData() {
     const AuthStr = 'Bearer ' + this.props.token;
@@ -54,56 +79,73 @@ class AddOfferPage extends Component {
   }
   handleSubmit = () => {
     this.setState({isLoading: true});
-    this.submitPhotos();
-    this.submitUserData();
+    // this.submitPhotos();
+    // this.submitUserData();
     this.submitOffer();
     this.setState({isLoading: false});
-
   };
   submitOffer() {
     let formData = this.state.formData;
     const AuthStr = 'Bearer ' + this.props.token;
     axios
-        .post(path + 'api/offer-photo/upload', formData,{ headers: { Authorization: AuthStr, } })
+        .post(path + 'api/offer/add', formData,{ headers: { Authorization: AuthStr, } })
         .then(res => {
           console.log(res.data)
         })
         .catch(err => {
-          console.log(err.response.data)
+          console.log(err.response.data);
+          this.setState({isLoading: false});
         });
   }
   submitPhotos() {
-    let pictures = this.state.pictures;
-    pictures.map((picture) => {
-      let data = new FormData();
-      data.append('offerPhoto', picture, picture.fileName);
-      const AuthStr = 'Bearer ' + this.props.token;
-      axios
-          .post(path + 'api/offer-photo/upload', data,{ headers: { Authorization: AuthStr, } })
-          .then(res => {
-            let formData = this.state.formData;
-            formData.photos.push(res.data[0]);
-            this.setState({formData: formData})
-          })
-          .catch(err => {
-            console.log(err)
-          });
-    })
-  }
-  submitUserData() {
+    let data = this.state.pictures;
     const AuthStr = 'Bearer ' + this.props.token;
+    axios
+        .post(path + 'api/offer-photo/upload', data,{ headers: { Authorization: AuthStr, } })
+        .then(res => {
+          console.log(res.data)
+        })
+        .catch(err => {
+          console.log(err)
+          this.setState({isLoading: false});
+        });
+    }
+  submitUserData() {
+    this.setState({
+      validateMessage: false,
+      success: false,
+    });
     const userData = this.state.userData;
+    if (userData.name === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.phoneNumber === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.city === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.state === ''){
+      this.setState({validateMessage: true, isLoading: false});
+      return
+    }
+    if (userData.zipCode === ''){
+      this.setState({validateMessage: true, isLoading: false});
+    }
+    const AuthStr = 'Bearer ' + this.props.token;
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
+          this.setState({isLoading: false, success: true});
         })
         .catch(err => {
+          this.setState({isLoading: false});
         })
   }
   handlePictures = (pic) => {
-    // let photos = [];
-    // pic.map(((photo) => photos.push(photo)));
-    // console.log(photos)
     this.setState({pictures: [...pic]})
   };
   handleModal() {
@@ -121,6 +163,8 @@ class AddOfferPage extends Component {
     const value = target.value;
     const name = target.name;
     formData[name] = value;
+    if (name === 'price')
+      formData[name] = parseInt(value, 10);
     this.setState({
       formData: formData
     });
@@ -146,7 +190,6 @@ class AddOfferPage extends Component {
                   <Form.Label><h3>Tytuł</h3></Form.Label>
                   <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" name={'title'} onChange={this.handleFormChange} />
                 </Form.Group>
-
                 <Form.Group>
                   <Form.Label>
                     <h3>Kategoria</h3>
@@ -165,14 +208,14 @@ class AddOfferPage extends Component {
                   <Col>
                     <Form.Label>Cena</Form.Label>
                     <Row>
-                      <Col md={11}><Form.Control type="text" name={'price'} onChange={this.handleFormChange} /></Col>
-                      <Form.Label>zł</Form.Label>
+                      <Col xs={10}><Form.Control type="text" name={'price'} onChange={this.handleFormChange} /></Col>
+                      <Col xs={2} ><Form.Label>zł</Form.Label></Col>
                     </Row>
                   </Col>
                   <Col>
                     <Form.Label>Stan</Form.Label>
                     <Form.Control as="select" name={'condition'} onChange={this.handleFormChange} >
-                      <option>-</option>
+                      <option value="" selected>Wybierz stan przedmiotu</option>
                       <option>Nowe</option>
                       <option>Używane</option>
                       <option>Uszkodzone</option>
@@ -209,7 +252,11 @@ class AddOfferPage extends Component {
                   </Form.Group>
                   <Form.Group as={Row} controlId="formState">
                     <Form.Label column md={5}>Województwo: </Form.Label>
-                    <Col md={7}><Form.Control type="text" placeholder="Wpisz województwo" name={'state'} onChange={this.handleUserDataChange} value={this.state.userData.state}/>
+                    <Col md={7}>
+                      <Form.Control as="select" name={'state'} placeholder="Wpisz województwo" onChange={this.handleChange} value={this.state.userData.state} >
+                        <option value="" selected>Wybierz województwo</option>
+                        {states.map((state, i) => <option key={i}>{state}</option>)}
+                      </Form.Control>
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row} controlId="formZipCode">
@@ -220,15 +267,20 @@ class AddOfferPage extends Component {
                   <Form.Text className="text-muted">
                     Twoje dane zostaną zapisane w ustawieniach, możesz je później zmienić.
                   </Form.Text>
+                  {this.state.validateMessage &&
+                  <Alert variant='warning' dismissible onClose={() => this.setState({validateMessage: false})}>Pola z danymi nie mogą być puste.</Alert>}
+                  {this.state.success &&
+                  <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>Zaktualizowano dane pomyślnie.</Alert>}
+
                 </Form.Group>
                 <Button variant="primary" onClick={this.handleSubmit}>
                   Dodaj ogłoszenie
                 </Button>
+                {this.state.isLoading && <Loading/>}
               </Form>
             </Col>
             <Col />
           </Row>
-          {this.state.isLoading && <Loading/>}
         </Container>
     );
   }

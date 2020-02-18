@@ -30,6 +30,7 @@ const states = [
   'wielkopolskie',
   'zachodniopomorskie'
 ];
+let photos = [];
 
 class AddOfferPage extends Component {
   constructor(props) {
@@ -46,9 +47,9 @@ class AddOfferPage extends Component {
         title: undefined,
         description: undefined,
         price: undefined,
-        condition: undefined,
+        condition: '',
         categoryUid: undefined,
-        photos: ["15e4672604768d1581675104.jpeg"]
+        photos: []
       },
       userData: {
         email: '',
@@ -67,6 +68,7 @@ class AddOfferPage extends Component {
     this.setState({isLoading: false});
 
   }
+  // TODO avatar upload request in get data settings
   getUserData() {
     const AuthStr = 'Bearer ' + this.props.token;
     axios
@@ -79,9 +81,9 @@ class AddOfferPage extends Component {
   }
   handleSubmit = () => {
     this.setState({isLoading: true});
-    // this.submitPhotos();
+    this.submitPhotos();
     // this.submitUserData();
-    this.submitOffer();
+    // this.submitOffer();
     this.setState({isLoading: false});
   };
   submitOffer() {
@@ -98,18 +100,24 @@ class AddOfferPage extends Component {
         });
   }
   submitPhotos() {
-    let data = this.state.pictures;
-    const AuthStr = 'Bearer ' + this.props.token;
-    axios
-        .post(path + 'api/offer-photo/upload', data,{ headers: { Authorization: AuthStr, } })
-        .then(res => {
-          console.log(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-          this.setState({isLoading: false});
-        });
-    }
+    photos.map((picture) => {
+      console.log(picture);
+      let data = new FormData();
+      data.append('image', picture, picture.fileName);
+      const AuthStr = 'Bearer ' + this.props.token;
+      axios
+          .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
+          .then(res => {
+            let formData = this.state.formData;
+            formData.photos.push(res.data[0]);
+            this.setState({formData: formData})
+          })
+          .catch(err => {
+            console.log(err.response.data);
+            this.setState({isLoading: false});
+          });
+    });
+  }
   submitUserData() {
     this.setState({
       validateMessage: false,
@@ -146,7 +154,7 @@ class AddOfferPage extends Component {
         })
   }
   handlePictures = (pic) => {
-    this.setState({pictures: [...pic]})
+    photos = pic;
   };
   handleModal() {
     this.setState({isModalOpen: !this.state.isModalOpen});
@@ -214,8 +222,8 @@ class AddOfferPage extends Component {
                   </Col>
                   <Col>
                     <Form.Label>Stan</Form.Label>
-                    <Form.Control as="select" name={'condition'} onChange={this.handleFormChange} >
-                      <option value="" selected>Wybierz stan przedmiotu</option>
+                    <Form.Control as="select" name={'condition'} value={this.state.formData.condition} onChange={this.handleFormChange} >
+                      <option value={''}>Wybierz stan przedmiotu</option>
                       <option>Nowe</option>
                       <option>Używane</option>
                       <option>Uszkodzone</option>

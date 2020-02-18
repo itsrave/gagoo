@@ -12,7 +12,7 @@ class FileUploader extends Component {
     this.onDrop = this.onDrop.bind(this);
   }
   onDrop(pictureFiles, pictureDataURLs) {
-    this.props.handlePictures(pictureDataURLs)
+    this.props.handlePictures(pictureFiles)
   }
   render() {
     return (

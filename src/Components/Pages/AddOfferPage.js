@@ -37,12 +37,13 @@ class AddOfferPage extends Component {
     super(props);
     this.handleModal = this.handleModal.bind(this);
     this.state = {
+      failure: false,
       validateMessage: false,
-      success: false,
       isModalOpen: false,
       isLoading: false,
       categoryChosen: '',
       pictures: [],
+      error: {},
       formData: {
         title: undefined,
         description: undefined,
@@ -62,6 +63,12 @@ class AddOfferPage extends Component {
       }
     }
   }
+  getInitialStateOfAlerts() {
+    this.setState({
+      validateMessage: false,
+      failure: false,
+    });
+  }
   componentDidMount() {
     this.setState({isLoading: true});
     this.getUserData();
@@ -80,10 +87,11 @@ class AddOfferPage extends Component {
         });
   }
   handleSubmit = () => {
+    this.getInitialStateOfAlerts();
     this.setState({isLoading: true});
+    this.submitUserData();
     this.submitPhotos();
-    // this.submitUserData();
-    // this.submitOffer();
+    this.submitOffer();
     this.setState({isLoading: false});
   };
   submitOffer() {
@@ -95,13 +103,11 @@ class AddOfferPage extends Component {
           console.log(res.data)
         })
         .catch(err => {
-          console.log(err.response.data);
-          this.setState({isLoading: false});
+          this.setState({error: err.response.data, isLoading: false});
         });
   }
   submitPhotos() {
     photos.map((picture) => {
-      console.log(picture);
       let data = new FormData();
       data.append('image', picture, picture.fileName);
       const AuthStr = 'Bearer ' + this.props.token;
@@ -114,15 +120,11 @@ class AddOfferPage extends Component {
           })
           .catch(err => {
             console.log(err.response.data);
-            this.setState({isLoading: false});
+            this.setState({failure: true, isLoading: false});
           });
     });
   }
   submitUserData() {
-    this.setState({
-      validateMessage: false,
-      success: false,
-    });
     const userData = this.state.userData;
     if (userData.name === ''){
       this.setState({validateMessage: true, isLoading: false});
@@ -142,15 +144,16 @@ class AddOfferPage extends Component {
     }
     if (userData.zipCode === ''){
       this.setState({validateMessage: true, isLoading: false});
+      return
     }
     const AuthStr = 'Bearer ' + this.props.token;
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
-          this.setState({isLoading: false, success: true});
+          this.setState({success: true});
         })
         .catch(err => {
-          this.setState({isLoading: false});
+          this.setState({isLoading: false, failure: true});
         })
   }
   handlePictures = (pic) => {
@@ -224,9 +227,9 @@ class AddOfferPage extends Component {
                     <Form.Label>Stan</Form.Label>
                     <Form.Control as="select" name={'condition'} value={this.state.formData.condition} onChange={this.handleFormChange} >
                       <option value={''}>Wybierz stan przedmiotu</option>
-                      <option>Nowe</option>
-                      <option>Używane</option>
-                      <option>Uszkodzone</option>
+                      <option>Nowy</option>
+                      <option>Używany</option>
+                      <option>Uszkodzony</option>
                     </Form.Control>
                   </Col>
                 </Form.Group>
@@ -261,8 +264,8 @@ class AddOfferPage extends Component {
                   <Form.Group as={Row} controlId="formState">
                     <Form.Label column md={5}>Województwo: </Form.Label>
                     <Col md={7}>
-                      <Form.Control as="select" name={'state'} placeholder="Wpisz województwo" onChange={this.handleChange} value={this.state.userData.state} >
-                        <option value="" selected>Wybierz województwo</option>
+                      <Form.Control as="select" name={'state'} onChange={this.handleUserDataChange} value={this.state.userData.state} >
+                        <option value={''}>Wybierz województwo</option>
                         {states.map((state, i) => <option key={i}>{state}</option>)}
                       </Form.Control>
                     </Col>
@@ -277,9 +280,8 @@ class AddOfferPage extends Component {
                   </Form.Text>
                   {this.state.validateMessage &&
                   <Alert variant='warning' dismissible onClose={() => this.setState({validateMessage: false})}>Pola z danymi nie mogą być puste.</Alert>}
-                  {this.state.success &&
-                  <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>Zaktualizowano dane pomyślnie.</Alert>}
-
+                  {this.state.failure &&
+                  <Alert variant='danger' dismissible onClose={() => this.setState({failure: false})}>Nieznany błąd, spróbuj ponownie później.</Alert>}
                 </Form.Group>
                 <Button variant="primary" onClick={this.handleSubmit}>
                   Dodaj ogłoszenie

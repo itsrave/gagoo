@@ -40,6 +40,12 @@ class AddOfferPage extends Component {
       success: false,
       isModalOpen: false,
       isLoading: false,
+      categoryError: false,
+      titleError: false,
+      descriptionError: false,
+      priceError: false,
+      conditionError: false,
+      errors: [],
       categoryChosen: '',
       pictures: [],
       formData: {
@@ -61,6 +67,20 @@ class AddOfferPage extends Component {
       }
     }
   }
+  getInitialWarningState() {
+    this.setState({
+      validateMessage: false,
+      success: false,
+      isModalOpen: false,
+      isLoading: false,
+      categoryError: false,
+      titleError: false,
+      descriptionError: false,
+      priceError: false,
+      conditionError: false,
+      errors: [],
+    })
+  }
   componentDidMount() {
     this.setState({isLoading: true});
     this.getUserData();
@@ -78,6 +98,7 @@ class AddOfferPage extends Component {
         });
   }
   handleSubmit = () => {
+    this.getInitialWarningState();
     this.setState({isLoading: true});
     // this.submitPhotos();
     // this.submitUserData();
@@ -93,8 +114,8 @@ class AddOfferPage extends Component {
           console.log(res.data)
         })
         .catch(err => {
-          console.log(err.response.data);
-          this.setState({isLoading: false});
+          this.setState({errors: err.response.data, isLoading: false});
+          this.handleErrors()
         });
   }
   submitPhotos() {
@@ -145,6 +166,24 @@ class AddOfferPage extends Component {
           this.setState({isLoading: false});
         })
   }
+  handleErrors() {
+    let errors = this.state.errors;
+    if (errors.category !== undefined) {
+      this.setState({categoryError: true});
+    }
+    if (errors.title !== undefined) {
+      this.setState({titleError: true});
+    }
+    if (errors.description !== undefined) {
+      this.setState({descriptionError: true});
+    }
+    if (errors.price !== undefined) {
+      this.setState({priceError: true});
+    }
+    if (errors.condition !== undefined) {
+      this.setState({conditionError: true});
+    }
+  }
   handlePictures = (pic) => {
     this.setState({pictures: [...pic]})
   };
@@ -189,6 +228,8 @@ class AddOfferPage extends Component {
                 <Form.Group>
                   <Form.Label><h3>Tytuł</h3></Form.Label>
                   <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" name={'title'} onChange={this.handleFormChange} />
+                  {this.state.titleError &&
+                  <Alert variant='warning' dismissible onClose={() => this.setState({titleError: false})}>{this.state.errors.title}</Alert>}
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>
@@ -196,6 +237,8 @@ class AddOfferPage extends Component {
                     <Button variant="primary" onClick={this.handleModal}>
                       Wybierz kategorie
                     </Button>
+                    {this.state.categoryError &&
+                    <Alert variant='warning' dismissible onClose={() => this.setState({categoryError: false})}>{this.state.errors.category}</Alert>}
                   </Form.Label>
                   <Row>
                     <Col>
@@ -211,6 +254,8 @@ class AddOfferPage extends Component {
                       <Col xs={10}><Form.Control type="text" name={'price'} onChange={this.handleFormChange} /></Col>
                       <Col xs={2} ><Form.Label>zł</Form.Label></Col>
                     </Row>
+                    {this.state.priceError &&
+                    <Alert variant='warning' dismissible onClose={() => this.setState({priceError: false})}>{this.state.errors.price}</Alert>}
                   </Col>
                   <Col>
                     <Form.Label>Stan</Form.Label>
@@ -220,11 +265,15 @@ class AddOfferPage extends Component {
                       <option>Używane</option>
                       <option>Uszkodzone</option>
                     </Form.Control>
+                    {this.state.conditionError &&
+                    <Alert variant='warning' dismissible onClose={() => this.setState({conditionError: false})}>{this.state.errors.condition}</Alert>}
                   </Col>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label><h3>Opis</h3></Form.Label>
                   <Form.Control as="textarea" rows="4" placeholder="Wpisz opis" name={'description'} onChange={this.handleFormChange} />
+                  {this.state.descriptionError &&
+                  <Alert variant='warning' dismissible onClose={() => this.setState({descriptionError: false})}>{this.state.errors.description}</Alert>}
                 </Form.Group>
                 <Form.Group>
                   <Form.Label><h3>Zdjęcia</h3></Form.Label>

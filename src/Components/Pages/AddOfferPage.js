@@ -47,6 +47,7 @@ class AddOfferPage extends Component {
       priceError: false,
       conditionError: false,
       errors: [],
+      successMessages: [],
       categoryChosen: '',
       pictures: [],
       error: {},
@@ -71,6 +72,7 @@ class AddOfferPage extends Component {
   }
   getInitialWarningState() {
     this.setState({
+      successMessages: {},
       failure: false,
       validateMessage: false,
       success: false,
@@ -88,7 +90,6 @@ class AddOfferPage extends Component {
     this.setState({isLoading: true});
     this.getUserData();
     this.setState({isLoading: false});
-
   }
   // TODO avatar upload request in get data settings
   getUserData() {
@@ -105,7 +106,9 @@ class AddOfferPage extends Component {
     this.getInitialWarningState();
     this.setState({isLoading: true});
     this.submitUserData();
-    this.submitPhotos();
+    if (photos !== []){
+      this.submitPhotos();
+    }
     this.submitOffer();
     this.setState({isLoading: false});
   };
@@ -115,11 +118,12 @@ class AddOfferPage extends Component {
     axios
         .post(path + 'api/offer/add', formData,{ headers: { Authorization: AuthStr, } })
         .then(res => {
-          console.log(res.data)
+          this.setState({successMessages: res.data});
+          this.handleMessages()
         })
         .catch(err => {
           this.setState({errors: err.response.data, isLoading: false});
-          this.handleErrors()
+          this.handleMessages()
         });
   }
   submitPhotos() {
@@ -166,14 +170,14 @@ class AddOfferPage extends Component {
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
-          this.setState({success: true});
         })
         .catch(err => {
           this.setState({isLoading: false, failure: true});
         })
   }
-  handleErrors() {
+  handleMessages() {
     let errors = this.state.errors;
+    let success = this.state.successMessages
     if (errors.category !== undefined) {
       this.setState({categoryError: true});
     }
@@ -188,6 +192,9 @@ class AddOfferPage extends Component {
     }
     if (errors.condition !== undefined) {
       this.setState({conditionError: true});
+    }
+    if (success.output !== undefined) {
+      this.setState({success: true});
     }
   }
   handlePictures = (pic) => {
@@ -243,14 +250,14 @@ class AddOfferPage extends Component {
                     <Button variant="primary" onClick={this.handleModal}>
                       Wybierz kategorie
                     </Button>
-                    {this.state.categoryError &&
-                    <Alert variant='warning' dismissible onClose={() => this.setState({categoryError: false})}>{this.state.errors.category}</Alert>}
                   </Form.Label>
                   <Row>
                     <Col>
                       <Form.Control plaintext readOnly defaultValue={this.state.categoryChosen} />
                     </Col>
                   </Row>
+                  {this.state.categoryError &&
+                  <Alert variant='warning' dismissible onClose={() => this.setState({categoryError: false})}>{this.state.errors.category}</Alert>}
                   <CategoryChooser category={this.handleCategory} opened={this.state.isModalOpen} toggleModal={this.handleModal} />
                 </Form.Group>
                 <Form.Group as={Row}>
@@ -327,6 +334,8 @@ class AddOfferPage extends Component {
                   {this.state.failure &&
                   <Alert variant='danger' dismissible onClose={() => this.setState({failure: false})}>Nieznany błąd, spróbuj ponownie później.</Alert>}
                 </Form.Group>
+                {this.state.success &&
+                <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>{this.state.successMessages.output + ' ' + this.state.successMessages.offerPublicIdentifier}</Alert>}
                 <Button variant="primary" onClick={this.handleSubmit}>
                   Dodaj ogłoszenie
                 </Button>

@@ -30,14 +30,15 @@ const states = [
   'wielkopolskie',
   'zachodniopomorskie'
 ];
+let photos = [];
 
 class AddOfferPage extends Component {
   constructor(props) {
     super(props);
     this.handleModal = this.handleModal.bind(this);
     this.state = {
+      failure: false,
       validateMessage: false,
-      success: false,
       isModalOpen: false,
       isLoading: false,
       categoryError: false,
@@ -48,13 +49,14 @@ class AddOfferPage extends Component {
       errors: [],
       categoryChosen: '',
       pictures: [],
+      error: {},
       formData: {
         title: undefined,
         description: undefined,
         price: undefined,
-        condition: undefined,
+        condition: '',
         categoryUid: undefined,
-        photos: ["15e4672604768d1581675104.jpeg"]
+        photos: []
       },
       userData: {
         email: '',
@@ -69,6 +71,7 @@ class AddOfferPage extends Component {
   }
   getInitialWarningState() {
     this.setState({
+      failure: false,
       validateMessage: false,
       success: false,
       isModalOpen: false,
@@ -87,6 +90,7 @@ class AddOfferPage extends Component {
     this.setState({isLoading: false});
 
   }
+  // TODO avatar upload request in get data settings
   getUserData() {
     const AuthStr = 'Bearer ' + this.props.token;
     axios
@@ -100,8 +104,8 @@ class AddOfferPage extends Component {
   handleSubmit = () => {
     this.getInitialWarningState();
     this.setState({isLoading: true});
-    // this.submitPhotos();
-    // this.submitUserData();
+    this.submitUserData();
+    this.submitPhotos();
     this.submitOffer();
     this.setState({isLoading: false});
   };
@@ -119,23 +123,24 @@ class AddOfferPage extends Component {
         });
   }
   submitPhotos() {
-    let data = this.state.pictures;
-    const AuthStr = 'Bearer ' + this.props.token;
-    axios
-        .post(path + 'api/offer-photo/upload', data,{ headers: { Authorization: AuthStr, } })
-        .then(res => {
-          console.log(res.data)
-        })
-        .catch(err => {
-          console.log(err)
-          this.setState({isLoading: false});
-        });
-    }
-  submitUserData() {
-    this.setState({
-      validateMessage: false,
-      success: false,
+    photos.map((picture) => {
+      let data = new FormData();
+      data.append('image', picture, picture.fileName);
+      const AuthStr = 'Bearer ' + this.props.token;
+      axios
+          .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
+          .then(res => {
+            let formData = this.state.formData;
+            formData.photos.push(res.data[0]);
+            this.setState({formData: formData})
+          })
+          .catch(err => {
+            console.log(err.response.data);
+            this.setState({failure: true, isLoading: false});
+          });
     });
+  }
+  submitUserData() {
     const userData = this.state.userData;
     if (userData.name === ''){
       this.setState({validateMessage: true, isLoading: false});
@@ -155,15 +160,16 @@ class AddOfferPage extends Component {
     }
     if (userData.zipCode === ''){
       this.setState({validateMessage: true, isLoading: false});
+      return
     }
     const AuthStr = 'Bearer ' + this.props.token;
     axios
         .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
         .then(res => {
-          this.setState({isLoading: false, success: true});
+          this.setState({success: true});
         })
         .catch(err => {
-          this.setState({isLoading: false});
+          this.setState({isLoading: false, failure: true});
         })
   }
   handleErrors() {
@@ -185,7 +191,7 @@ class AddOfferPage extends Component {
     }
   }
   handlePictures = (pic) => {
-    this.setState({pictures: [...pic]})
+    photos = pic;
   };
   handleModal() {
     this.setState({isModalOpen: !this.state.isModalOpen});
@@ -259,11 +265,11 @@ class AddOfferPage extends Component {
                   </Col>
                   <Col>
                     <Form.Label>Stan</Form.Label>
-                    <Form.Control as="select" name={'condition'} onChange={this.handleFormChange} >
-                      <option value="" selected>Wybierz stan przedmiotu</option>
-                      <option>Nowe</option>
-                      <option>Używane</option>
-                      <option>Uszkodzone</option>
+                    <Form.Control as="select" name={'condition'} value={this.state.formData.condition} onChange={this.handleFormChange} >
+                      <option value={''}>Wybierz stan przedmiotu</option>
+                      <option>Nowy</option>
+                      <option>Używany</option>
+                      <option>Uszkodzony</option>
                     </Form.Control>
                     {this.state.conditionError &&
                     <Alert variant='warning' dismissible onClose={() => this.setState({conditionError: false})}>{this.state.errors.condition}</Alert>}
@@ -302,8 +308,8 @@ class AddOfferPage extends Component {
                   <Form.Group as={Row} controlId="formState">
                     <Form.Label column md={5}>Województwo: </Form.Label>
                     <Col md={7}>
-                      <Form.Control as="select" name={'state'} placeholder="Wpisz województwo" onChange={this.handleChange} value={this.state.userData.state} >
-                        <option value="" selected>Wybierz województwo</option>
+                      <Form.Control as="select" name={'state'} onChange={this.handleUserDataChange} value={this.state.userData.state} >
+                        <option value={''}>Wybierz województwo</option>
                         {states.map((state, i) => <option key={i}>{state}</option>)}
                       </Form.Control>
                     </Col>
@@ -318,9 +324,8 @@ class AddOfferPage extends Component {
                   </Form.Text>
                   {this.state.validateMessage &&
                   <Alert variant='warning' dismissible onClose={() => this.setState({validateMessage: false})}>Pola z danymi nie mogą być puste.</Alert>}
-                  {this.state.success &&
-                  <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>Zaktualizowano dane pomyślnie.</Alert>}
-
+                  {this.state.failure &&
+                  <Alert variant='danger' dismissible onClose={() => this.setState({failure: false})}>Nieznany błąd, spróbuj ponownie później.</Alert>}
                 </Form.Group>
                 <Button variant="primary" onClick={this.handleSubmit}>
                   Dodaj ogłoszenie

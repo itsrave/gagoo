@@ -11,7 +11,6 @@ class MyAccountPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       offersActive: false,
       settingsActive: false,
     }

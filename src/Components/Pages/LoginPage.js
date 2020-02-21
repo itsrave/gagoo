@@ -69,7 +69,7 @@ class LoginPage extends Component {
         .then(res => {
           const {cookies} = this.props;
           cookies.set('token', res.data.token, {path: '/'});
-          this.props.setToken()
+          this.props.setToken();
           this.setState({succesfulLogin: true, isLoading: false, redirect: true});
         })
         .catch(err => {

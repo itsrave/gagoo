@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Form, InputGroup} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
-import './SearchBar.css'
+import './Css/SearchBar.css'
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";

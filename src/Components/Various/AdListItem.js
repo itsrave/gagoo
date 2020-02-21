@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faMapMarkerAlt, faClock, faWrench, faInfo, faDollarSign} from "@fortawesome/free-solid-svg-icons";
 import { LinkContainer } from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
-import './AdListItem.css'
+import '../Css/AdListItem.css'
 
 class AdListItem extends Component {
 

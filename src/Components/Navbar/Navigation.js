@@ -9,7 +9,7 @@ import IsUser from "../User/IsUser";
 import axios from "axios";
 import Loading from "../Various/Loading";
 import { LinkContainer } from 'react-router-bootstrap'
-import './Navigation.css'
+import '../Css/Navigation.css'
 import path from "../../api";
 import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -21,49 +21,30 @@ class Navigation extends Component {
     this.state = {
       redirect: false,
       isLoading: false,
-      token: this.props.token || undefined,
-      username: '...'
+      isAdmin: false,
     }
   }
   getInitialState() {
     this.setState({
       redirect: false,
       isLoading: false,
-      token: this.props.token || undefined,
-      username: '...'
+      isAdmin: false,
     })
   }
-  componentDidMount() {
-    this.setState({ token: this.props.token });
-    this.getUserName()
-  }
   componentDidUpdate(prevProps, prevState, snapshot) {
-      const newProps = this.props;
-      if(prevProps.token !== newProps.token) {
-        this.setState({ token: newProps.token });
-        this.getUserName()
-      }
+    if (prevProps.userData !== this.props.userData) {
+      let bool = this.props.userData.roles.includes("ROLE_MODERATOR");
+      this.setState({isAdmin: bool})
+    }
   }
   handleLogout() {
     this.getInitialState();
     // this.setState({redirect: true});
     this.props.onLogout();
   }
-  getUserName() {
-    const AuthStr = 'Bearer ' + this.props.token;
-    axios
-        .get(path + 'api/user/get-data',{ headers: { Authorization: AuthStr } })
-        .then(res => {
-          this.setState({username: res.data.username});
-        })
-        .catch(err => {
-          this.setState({username: '...'});
-          console.log(err);
-        });
-  }
   renderGreeting() {
-    if (this.state.token !== undefined) {
-      return <IsUser username={this.state.username} onLogout={() => this.handleLogout()} />;
+    if (this.props.token !== undefined) {
+      return <IsUser username={this.props.userData.username} onLogout={() => this.handleLogout()} />;
     }
     return <IsGuest />;
 
@@ -80,13 +61,11 @@ class Navigation extends Component {
                 <LinkContainer to='/offers'>
                   <Nav.Link>Przeglądaj oferty</Nav.Link>
                 </LinkContainer>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Ogloszenia</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                  <NavDropdown.Divider/>
-                  <NavDropdown.Item href="#action/3.4">Aaaaa</NavDropdown.Item>
-                </NavDropdown>
+                {this.state.isAdmin &&
+                <LinkContainer to='/adminpanel'>
+                  <Nav.Link>Panel Administatora</Nav.Link>
+                </LinkContainer>
+                }
               </Nav>
               <Nav>
                 <LinkContainer to='/addoffer'>

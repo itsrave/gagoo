@@ -7,7 +7,7 @@ import {Col, Container} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser, faEnvelope, faPhoneAlt, faMapMarker} from "@fortawesome/free-solid-svg-icons";
 import path from "../../api";
-import './UserCard.css'
+import '../Css/UserCard.css'
 import axios from "axios";
 import Forxsata from 'form-data'
 import Alert from "react-bootstrap/Alert";

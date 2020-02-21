@@ -48,7 +48,8 @@ class LoginPage extends Component {
     }
   }
 
-  onSubmit() {
+  onSubmit(e) {
+    e.preventDefault();
     this.getInitialState();
     this.toggleLoading();
     let user = {
@@ -87,7 +88,7 @@ class LoginPage extends Component {
   render() {
     return (
         <Container className='my-3'>
-          <Form className='d-flex justify-content-sm-center'>
+          <Form className='d-flex justify-content-sm-center' onSubmit={this.onSubmit}>
             <Col md={5}>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Login</Form.Label>
@@ -107,7 +108,7 @@ class LoginPage extends Component {
               <Form.Group controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="Zapamiętaj mnie"/>
               </Form.Group>
-              <Button variant="primary" onClick={this.onSubmit}>Zaloguj</Button>
+              <Button variant="primary" type='submit'>Zaloguj</Button>
               <Form.Group />
               {this.state.isLoading && <Loading/>}
               {this.state.succesfulLogin &&

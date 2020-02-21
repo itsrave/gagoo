@@ -49,7 +49,8 @@ class RegisterPage extends Component {
       usernameMessage: '',
     })
   }
-  onSubmit() {
+  onSubmit(e) {
+    e.preventDefault();
     this.getInitialState();
     this.setState({isLoading: true});
     let user = {
@@ -85,6 +86,10 @@ class RegisterPage extends Component {
         .post(path + 'user/register', user)
         .then(res => {
           this.setState({succesfulRegister: true, isLoading: false});
+          this.email.current.value = '';
+          this.username.current.value = '';
+          this.password.current.value = '';
+          this.passwordrepeat.current.value = '';
         })
         .catch(err => {
           if (err.response.status === 400) {
@@ -111,7 +116,7 @@ class RegisterPage extends Component {
   render() {
     return (
         <Container className='my-3'>
-          <Form className='d-flex justify-content-sm-center'>
+          <Form className='d-flex justify-content-sm-center' onSubmit={this.onSubmit}>
             <Col md={5}><Form.Group controlId="formEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={this.email} placeholder="Email"/>
@@ -153,7 +158,7 @@ class RegisterPage extends Component {
               <Alert variant='success' dismissible onClose={() => this.setState({succesfulRegister: false})}>
                 Rejestracja pomyślna, możesz się teraz <Link to='/login'>zalogować</Link>.
               </Alert>}
-              <Button variant="primary" onClick={this.onSubmit}>
+              <Button variant="primary" type={'submit'}>
                 Zarejestruj
               </Button>
               {this.state.isLoading && <Loading/>}

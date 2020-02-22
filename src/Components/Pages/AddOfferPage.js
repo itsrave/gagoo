@@ -49,7 +49,6 @@ class AddOfferPage extends Component {
       errors: [],
       successMessages: [],
       categoryChosen: '',
-      pictures: [],
       error: {},
       formData: {
         title: undefined,
@@ -59,6 +58,7 @@ class AddOfferPage extends Component {
         categoryUid: undefined,
         photos: []
       },
+      pictures: [],
       userData: {
         email: '',
         username: '',
@@ -106,14 +106,13 @@ class AddOfferPage extends Component {
     this.getInitialWarningState();
     this.setState({isLoading: true});
     this.submitUserData();
-    if (photos !== []){
-      this.submitPhotos();
-    }
+    this.submitPhotos();
     this.submitOffer();
     this.setState({isLoading: false});
   };
   submitOffer() {
     let formData = this.state.formData;
+    formData.photos = this.state.pictures;
     const AuthStr = 'Bearer ' + this.props.token;
     axios
         .post(path + 'api/offer/add', formData,{ headers: { Authorization: AuthStr, } })
@@ -127,16 +126,16 @@ class AddOfferPage extends Component {
         });
   }
   submitPhotos() {
-    photos.map((picture) => {
+    photos.forEach((picture) => {
       let data = new FormData();
       data.append('image', picture, picture.fileName);
       const AuthStr = 'Bearer ' + this.props.token;
       axios
           .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
           .then(res => {
-            let formData = this.state.formData;
-            formData.photos.push(res.data[0]);
-            this.setState({formData: formData})
+            let pictures = this.state.pictures;
+            pictures.push(res.data[0]);
+            this.setState({pictures: pictures})
           })
           .catch(err => {
             console.log(err.response.data);

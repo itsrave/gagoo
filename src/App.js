@@ -73,7 +73,7 @@ class App extends Component {
             <SearchBar />
             <Switch className='main-content'>
               <Route path='/' component={Homepage} exact/>
-              <Route path='/adminpanel' component={AdminPage} />
+              <Route path='/adminpanel' render={(props) => <AdminPage {...props} token={this.state.token} />} />
               <Route path='/register' component={RegisterPage}/>
               <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.setToken} />} />
               <Route path='/offerpage' component={OfferPage}/>

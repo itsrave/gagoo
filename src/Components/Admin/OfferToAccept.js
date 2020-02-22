@@ -9,9 +9,18 @@ import '../Css/AdListItem.css'
 import {Link} from "react-router-dom";
 
 class OfferToAccept extends Component {
+  // title={offer.title}
+  // description={offer.description}
+  // userData={offer.owner}
+  // category={offer.category.name}
+  // photos={offer.photos}
+  // price={offer.price}
+  // condition={offer.condition}
+  // publicId={offer.publicIdentifier}
+
   render() {
     return (
-        <Card>
+        <Card className="my-2">
           <Row className='no-gutters'>
             <LinkContainer to='/offerpage' className='offer-image'>
               <Col lg={4}>
@@ -20,18 +29,25 @@ class OfferToAccept extends Component {
             </LinkContainer>
             <Col lg={8}>
               <Card.Body>
-                <Link to={'/offerpage'}><Card.Title>Uturbiony golf3 tdi 1.6</Card.Title></Link>
-                <Card.Text><FontAwesomeIcon icon={faDollarSign}/> 4500zł</Card.Text>
-                <Card.Text className="text-muted">Kategoria > Subkategoria</Card.Text>
+                <Row>
+                  <Col>
+                    <Link to={'/offerpage'}><Card.Title>{this.props.title}</Card.Title></Link>
+                    <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {this.props.price}zł</Card.Text>
+                    <Card.Text className="text-muted">{this.props.category}</Card.Text>
+                  </Col>
+                  <Col>
+                    <Card.text>{this.props.description}</Card.text>
+                  </Col>
+                </Row>
               </Card.Body>
             </Col>
           </Row>
           <Card.Footer className="text-muted">
             <Row>
-              <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> Miastko</Col>
+              <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> {this.props.userData.city}</Col>
               <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> Wczoraj</Col>
-              <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> Nowy</Col>
-              <Col className="py-1" md={3}><FontAwesomeIcon icon={faInfo}/> 2312321321</Col>
+              <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> {this.props.condition}</Col>
+              {/*<Col className="py-1" md={3}><FontAwesomeIcon icon={faInfo}/> {this.props.publicId}</Col>*/}
             </Row>
           </Card.Footer>
         </Card>

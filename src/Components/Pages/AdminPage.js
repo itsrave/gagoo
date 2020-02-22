@@ -5,18 +5,52 @@ import AdListItem from "../Various/AdListItem";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Pagination from "react-bootstrap/Pagination";
+import axios from "axios";
+import path from "../../api";
 
 class AdminPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      offers: [],
+      pagination: {},
+      page: '1'
     }
   }
-
+  componentDidMount() {
+    this.getOffers()
+  }
+  getOffers() {
+    const AuthStr = 'Bearer ' + this.props.token;
+    axios
+        .get(path + 'api/offer/unaccepted/' + this.state.page,{ headers: { Authorization: AuthStr } })
+        .then(res => {
+          this.setState({offers: res.data.offers, pagination: res.data.pagination});
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }
+  renderOffers() {
+    let offers = this.state.offers;
+    return offers.map((offer, index) => (
+      <OfferToAccept
+        key={index}
+        title={offer.title}
+        description={offer.description}
+        userData={offer.owner}
+        // category={offer.category}
+        photos={offer.photos}
+        price={offer.price}
+        condition={offer.condition}
+        publicId={offer.publicIdentifier}
+      />
+    ))
+  }
   render() {
     return (
         <Container>
-          <OfferToAccept />
+          {this.renderOffers()}
           <Row>
             <Col>
               <Pagination className={'justify-content-center'}>

@@ -28,6 +28,7 @@ class LoginPage extends Component {
       wrongCredentials: false,
       unexpectedError: false,
       succesfulLogin: false,
+      noLogin: false,
       redirect: false,
     }
   }
@@ -39,12 +40,23 @@ class LoginPage extends Component {
       wrongCredentials: false,
       unexpectedError: false,
       succesfulLogin: false,
+      noLogin: false,
       redirect: false,
     })
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      if (this.props.match.params.reference === 'nologin') {
+        this.setState({noLogin: true, settingsActive: true})
+      }
+    }
   }
   componentDidMount() {
     if (this.props.token !== undefined){
       this.setState({redirect: true})
+    }
+    if (this.props.match.params.reference === 'nologin') {
+      this.setState({noLogin: true, settingsActive: true})
     }
   }
 
@@ -118,6 +130,8 @@ class LoginPage extends Component {
               <Alert variant='danger' dismissible onClose={() => this.setState({wrongCredentials: false})}>Błędne hasło lub nazwa użytkownika.</Alert>}
               {this.state.unexpectedError &&
               <Alert variant='danger' dismissible onClose={() => this.setState({unexpectedError: false})}>Niespodziewany błąd, spróbuj ponownie później.</Alert>}
+              {this.state.noLogin &&
+              <Alert variant='warning' dismissible onClose={() => this.setState({noLogin: false})}>Musisz się zalogować aby wyświetlić tę stronę.</Alert>}
             </Col>
           </Form>
           { this.state.redirect && <Redirect to="/" />}

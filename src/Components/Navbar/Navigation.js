@@ -39,7 +39,7 @@ class Navigation extends Component {
   }
   handleLogout() {
     this.getInitialState();
-    // this.setState({redirect: true});
+    this.setState({redirect: true});
     this.props.onLogout();
   }
   renderGreeting() {

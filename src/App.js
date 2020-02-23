@@ -5,7 +5,7 @@ import Navigation from "./Components/Navbar/Navigation";
 import Homepage from "./Components/Pages/Homepage";
 import FooterComponent from "./Components/Footer/FooterComponent";
 import SearchBar from "./Components/SearchBar";
-import {Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import RegisterPage from "./Components/Pages/RegisterPage";
 import LoginPage from "./Components/Pages/LoginPage";
 import OfferPage from "./Components/Pages/OfferPage";
@@ -31,10 +31,21 @@ class App extends Component {
     this.state = {
       token: cookies.get('token') || '',
       isAdminAuthed: false,
+      isLoggedIn: false,
       userData: {
         username: '...'
       }
     }
+  }
+  getInitialState() {
+    this.setState({
+      token: '',
+      isAdminAuthed: false,
+      isLoggedIn: false,
+      userData: {
+        username: '...'
+      }
+    })
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.state.token !== prevState.token) {
@@ -48,6 +59,9 @@ class App extends Component {
         .get(path + 'api/user/get-data',{ headers: { Authorization: AuthStr } })
         .then(res => {
           this.setState({userData: res.data});
+          let admin = this.state.userData.roles.includes("ROLE_MODERATOR");
+          let user = this.state.userData.roles.includes("ROLE_USER");
+          this.setState({isAdminAuthed: admin, isLoggedIn: user})
         })
         .catch(err => {
           console.log(err);
@@ -60,7 +74,7 @@ class App extends Component {
   handleLogout() {
     const { cookies } = this.props;
     cookies.remove('token');
-    this.setToken()
+    this.getInitialState();
   }
   setToken() {
     const { cookies } = this.props;
@@ -73,14 +87,13 @@ class App extends Component {
             <SearchBar />
             <Switch className='main-content'>
               <Route path='/' component={Homepage} exact/>
-              <Route path='/adminpanel' render={(props) => <AdminPage {...props} token={this.state.token} />} />
-              <Route path='/register' component={RegisterPage}/>
-              <Route path='/login' render={(props) => <LoginPage {...props} token={this.state.token} setToken={this.setToken} />} />
+              <Route path='/adminpanel' render={(props) => (this.state.isAdminAuthed === true ? <AdminPage {...props} token={this.state.token} /> : <Redirect to='/' />)} />
+              <Route path='/register' render={(props) => (this.state.isLoggedIn === false ? <RegisterPage {...props}  /> : <Redirect to='/' />)} />
+              <Route path='/login/:reference' render={(props) => (this.state.isLoggedIn === false ? <LoginPage {...props} token={this.state.token} setToken={this.setToken} /> : <Redirect to='/' />)} />
               <Route path='/offerpage' component={OfferPage}/>
               <Route path='/offers' component={OffersPage}/>
-              <Route path='/addoffer' render={(props) => <AddOfferPage {...props} token={this.state.token} />}/>
-              <Route path='/cat' component={CategoryChooser}/>/>
-              <Route path='/account/:reference' render={(props) => <MyAccountPage {...props} token={this.state.token} />}/>
+              <Route path='/addoffer' render={(props) => (this.state.isLoggedIn === true ? <AddOfferPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
+              <Route path='/account/:reference' render={(props) => (this.state.isLoggedIn === true ? <MyAccountPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
             </Switch>
             <FooterComponent />
           </div>

@@ -30,7 +30,6 @@ const states = [
   'wielkopolskie',
   'zachodniopomorskie'
 ];
-let photos = [];
 
 class AddOfferPage extends Component {
   constructor(props) {
@@ -77,7 +76,6 @@ class AddOfferPage extends Component {
       validateMessage: false,
       success: false,
       isModalOpen: false,
-      isLoading: false,
       categoryError: false,
       titleError: false,
       descriptionError: false,
@@ -106,18 +104,15 @@ class AddOfferPage extends Component {
     this.getInitialWarningState();
     this.setState({isLoading: true});
     this.submitUserData();
-    this.submitPhotos();
-    this.submitOffer();
-    this.setState({isLoading: false});
+    this.submitPhotos().then(() => this.submitOffer());
   };
   submitOffer() {
     let formData = this.state.formData;
-    formData.photos = this.state.pictures;
     const AuthStr = 'Bearer ' + this.props.token;
     axios
         .post(path + 'api/offer/add', formData,{ headers: { Authorization: AuthStr, } })
         .then(res => {
-          this.setState({successMessages: res.data});
+          this.setState({successMessages: res.data, isLoading: false});
           this.handleMessages()
         })
         .catch(err => {
@@ -125,23 +120,24 @@ class AddOfferPage extends Component {
           this.handleMessages()
         });
   }
+  submitPhoto(picture) {
+    const AuthStr = 'Bearer ' + this.props.token;
+    let data = new FormData();
+    data.append('image', picture, picture.fileName);
+    return axios
+        .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
+        .then(res => {
+          let formData = this.state.formData;
+          formData.photos.push(res.data[0]);
+          this.setState({formData: formData})
+        })
+        .catch(err => {
+          console.log(err.response.data);
+          this.setState({failure: true, isLoading: false});
+        });
+  }
   submitPhotos() {
-    photos.forEach((picture) => {
-      let data = new FormData();
-      data.append('image', picture, picture.fileName);
-      const AuthStr = 'Bearer ' + this.props.token;
-      axios
-          .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
-          .then(res => {
-            let pictures = this.state.pictures;
-            pictures.push(res.data[0]);
-            this.setState({pictures: pictures})
-          })
-          .catch(err => {
-            console.log(err.response.data);
-            this.setState({failure: true, isLoading: false});
-          });
-    });
+    return Promise.all(this.state.pictures.map(this.submitPhoto.bind(this)));
   }
   submitUserData() {
     const userData = this.state.userData;
@@ -197,7 +193,7 @@ class AddOfferPage extends Component {
     }
   }
   handlePictures = (pic) => {
-    photos = pic;
+    this.setState({pictures: pic});
   };
   handleModal() {
     this.setState({isModalOpen: !this.state.isModalOpen});
@@ -263,7 +259,7 @@ class AddOfferPage extends Component {
                   <Col>
                     <Form.Label>Cena</Form.Label>
                     <Row>
-                      <Col xs={10}><Form.Control type="text" name={'price'} onChange={this.handleFormChange} /></Col>
+                      <Col xs={10}><Form.Control type="number" name={'price'} onChange={this.handleFormChange} /></Col>
                       <Col xs={2} ><Form.Label>zł</Form.Label></Col>
                     </Row>
                     {this.state.priceError &&
@@ -338,7 +334,7 @@ class AddOfferPage extends Component {
                 <Button variant="primary" onClick={this.handleSubmit}>
                   Dodaj ogłoszenie
                 </Button>
-                {this.state.isLoading && <Loading/>}
+                {this.state.isLoading && <Loading />}
               </Form>
             </Col>
             <Col />

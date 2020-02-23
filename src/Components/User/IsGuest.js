@@ -7,7 +7,7 @@ class IsGuest extends Component {
   render() {
     return (
         <>
-          <LinkContainer to='/login'>
+          <LinkContainer to='/login/navigation'>
             <Nav.Link>
               Zaloguj
             </Nav.Link>

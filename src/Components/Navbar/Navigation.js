@@ -33,8 +33,11 @@ class Navigation extends Component {
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.userData !== this.props.userData) {
-      let bool = this.props.userData.roles.includes("ROLE_MODERATOR");
-      this.setState({isAdmin: bool})
+      try {
+        let bool = this.props.userData.roles.includes("ROLE_MODERATOR");
+        this.setState({isAdmin: bool})
+      } catch (e) {
+      }
     }
   }
   handleLogout() {
@@ -58,12 +61,12 @@ class Navigation extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <LinkContainer to='/offers'>
-                  <Nav.Link>Przeglądaj oferty</Nav.Link>
+                <LinkContainer to='/offers/1'>
+                  <Nav.Link active={false}>Przeglądaj oferty</Nav.Link>
                 </LinkContainer>
                 {this.state.isAdmin &&
-                <LinkContainer to='/adminpanel'>
-                  <Nav.Link>Panel Administatora</Nav.Link>
+                <LinkContainer to='/adminpanel/1'>
+                  <Nav.Link active={false}>Panel Administatora</Nav.Link>
                 </LinkContainer>
                 }
               </Nav>

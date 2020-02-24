@@ -12,13 +12,13 @@ class IsUser extends Component {
         <>
           <NavDropdown title={"Witaj, " + this.props.username} id="basic-nav-dropdown">
             <LinkContainer to={`/account/myoffers`}>
-              <NavDropdown.Item>Moje ogłoszenia</NavDropdown.Item>
+              <NavDropdown.Item active={false}>Moje ogłoszenia</NavDropdown.Item>
             </LinkContainer>
             <LinkContainer to={`/account/settings`}>
-              <NavDropdown.Item>Ustawienia</NavDropdown.Item>
+              <NavDropdown.Item active={false}>Ustawienia</NavDropdown.Item>
             </LinkContainer>
             <NavDropdown.Divider/>
-            <NavDropdown.Item onClick={this.props.onLogout}>Wyloguj</NavDropdown.Item>
+            <NavDropdown.Item active={false} onClick={this.props.onLogout}>Wyloguj</NavDropdown.Item>
           </NavDropdown>
         </>
     );

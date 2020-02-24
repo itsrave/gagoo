@@ -8,7 +8,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
 import '../Css/AdListItem.css'
 
-class AdListItem extends Component {
+class OfferCard extends Component {
 
   render() {
     return (
@@ -40,4 +40,4 @@ class AdListItem extends Component {
   }
 }
 
-export default AdListItem;
+export default OfferCard;

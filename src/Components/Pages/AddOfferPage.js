@@ -100,7 +100,8 @@ class AddOfferPage extends Component {
           console.log(err);
         });
   }
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault();
     this.getInitialWarningState();
     this.setState({isLoading: true});
     this.submitUserData();
@@ -233,7 +234,7 @@ class AddOfferPage extends Component {
           <Row>
             <Col />
             <Col md={8}>
-              <Form>
+              <Form onSubmit={this.handleSubmit}>
                 <Form.Group>
                   <Form.Label><h3>Tytuł</h3></Form.Label>
                   <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" name={'title'} onChange={this.handleFormChange} />
@@ -332,7 +333,7 @@ class AddOfferPage extends Component {
                 </Form.Group>
                 {this.state.success &&
                 <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>{this.state.successMessages.output + ' ' + this.state.successMessages.offerPublicIdentifier}</Alert>}
-                <Button variant="primary" onClick={this.handleSubmit}>
+                <Button variant="primary" type={'submit'}>
                   Dodaj ogłoszenie
                 </Button>
                 {this.state.isLoading && <Loading />}

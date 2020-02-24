@@ -184,5 +184,4 @@ class Settings extends Component {
     );
   }
 }
-// TODO validacjaaa
 export default Settings;

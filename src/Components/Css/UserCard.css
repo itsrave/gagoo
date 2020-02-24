@@ -1,5 +1,6 @@
 .avatar {
     position: relative;
+    z-index: 2;
 }
 .avatar-image {
     transition: opacity linear .3s;

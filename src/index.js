@@ -5,10 +5,12 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter } from "react-router-dom";
 import CookiesProvider from "react-cookie/cjs/CookiesProvider";
+import ScrollToTop from "./Components/Various/ScrollToTop";
 
 
 ReactDOM.render(
     <HashRouter>
+      <ScrollToTop/>
       <CookiesProvider>
         <App />
       </CookiesProvider>

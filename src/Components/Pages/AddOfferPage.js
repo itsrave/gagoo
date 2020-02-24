@@ -137,6 +137,9 @@ class AddOfferPage extends Component {
         });
   }
   submitPhotos() {
+    let formData = this.state.formData;
+    formData.photos = [];
+    this.setState({formData: formData});
     return Promise.all(this.state.pictures.map(this.submitPhoto.bind(this)));
   }
   submitUserData() {
@@ -210,8 +213,6 @@ class AddOfferPage extends Component {
     const value = target.value;
     const name = target.name;
     formData[name] = value;
-    if (name === 'price')
-      formData[name] = parseInt(value, 10);
     this.setState({
       formData: formData
     });

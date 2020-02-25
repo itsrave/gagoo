@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container} from "react-bootstrap";
+import {Breadcrumb, Container} from "react-bootstrap";
 import OfferCard from "../Various/OfferCard";
 import Pagination from "react-bootstrap/Pagination";
 import Row from "react-bootstrap/Row";
@@ -9,16 +9,29 @@ import path from "../../api";
 import OfferToAccept from "../Admin/OfferToAccept";
 import PaginationComponent from "../Various/PaginationComponent";
 import Loading from "../Various/Loading";
+import CategoryChooser from "../Various/CategoryChooser";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import SortBy from "../Various/SortBy";
+import {Redirect} from "react-router-dom";
 
 class OffersPage extends Component {
   constructor(props) {
     super(props);
+    this.handleModal = this.handleModal.bind(this);
+    this.handleSortChange = this.handleSortChange.bind(this);
     this.state = {
       offers: [],
       pagination: {},
       noOffers: false,
       isLoading: false,
-      page: this.props.match.params.page
+      isModalOpen: false,
+      categoryUid: '',
+      categoryChosen: '',
+      page: this.props.match.params.page,
+      sortBy: this.props.match.params.sortBy,
+      order: this.props.match.params.order,
+      redirect: false,
     }
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -45,6 +58,13 @@ class OffersPage extends Component {
           }
         });
   }
+  handleModal() {
+    this.setState({isModalOpen: !this.state.isModalOpen});
+  }
+  handleCategory = (id, names) => {
+    let category = names.filter(Boolean).join(' > ');
+    this.setState({categoryUid: id, categoryChosen: category})
+  };
   renderOffers() {
     let offers = this.state.offers;
     return offers.map((offer, index) => (
@@ -63,9 +83,31 @@ class OffersPage extends Component {
         />
     ))
   }
+  handleSortChange(sortBy, order) {
+    this.props.history.push(`/offers/${sortBy}/${order}`)
+  }
   render() {
     return (
         <Container>
+          <Row>
+            <Col>
+              {this.state.categoryChosen !== '' && <Breadcrumb>
+                <Breadcrumb.Item active>{this.state.categoryChosen}</Breadcrumb.Item>
+              </Breadcrumb>}
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={4}>
+              <Button variant="primary" onClick={this.handleModal}>
+                Wybierz kategorie
+              </Button>
+            </Col>
+            <Col />
+            <Col sm={4} className="text-right">
+              <SortBy initialOrder={this.props.match.params.order} initialSortBy={this.props.match.params.sortBy} onSortChange={this.handleSortChange} />
+            </Col>
+          </Row>
+          <CategoryChooser category={this.handleCategory} opened={this.state.isModalOpen} toggleModal={this.handleModal} />
           <Row sm={10}>
             <Col>
               {this.state.noOffers &&

@@ -31,6 +31,15 @@ class PaginationComponent extends Component {
     let link = this.props.link;
     let pages = this.state.pages;
     let current = parseInt(this.props.current, 10);
+    if (current === 0 || current === 1 || current === 2) {
+      return pages.map((page, index) => (
+          <LinkContainer key={index} to={link + page}>
+            <Pagination.Item active={page === current}>
+              {page}
+            </Pagination.Item>
+          </LinkContainer>
+      ))
+    }
     if (current === this.props.pageCount || current === (this.props.pageCount - 1) || current === (this.props.pageCount - 2)) {
       return (
           <>

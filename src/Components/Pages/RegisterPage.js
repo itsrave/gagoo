@@ -16,6 +16,7 @@ class RegisterPage extends Component {
     this.username = React.createRef();
     this.password = React.createRef();
     this.passwordrepeat = React.createRef();
+    this.acceptPolicy = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
@@ -29,6 +30,7 @@ class RegisterPage extends Component {
       emailWarningMessage: false,
       usernameWarningMessage: false,
       usernameTooShort: false,
+      policyWarning: false,
       emailMessage: '',
       usernameMessage: '',
     }
@@ -45,6 +47,7 @@ class RegisterPage extends Component {
       emailWarningMessage: false,
       usernameWarningMessage: false,
       usernameTooShort: false,
+      policyWarning: false,
       emailMessage: '',
       usernameMessage: '',
     })
@@ -58,6 +61,10 @@ class RegisterPage extends Component {
       username: this.username.current.value,
       password: this.password.current.value
     };
+    if (this.acceptPolicy.current.checked === false) {
+      this.setState({policyWarning: true, isLoading: false});
+      return;
+    }
     if (user.email === '') {
       this.setState({emailWarning: true, isLoading: false});
       return
@@ -150,10 +157,13 @@ class RegisterPage extends Component {
                 {this.state.passwordWrong &&
                 <Alert variant='warning' dismissible onClose={() => this.setState({passwordWrong: false})}>Hasła są różne</Alert>}
               </Form.Group>
-              // TODO checkbox check
               <Form.Group controlId="form">
-                <Form.Check type="checkbox" label="Akceptuje regulamin serwisu"/>
+                <Form.Check type="checkbox" ref={this.acceptPolicy} label="Akceptuje regulamin serwisu"/>
               </Form.Group>
+              {this.state.policyWarning &&
+              <Alert variant='warning' dismissible onClose={() => this.setState({policyWarning: false})}>
+                Musisz zaakceptować regulamin aby się zarejestrować.
+              </Alert>}
               {this.state.succesfulRegister &&
               <Alert variant='success' dismissible onClose={() => this.setState({succesfulRegister: false})}>
                 Rejestracja pomyślna, możesz się teraz <Link to='/login'>zalogować</Link>.

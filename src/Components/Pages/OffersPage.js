@@ -26,12 +26,19 @@ class OffersPage extends Component {
       noOffers: false,
       isLoading: false,
       isModalOpen: false,
-      categoryUid: '',
+      categoryUi: '',
       categoryChosen: '',
       page: this.props.match.params.page,
       sortBy: this.props.match.params.sortBy,
       order: this.props.match.params.order,
       redirect: false,
+      query: {
+        subject: '',
+        categoryUi: '',
+        orderBy: this.props.match.params.sortBy,
+        strategy: this.props.match.params.order,
+        page: this.props.match.params.order,
+      }
     }
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -62,8 +69,10 @@ class OffersPage extends Component {
     this.setState({isModalOpen: !this.state.isModalOpen});
   }
   handleCategory = (id, names) => {
+    let query = this.state.query;
+    query.categoryUi = id;
     let category = names.filter(Boolean).join(' > ');
-    this.setState({categoryUid: id, categoryChosen: category})
+    this.setState({query: query, categoryChosen: category})
   };
   renderOffers() {
     let offers = this.state.offers;
@@ -84,6 +93,11 @@ class OffersPage extends Component {
     ))
   }
   handleSortChange(sortBy, order) {
+    let query = this.state.query;
+    query.strategy = order;
+    query.orderBy = sortBy;
+    this.setState({
+    });
     this.props.history.push(`/offers/${sortBy}/${order}`)
   }
   render() {

@@ -41,8 +41,7 @@ class Cards extends Component {
         });
   }
   renderOffers() {
-    let offers = this.state.offers;
-    this.state.offers.map((offer, key) => (
+    return this.state.offers.map((offer, key) => (
         <OfferCardHomepage key={key} data={offer} />
     ))
   }
@@ -50,7 +49,7 @@ class Cards extends Component {
     return (
         <Container>
           <h2>Najnowsze ogłoszenia</h2>
-          <CardColumns>
+          <CardColumns classname={'py-3'}>
             {this.state.noOffers &&
             <Container className={'text-center'}>
               <h1>Brak ofert</h1>

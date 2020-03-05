@@ -37,7 +37,7 @@ class OffersPage extends Component {
         categoryUi: '',
         orderBy: this.props.match.params.sortBy,
         strategy: this.props.match.params.order,
-        page: this.props.match.params.order,
+        page: this.props.match.params.page,
       }
     }
   }
@@ -52,7 +52,7 @@ class OffersPage extends Component {
   getOffers(page) {
     this.setState({isLoading: true});
     axios
-        .get(path + 'offer/newest/' + page)
+        .post(path + 'offer/search/' + this.props.match.params.page, this.state.query)
         .then(res => {
           this.setState({offers: res.data.offers, pagination: res.data.pagination, isLoading: false});
         })
@@ -61,7 +61,6 @@ class OffersPage extends Component {
             this.setState({noOffers: true, isLoading: false});
           } else {
             this.setState({isLoading: false});
-            console.log(err);
           }
         });
   }
@@ -96,9 +95,8 @@ class OffersPage extends Component {
     let query = this.state.query;
     query.strategy = order;
     query.orderBy = sortBy;
-    this.setState({
-    });
-    this.props.history.push(`/offers/${sortBy}/${order}`)
+    this.setState({query: query});
+    this.props.history.push(`/offers/${sortBy}/${order}/${query.page}`)
   }
   render() {
     return (
@@ -118,7 +116,7 @@ class OffersPage extends Component {
             </Col>
             <Col />
             <Col sm={4} className="text-right">
-              <SortBy initialOrder={this.props.match.params.order} initialSortBy={this.props.match.params.sortBy} onSortChange={this.handleSortChange} />
+              <SortBy order={this.props.match.params.order} sort={this.props.match.params.sortBy} onSortChange={this.handleSortChange} />
             </Col>
           </Row>
           <CategoryChooser category={this.handleCategory} opened={this.state.isModalOpen} toggleModal={this.handleModal} />
@@ -133,7 +131,7 @@ class OffersPage extends Component {
           </Row>
           <Row>
             <Col>
-              <PaginationComponent link={'/offers/'} current={this.state.pagination.currentPage} pageCount={this.state.pagination.pageCount} />
+              <PaginationComponent link={`/offers/${this.state.sortBy}/${this.state.order}/`} current={this.state.pagination.currentPage} pageCount={this.state.pagination.pageCount} />
             </Col>
           </Row>
           {this.state.isLoading && <Loading full={true}/>}

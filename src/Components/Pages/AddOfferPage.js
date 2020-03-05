@@ -104,7 +104,7 @@ class AddOfferPage extends Component {
     e.preventDefault();
     this.getInitialWarningState();
     this.setState({isLoading: true});
-    this.submitUserData();
+    this.submitUserData();  //TODO if failed dont post the offer
     this.submitPhotos().then(() => this.submitOffer());
   };
   submitOffer() {

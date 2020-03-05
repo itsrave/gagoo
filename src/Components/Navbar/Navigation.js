@@ -61,7 +61,7 @@ class Navigation extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <LinkContainer to='/offers/date/ascending'>
+                <LinkContainer to='/offers/date/asc/1'>
                   <Nav.Link active={false}>Przeglądaj oferty</Nav.Link>
                 </LinkContainer>
                 {this.state.isAdmin &&

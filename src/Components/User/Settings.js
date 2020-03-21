@@ -152,7 +152,7 @@ class Settings extends Component {
               </Form.Group>
             <Form.Group as={Row} controlId="formCity">
               <Form.Label column lg={5}>Miasto: </Form.Label>
-              <Col lg={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} value={this.state.userData.city} />
+              <Col lg={7}><Form.Control required type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleChange} value={this.state.userData.city} />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="formState">

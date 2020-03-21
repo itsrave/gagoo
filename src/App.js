@@ -19,6 +19,7 @@ import AdminPage from "./Components/Pages/AdminPage";
 import axios from "axios";
 import path from "./api";
 
+
 class App extends Component {
   static propTypes = {
     cookies: instanceOf(Cookies).isRequired
@@ -63,7 +64,7 @@ class App extends Component {
           this.setState({isAdminAuthed: admin, isLoggedIn: user})
         })
         .catch(err => {
-          console.log(err);
+          this.setState({isLoggedIn: false})
         });
   }
   componentDidMount() {
@@ -84,17 +85,17 @@ class App extends Component {
     return (
           <div className="App bg-light">
             <Navigation token={this.state.token} userData={this.state.userData} onLogout={() => this.handleLogout()} />
-            <SearchBar />
-            <Switch className='main-content'>
-              <Route path='/' component={Homepage} exact/>
-              <Route path='/adminpanel/:page' render={(props) => (this.state.isAdminAuthed === true ? <AdminPage {...props} token={this.state.token} /> : <Redirect to='/' />)} />
-              <Route path='/register' render={(props) => (this.state.isLoggedIn === false ? <RegisterPage {...props}  /> : <Redirect to='/' />)} />
-              <Route path='/login/:reference' render={(props) => (this.state.isLoggedIn === false ? <LoginPage {...props} token={this.state.token} setToken={this.setToken} /> : <Redirect to='/' />)} />
-              <Route path='/offerpage' component={OfferPage}/>
-              <Route path='/offers/:sortBy/:order/:page' component={OffersPage}/>
-              <Route path='/addoffer' render={(props) => (this.state.isLoggedIn === true ? <AddOfferPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
-              <Route path='/account/:reference' render={(props) => (this.state.isLoggedIn === true ? <MyAccountPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
-            </Switch>
+              <SearchBar />
+              <Switch className='main-content'>
+                <Route path='/' component={Homepage} exact/>
+                <Route path='/adminpanel/:page' render={(props) => (this.state.isAdminAuthed === true ? <AdminPage {...props} token={this.state.token} /> : <Redirect to='/' />)} />
+                <Route path='/register' render={(props) => (this.state.isLoggedIn === false ? <RegisterPage {...props}  /> : <Redirect to='/' />)} />
+                <Route path='/login/:reference' render={(props) => (this.state.isLoggedIn === false ? <LoginPage {...props} token={this.state.token} setToken={this.setToken} /> : <Redirect to='/' />)} />
+                <Route path='/offerpage/:offerId' component={OfferPage}/>
+                <Route path='/offers/:sortBy/:order/:category?/:page/' component={OffersPage}/>
+                <Route path='/addoffer' render={(props) => (this.state.isLoggedIn === true ? <AddOfferPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
+                <Route path='/account/:reference' render={(props) => (this.state.isLoggedIn === true ? <MyAccountPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
+              </Switch>
             <FooterComponent />
           </div>
     );

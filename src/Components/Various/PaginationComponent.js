@@ -40,7 +40,7 @@ class PaginationComponent extends Component {
           </LinkContainer>
       ))
     }
-    if (current === this.props.pageCount || current === (this.props.pageCount - 1) || current === (this.props.pageCount - 2)) {
+    if ((current === this.props.pageCount || current === (this.props.pageCount - 1) || current === (this.props.pageCount - 2)) && this.props.pageCount > 6) {
       return (
           <>
             <LinkContainer to={link + 1}>

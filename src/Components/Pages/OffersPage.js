@@ -1,19 +1,16 @@
 import React, {Component} from 'react';
 import {Breadcrumb, Container} from "react-bootstrap";
 import OfferCard from "../Various/OfferCard";
-import Pagination from "react-bootstrap/Pagination";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
 import path from "../../api";
-import OfferToAccept from "../Admin/OfferToAccept";
 import PaginationComponent from "../Various/PaginationComponent";
 import Loading from "../Various/Loading";
 import CategoryChooser from "../Various/CategoryChooser";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import SortBy from "../Various/SortBy";
-import {Redirect} from "react-router-dom";
+import queryString from "query-string";
 
 class OffersPage extends Component {
   constructor(props) {
@@ -26,7 +23,6 @@ class OffersPage extends Component {
       noOffers: false,
       isLoading: false,
       isModalOpen: false,
-      categoryUi: '',
       categoryChosen: '',
       page: this.props.match.params.page,
       sortBy: this.props.match.params.sortBy,
@@ -34,27 +30,48 @@ class OffersPage extends Component {
       redirect: false,
       query: {
         subject: '',
-        categoryUi: '',
+        categoryUid: this.props.match.params.category,
         orderBy: this.props.match.params.sortBy,
         strategy: this.props.match.params.order,
         page: this.props.match.params.page,
       }
     }
   }
+  getInitialState() {
+    this.setState({
+      categoryChosen: '',});
+  }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps !== this.props) {
+      this.getInitialState();
       this.getOffers(this.props.match.params.page);
     }
   }
   componentDidMount() {
+    this.getInitialState();
     this.getOffers(this.props.match.params.page);
   }
   getOffers(page) {
     this.setState({isLoading: true});
+    const values = queryString.parse(this.props.location.search);
+    let query = {
+      subject: values.subject,
+      city: values.city,
+      categoryUid: this.props.match.params.category,
+      orderBy: this.props.match.params.sortBy,
+      strategy: this.props.match.params.order,
+      page: this.props.match.params.page,
+    };
     axios
-        .post(path + 'offer/search/' + this.props.match.params.page, this.state.query)
+        .post(path + 'offer/search/' + page, query)
         .then(res => {
-          this.setState({offers: res.data.offers, pagination: res.data.pagination, isLoading: false});
+          if (this.state.categoryChosen === '' && this.props.match.params.category !== undefined) {
+            let category = res.data.offers[0].categoryHierarchy.map((category) => category.name);
+            let categoryNames = category.filter(Boolean).join(' > ');
+            this.setState({offers: res.data.offers, categoryChosen: categoryNames, pagination: res.data.pagination, isLoading: false});
+          } else {
+            this.setState({offers: res.data.offers, pagination: res.data.pagination, isLoading: false});
+          }
         })
         .catch(err => {
           if (err.response.status === 404) {
@@ -67,16 +84,22 @@ class OffersPage extends Component {
   handleModal() {
     this.setState({isModalOpen: !this.state.isModalOpen});
   }
+  refresh() {
+    this.setState({offers: [], noOffers: false});
+    let query = this.state.query;
+    this.props.history.push(`/offers/${query.orderBy}/${query.strategy}${query.categoryUid === undefined ? '' : '/' + query.categoryUid}/1`)
+  }
   handleCategory = (id, names) => {
     let query = this.state.query;
-    query.categoryUi = id;
+    query.categoryUid = id;
     let category = names.filter(Boolean).join(' > ');
-    this.setState({query: query, categoryChosen: category})
+    this.setState({query: query, categoryChosen: category});
+    this.refresh()
   };
   renderOffers() {
     let offers = this.state.offers;
     return offers.map((offer, index) => (
-        <OfferToAccept
+        <OfferCard
             key={index}
             token={this.props.token}
             title={offer.title}
@@ -96,7 +119,7 @@ class OffersPage extends Component {
     query.strategy = order;
     query.orderBy = sortBy;
     this.setState({query: query});
-    this.props.history.push(`/offers/${sortBy}/${order}/${query.page}`)
+    this.refresh()
   }
   render() {
     return (
@@ -131,7 +154,7 @@ class OffersPage extends Component {
           </Row>
           <Row>
             <Col>
-              <PaginationComponent link={`/offers/${this.state.sortBy}/${this.state.order}/`} current={this.state.pagination.currentPage} pageCount={this.state.pagination.pageCount} />
+              <PaginationComponent link={`/offers/${this.state.query.orderBy}/${this.state.query.strategy}${this.state.query.categoryUid === undefined ? '' : '/' + this.state.query.categoryUid}/`} current={this.state.pagination.currentPage} pageCount={this.state.pagination.pageCount} />
             </Col>
           </Row>
           {this.state.isLoading && <Loading full={true}/>}

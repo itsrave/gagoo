@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Row} from "react-bootstrap";
+import {Button, Carousel, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,35 +7,57 @@ import {faMapMarkerAlt, faClock, faWrench, faInfo, faDollarSign} from "@fortawes
 import { LinkContainer } from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
 import '../Css/AdListItem.css'
+import path from "../../api";
+import Alert from "react-bootstrap/Alert";
 
 class OfferCard extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+    }
+  }
+  renderCategories() {
+    let categories = this.props.categories.map((category) => category.name);
+    return categories.filter(Boolean).join(' > ');
+  }
+  componentDidMount() {
+    this.renderCategories()
+  }
   render() {
     return (
-          <Card>
-            <Row className='no-gutters'>
-              <LinkContainer to='/offerpage' className='offer-image'>
-                <Col lg={4}>
-                    <Card.Img src="https://i.picsum.photos/id/737/260/160.jpg"/>
-                </Col>
-              </LinkContainer>
-              <Col lg={8}>
-                <Card.Body>
-                  <Link to={'/offerpage'}><Card.Title>Uturbiony golf3 tdi 1.6</Card.Title></Link>
-                  <Card.Text><FontAwesomeIcon icon={faDollarSign} /> 4500zł</Card.Text>
-                  <Card.Text className="text-muted">Kategoria > Subkategoria</Card.Text>
-                </Card.Body>
-              </Col>
+        <Card className="my-2">
+          <Row className='no-gutters'>
+            <LinkContainer to={`/offerpage/${this.props.publicId}`}>
+            <Col lg={4} className="offer-image">
+              <img
+                  className="d-block mx-auto img-fluid carousel-image"
+                  src={path + 'upload/offer-imgs/' + this.props.photos[0]}
+                  alt={"Zdjęcie oferty"}
+              />
+            </Col>
+            </LinkContainer>
+            <Col lg={8}>
+              <Card.Body>
+                <Row>
+                  <Col sm={4}>
+                    <LinkContainer to={`/offerpage/${this.props.publicId}`}>
+                      <Link to={'/offerpage'}><Card.Title>{this.props.title}</Card.Title></Link>
+                    </LinkContainer>
+                    <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {this.props.price}zł</Card.Text>
+                    <Card.Text className="text-muted">{this.renderCategories()}</Card.Text>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Col>
+          </Row>
+          <Card.Footer className="text-muted">
+            <Row>
+              <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> {this.props.userData.city}</Col>
+              <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> {this.props.created}</Col>
+              <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> {this.props.condition}</Col>
             </Row>
-            <Card.Footer className="text-muted">
-              <Row>
-                <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> Miastko</Col>
-                <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> Wczoraj</Col>
-                <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> Nowy</Col>
-                <Col className="py-1" md={3}><FontAwesomeIcon icon={faInfo}/> 2312321321</Col>
-              </Row>
-            </Card.Footer>
-          </Card>
+          </Card.Footer>
+        </Card>
     );
   }
 }

@@ -104,7 +104,7 @@ class AddOfferPage extends Component {
     e.preventDefault();
     this.getInitialWarningState();
     this.setState({isLoading: true});
-    this.submitUserData();  //TODO if failed dont post the offer
+    this.submitUserData();
     this.submitPhotos().then(() => this.submitOffer());
   };
   submitOffer() {
@@ -176,7 +176,7 @@ class AddOfferPage extends Component {
   }
   handleMessages() {
     let errors = this.state.errors;
-    let success = this.state.successMessages
+    let success = this.state.successMessages;
     if (errors.category !== undefined) {
       this.setState({categoryError: true});
     }
@@ -306,7 +306,7 @@ class AddOfferPage extends Component {
                   </Form.Group>
                   <Form.Group as={Row} controlId="formCity">
                     <Form.Label column md={5}>Miasto: </Form.Label>
-                    <Col md={7}><Form.Control type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleUserDataChange} value={this.state.userData.city} />
+                    <Col md={7}><Form.Control required type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleUserDataChange} value={this.state.userData.city} />
                     </Col>
                   </Form.Group>
                   <Form.Group as={Row} controlId="formState">

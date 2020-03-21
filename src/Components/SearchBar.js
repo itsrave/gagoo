@@ -5,8 +5,14 @@ import './Css/SearchBar.css'
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
+import { withRouter } from "react-router-dom";
+import queryString from "query-string";
 
 class SearchBar extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
         <Container className='search-bar my-3'>
@@ -17,7 +23,7 @@ class SearchBar extends Component {
                   <InputGroup.Prepend>
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
                   </InputGroup.Prepend>
-                  <Form.Control className="mr-sm-2" placeholder='Czego szukasz?'/>
+                  <Form.Control className="mr-sm-2" name={'subject'} placeholder='Czego szukasz?'/>
                 </InputGroup>
               </Col>
               <Col md={3} className='my-1 my-md-0'>
@@ -25,11 +31,11 @@ class SearchBar extends Component {
                   <InputGroup.Prepend>
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faMapMarkedAlt} /></InputGroup.Text>
                   </InputGroup.Prepend>
-                  <Form.Control className="mr-sm-2" placeholder='Lokalizacja'/>
+                  <Form.Control className="mr-sm-2" name={'city'} placeholder='Lokalizacja'/>
                 </InputGroup>
               </Col>
               <Col md={1} className="text-center my-1 my-md-0">
-                <Button variant="info">Szukaj</Button>
+                <Button variant="info" type={'submit'}>Szukaj</Button>
               </Col>
             </Form.Row>
           </Form>
@@ -38,4 +44,4 @@ class SearchBar extends Component {
   }
 }
 
-export default SearchBar;
+export default withRouter(SearchBar);

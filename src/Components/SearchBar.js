@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
-import queryString from "query-string";
 
 class SearchBar extends Component {
   constructor(props) {

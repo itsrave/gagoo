@@ -9,22 +9,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 
 class UserCardAdpage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userData: {
-        email: 'przykład@przykład.pl',
-        username: 'Nazwa użytkownika',
-        name: 'dsadsa',
-        phoneNumber: '324124234',
-        city: 'fsdfds',
-        state: 'dsaada',
-        zipCode: '22-222',
-        avatar: '',
-      }
-    }
-  }
-
   render() {
     return (
         <Card>
@@ -35,13 +19,13 @@ class UserCardAdpage extends Component {
             <Card.Title>
               <Row>
                 <Col xs={1}><FontAwesomeIcon icon={faUser}/></Col>
-                <Col xs={10}>{this.state.userData.name}</Col>
+                <Col xs={10}>{this.props.user.name}</Col>
               </Row>
             </Card.Title>
             <div>
               <Row>
                 <Col xs={1}><FontAwesomeIcon icon={faMapMarker}/></Col>
-                <Col xs={8}>{this.state.userData.city}</Col>
+                <Col xs={8}>{this.props.user.city}</Col>
               </Row>
             </div>
           </Card.Body>
@@ -49,13 +33,13 @@ class UserCardAdpage extends Component {
             <ListGroupItem>
               <Row>
                 <Col xs={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
-                <Col xs={8}>{this.state.userData.phoneNumber}</Col>
+                <Col xs={8}>{this.props.user.phoneNumber}</Col>
               </Row>
             </ListGroupItem>
             <ListGroupItem>
               <Row>
                 <Col xs={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
-                <Col xs={8}>{this.state.userData.email}</Col>
+                <Col xs={8}>{this.props.user.email}</Col>
               </Row>
             </ListGroupItem>
           </ListGroup>

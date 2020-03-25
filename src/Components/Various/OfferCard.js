@@ -11,11 +11,6 @@ import path from "../../api";
 import Alert from "react-bootstrap/Alert";
 
 class OfferCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    }
-  }
   renderCategories() {
     let categories = this.props.categories.map((category) => category.name);
     return categories.filter(Boolean).join(' > ');

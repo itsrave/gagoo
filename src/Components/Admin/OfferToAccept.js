@@ -80,7 +80,7 @@ class OfferToAccept extends Component {
                     <Form>
                       <Form.Group>
                         <Form.Label>Opis</Form.Label>
-                        <Form.Control as="textarea" rows="3" plaintext={true} readOnly={true} value={this.props.description} />
+                        <Form.Control as="textarea" rows="3" plaintext={true} readOnly={true} value={this.props.description.split("<br />").join("")} />
                       </Form.Group>
                     </Form>
                   </Col>

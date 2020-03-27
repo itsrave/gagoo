@@ -27,7 +27,7 @@ class Cards extends Component {
   getOffers() {
     this.setState({isLoading: true});
     axios
-        .get(path + 'offer/newest/')
+        .get(path + 'public-api/offer/newest/')
         .then(res => {
           this.setState({offers: res.data.offers, isLoading: false});
         })

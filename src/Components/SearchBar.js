@@ -5,17 +5,24 @@ import './Css/SearchBar.css'
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
-import { withRouter } from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
+    this.submit = this.submit.bind(this);
+    this.state = {
+      redirect: false
+    }
   }
 
+  submit() {
+    this.setState({redirect: true})
+  }
   render() {
     return (
         <Container className='search-bar my-3'>
-          <Form className='search-form'>
+          <Form className='search-form' onSubmit={this.submit}>
             <Form.Row className='justify-content-md-center'>
               <Col md={4} className='my-1 my-md-0'>
                 <InputGroup>
@@ -38,6 +45,7 @@ class SearchBar extends Component {
               </Col>
             </Form.Row>
           </Form>
+          { this.state.redirect && <Redirect to='/offers/date/asc/1' />}
         </Container>
     );
   }

@@ -63,7 +63,7 @@ class OffersPage extends Component {
       page: this.props.match.params.page,
     };
     axios
-        .post(path + 'offer/search/' + page, query)
+        .post(path + 'public-api/offer/search/' + page, query)
         .then(res => {
           if (this.state.categoryChosen === '' && this.props.match.params.category !== undefined) {
             let category = res.data.offers[0].categoryHierarchy.map((category) => category.name);

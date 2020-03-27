@@ -13,6 +13,7 @@ import queryString from "query-string";
 import axios from "axios";
 import path from "../../api";
 import Loading from "../Various/Loading";
+import {Link} from "react-router-dom";
 
 class OfferPage extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class OfferPage extends Component {
   getOffers() {
     this.setState({isLoading: true});
     axios
-        .get(path + 'offer/' + this.props.match.params.offerId)
+        .get(path + 'public-api/offer/' + this.props.match.params.offerId)
         .then(res => {
           let categories = res.data.categoryHierarchy.map((category) => category.name);
           let offer = res.data;
@@ -94,7 +95,7 @@ class OfferPage extends Component {
               <Container className={'pt-2'}>
                 <Row>
                   <Col className="text-center">
-                    <Button variant="primary">Pokaż ogłoszenia użytkownika</Button>
+                    <Link className="btn btn-primary" to={`/useroffers/:userID:page/`}>Pokaż ogłoszenia użytkownika</Link>
                   </Col>
                 </Row>
               </Container>

@@ -45,7 +45,7 @@ class CategoryChooser extends Component {
   }
   getCategories() {
     axios
-        .get(path + 'category/get-all')
+        .get(path + 'public-api/category/get-all')
         .then(res => this.setState({cats: res.data, isLoading: false}))
         .catch(err => {
           this.setState({isLoading: false});

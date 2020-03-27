@@ -33,15 +33,11 @@ class OfferCard extends Component {
             </LinkContainer>
             <Col lg={8}>
               <Card.Body>
-                <Row>
-                  <Col sm={4}>
                     <LinkContainer to={`/offerpage/${this.props.publicId}`}>
                       <Link to={'/offerpage'}><Card.Title>{this.props.title}</Card.Title></Link>
                     </LinkContainer>
                     <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {this.props.price}zł</Card.Text>
                     <Card.Text className="text-muted">{this.renderCategories()}</Card.Text>
-                  </Col>
-                </Row>
               </Card.Body>
             </Col>
           </Row>

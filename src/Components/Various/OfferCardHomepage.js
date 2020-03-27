@@ -8,7 +8,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import '../Css/AdListItem.css'
 const imageStyle = {
   display: 'block',
-  maxHeight: '300px',
+  maxHeight: '100%',
   maxWidth : '100%',
   objectFit: 'cover'
 };

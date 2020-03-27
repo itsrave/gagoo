@@ -90,7 +90,7 @@ class RegisterPage extends Component {
       return;
     }
     axios
-        .post(path + 'user/register', user)
+        .post(path + 'public-api/user/register', user)
         .then(res => {
           this.setState({succesfulRegister: true, isLoading: false});
           this.email.current.value = '';

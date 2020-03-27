@@ -18,6 +18,7 @@ import CategoryChooser from "./Components/Various/CategoryChooser";
 import AdminPage from "./Components/Pages/AdminPage";
 import axios from "axios";
 import path from "./api";
+import UserOffersPage from "./Components/Pages/UserOffersPage";
 
 
 class App extends Component {
@@ -93,9 +94,9 @@ class App extends Component {
                 <Route path='/login/:reference' render={(props) => (this.state.isLoggedIn === false ? <LoginPage {...props} token={this.state.token} setToken={this.setToken} /> : <Redirect to='/' />)} />
                 <Route path='/offerpage/:offerId' component={OfferPage}/>
                 <Route path='/offers/:sortBy/:order/:category?/:page/' component={OffersPage}/>
-                <Route path='/useroffers/:userID/:page/' component={OffersPage}/>
+                <Route path='/useroffers/:userID/:page/' component={UserOffersPage}/>
                 <Route path='/addoffer' render={(props) => (this.state.isLoggedIn === true ? <AddOfferPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
-                <Route path='/account/:reference' render={(props) => (this.state.isLoggedIn === true ? <MyAccountPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
+                <Route path='/account/:reference/:page?/' render={(props) => (this.state.isLoggedIn === true ? <MyAccountPage {...props} token={this.state.token} /> : <Redirect to='/login/nologin' />)}/>
               </Switch>
             <FooterComponent />
           </div>

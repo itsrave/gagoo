@@ -1,36 +1,33 @@
 import React, {Component} from 'react';
 import axios from "axios";
 import path from "../../api";
-import queryString from "query-string";
-import OfferCard from "../Various/OfferCard";
+import OfferCard from "./OfferCard";
 import {Breadcrumb, Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import SortBy from "../Various/SortBy";
-import CategoryChooser from "../Various/CategoryChooser";
-import PaginationComponent from "../Various/PaginationComponent";
-import Loading from "../Various/Loading";
+import PaginationComponent from "./PaginationComponent";
+import Loading from "./Loading";
+import {withRouter} from "react-router-dom";
 
-class UserOffersPage extends Component {
+class MyOffers extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
       offers: [],
       pagination: {},
-      owner: {}
     }
   }
   componentDidMount() {
     this.getOffers();
   }
   getOffers() {
+    const AuthStr = 'Bearer ' + this.props.token;
     this.setState({isLoading: true});
     axios
-        .get(path + `public-api/offer/user/${this.props.match.params.userID}/page/${this.props.match.params.page}`)
+        .get(path + `api/offer/current-user/page/${this.props.match.params.page}`, { headers: { Authorization: AuthStr }})
         .then(res => {
-          this.setState({offers: res.data.offers, pagination: res.data.pagination, owner: res.data.offers[0].owner, isLoading: false});
+          this.setState({offers: res.data.offers, pagination: res.data.pagination, isLoading: false});
         })
         .catch(err => {
           if (err.response.status === 404) {
@@ -61,9 +58,6 @@ class UserOffersPage extends Component {
   render() {
     return (
         <Container>
-          <Breadcrumb>
-            <Breadcrumb.Item active>{this.state.owner.name ? this.state.owner.name + ' - Wszystkie ogłoszenia użytkownika' : 'Wszystkie ogłoszenia użytkownika'}</Breadcrumb.Item>
-          </Breadcrumb>
           {/*<Row>*/}
           {/*  <Col>*/}
           {/*    {this.state.categoryChosen !== '' && <Breadcrumb>*/}
@@ -94,7 +88,7 @@ class UserOffersPage extends Component {
           </Row>
           <Row>
             <Col>
-              <PaginationComponent link={`/offer/user/${this.props.match.params.userID}/page/`} current={this.props.match.params.page} pageCount={this.state.pagination.pageCount} />
+              <PaginationComponent link={`/account/myoffers/`} current={this.props.match.params.page} pageCount={this.state.pagination.pageCount} />
             </Col>
           </Row>
           {this.state.isLoading && <Loading full={true}/>}
@@ -103,4 +97,4 @@ class UserOffersPage extends Component {
   }
 }
 
-export default UserOffersPage;
+export default withRouter(MyOffers);

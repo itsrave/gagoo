@@ -20,7 +20,7 @@ class OfferPage extends Component {
     super(props);
     this.state = {
       offer: [],
-      owner: [],
+      owner: {publicIdentifier: ''},
       isLoading: false,
     }
   }
@@ -52,7 +52,6 @@ class OfferPage extends Component {
           offer.description = offer.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
           offer.categoryHierarchy = categories.filter(Boolean).join(' > ');
           this.setState({offer: offer, owner: offer.owner, isLoading: false});
-          console.log(res)
         })
         .catch(err => {
           if (err.response.status === 404) {
@@ -95,7 +94,7 @@ class OfferPage extends Component {
               <Container className={'pt-2'}>
                 <Row>
                   <Col className="text-center">
-                    <Link className="btn btn-primary" to={`/useroffers/:userID:page/`}>Pokaż ogłoszenia użytkownika</Link>
+                    <Link className="btn btn-primary" to={`/useroffers/${this.state.owner.publicIdentifier}/1`}>Pokaż ogłoszenia użytkownika</Link>
                   </Col>
                 </Row>
               </Container>

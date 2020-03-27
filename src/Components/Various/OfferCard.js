@@ -23,7 +23,7 @@ class OfferCard extends Component {
         <Card className="my-2">
           <Row className='no-gutters'>
             <LinkContainer to={`/offerpage/${this.props.publicId}`}>
-            <Col lg={4} className="offer-image">
+            <Col lg={4} className="offer-image offer-image-fit">
               <img
                   className="d-block mx-auto img-fluid carousel-image"
                   src={path + 'upload/offer-imgs/' + this.props.photos[0]}

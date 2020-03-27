@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Loading from "../Various/Loading";
 import Nav from "react-bootstrap/Nav";
 import Settings from "../User/Settings";
+import MyOffers from "../Various/MyOffers";
 
 class MyAccountPage extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class MyAccountPage extends Component {
   }
   toggleOffersActive = () => {
     this.setState({offersActive: true, settingsActive: false});
-    this.props.history.push('/account/offers');
+    this.props.history.push('/account/myoffers/1');
   };
   toggleSettingsActive = () => {
     this.setState({offersActive: false, settingsActive: true});
@@ -46,7 +47,7 @@ class MyAccountPage extends Component {
     if (this.props.match.params.reference === 'settings') {
       return <Settings token={this.props.token} />
     } else {
-      return <h1>nie ma</h1>
+      return <MyOffers token={this.props.token} />
     }
   }
   render() {

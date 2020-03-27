@@ -146,7 +146,7 @@ class OffersPage extends Component {
           <Row sm={10}>
             <Col>
               {this.state.noOffers &&
-              <Container className={'text-center'}>
+              <Container className={'text-center my-3'}>
                 <h1>Brak ofert</h1>
               </Container>}
               {this.renderOffers()}

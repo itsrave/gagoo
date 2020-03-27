@@ -11,7 +11,7 @@ class IsUser extends Component {
     return (
         <>
           <NavDropdown title={"Witaj, " + this.props.username} id="basic-nav-dropdown">
-            <LinkContainer to={`/account/myoffers`}>
+            <LinkContainer to={`/account/myoffers/1`}>
               <NavDropdown.Item active={false}>Moje ogłoszenia</NavDropdown.Item>
             </LinkContainer>
             <LinkContainer to={`/account/settings`}>

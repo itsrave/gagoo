@@ -51,11 +51,11 @@ class Cards extends Component {
           <h2>Najnowsze ogłoszenia</h2>
           <CardColumns classname={'py-3'}>
             {this.state.noOffers &&
-            <Container className={'text-center'}>
+            <Container className={'text-center my-3'}>
               <h1>Brak ofert</h1>
             </Container>}
             {this.state.unexpectedError &&
-            <Container className={'text-center'}>
+            <Container className={'text-center my-3'}>
               <h1>Nieznany błąd</h1>
             </Container>}
             {this.renderOffers()}

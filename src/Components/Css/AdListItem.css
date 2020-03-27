@@ -1,7 +1,11 @@
 .offer-image:hover {
     cursor: pointer;
 }
+.
 .carousel-image {
     min-height: 300px;
     max-height: 300px;
+}
+.offer-image-fit {
+    object-fit: cover;
 }

@@ -13,7 +13,7 @@ class UserCardAdpage extends Component {
     return (
         <Card>
           <Card.Header className={'d-flex justify-content-sm-center'}>
-            <Card.Img style={{objectFit: 'cover', width: '200px', height: '200px' }} variant="top" className='rounded-circle avatar-image' src={path + "upload/av/av_17_1581086374_wiata.png"} />
+            <Card.Img style={{objectFit: 'cover', width: '200px', height: '200px' }} variant="top" className='rounded-circle avatar-image' src={path + "upload/av/" + this.props.user.avatar} />
           </Card.Header>
           <Card.Body>
             <Card.Title>

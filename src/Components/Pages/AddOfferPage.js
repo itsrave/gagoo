@@ -117,6 +117,9 @@ class AddOfferPage extends Component {
           this.handleMessages()
         })
         .catch(err => {
+          if (err.response.status === 406) {
+            this.setState({errors: err.response.data, isLoading: false})
+          }
           this.setState({errors: err.response.data, isLoading: false});
           this.handleMessages()
         });

@@ -49,7 +49,7 @@ class Cards extends Component {
     return (
         <Container>
           <h2>Najnowsze ogłoszenia</h2>
-          <CardColumns classname={'py-3'}>
+          <CardColumns className={'py-3'}>
             {this.state.noOffers &&
             <Container className={'text-center my-3'}>
               <h1>Brak ofert</h1>

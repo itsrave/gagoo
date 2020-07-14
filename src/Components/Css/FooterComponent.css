@@ -1,5 +1,4 @@
 .footer {
-    background-color: #f8f9fa;
     margin-top: auto;
 }
 .links {
@@ -7,4 +6,10 @@
 ul {
     margin-top: 16px;
     list-style: none;
+}
+.nopadding {
+    padding: 0;
+}
+.nomargin {
+    margin: 0;
 }

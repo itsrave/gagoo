@@ -12,7 +12,6 @@ import axios from "axios";
 import Forxsata from 'form-data'
 import Alert from "react-bootstrap/Alert";
 import Loading from "../Various/Loading";
-import Form from "react-bootstrap/Form";
 
 class UserCard extends Component {
   constructor(props) {
@@ -23,7 +22,8 @@ class UserCard extends Component {
       successMessage: [],
       errorMessage: [],
       success: false,
-      errorWarning: false
+      errorWarning: false,
+      errorType: false
     }
   }
   getInitialState() {
@@ -31,7 +31,8 @@ class UserCard extends Component {
       successMessage: [],
       errorMessage: [],
       success: false,
-      errorWarning: false
+      errorWarning: false,
+      errorType: false
     })
   }
   componentDidUpdate(prevProps) {
@@ -39,30 +40,39 @@ class UserCard extends Component {
       this.setState({userData: this.props.userData});
     }
   }
+  isFileImage(file) {
+    const acceptedImageTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+
+    return file && acceptedImageTypes.includes(file['type'])
+  }
   handleAvatarChange(e) {
     this.getInitialState();
     e.stopPropagation();
     e.preventDefault();
     let file = e.target.files[0];
-    let data = new Forxsata();
-    data.append('avatar', file, file.fileName);
-    const AuthStr = 'Bearer ' + this.props.token;
-    axios
-        .post(path + 'api/user/update-avatar', data,{ headers: { Authorization: AuthStr, } })
-        .then(res => {
-          this.setState({successMessage: res.data, success: true});
-          this.props.update()
-        })
-        .catch(err => {
-          this.setState({errorMessage: err.response.data.tempAvatar, errorWarning: true});
-        });
-    // TODO LIMIT FILE OPTIONS
+    if (this.isFileImage(file)) {
+      let data = new Forxsata();
+      data.append('avatar', file, file.fileName);
+      const AuthStr = 'Bearer ' + this.props.token;
+      axios
+          .post(path + 'api/user/update-avatar', data,{ headers: { Authorization: AuthStr, } })
+          .then(res => {
+            this.setState({successMessage: res.data, success: true});
+            this.props.update()
+          })
+          .catch(err => {
+            this.setState({errorMessage: err.response.data.tempAvatar, errorWarning: true});
+          });
+    } else {
+      this.setState({errorType: true})
+    }
   }
   render() {
     return (
         <>
           <Card>
             <Card.Header className={'avatar d-flex justify-content-center'}>
+              <p className={'addButton'}>+</p>
               <Card.Img onClick={() => this.avatar.click()} style={{objectFit: 'cover', width: '200px', height: '200px' }} variant="top" className='rounded-circle avatar-image' src={path + "upload/av/" + this.state.userData.avatar} />
               <input type="file" id="file" onChange={this.handleAvatarChange} ref={(ref) => this.avatar = ref} style={{display: 'none'}}/>
             </Card.Header>
@@ -73,14 +83,13 @@ class UserCard extends Component {
                   <Col xs={8}>{this.state.userData.name}</Col>
                 </Row>
               </Card.Title>
-              <div>
                 <Row>
                   <Col xs={1}><FontAwesomeIcon icon={faMapMarker}/></Col>
                   <Col xs={8}>{this.state.userData.city}</Col>
                 </Row>
-              </div>
             </Card.Body>
             <ListGroup className="list-group-flush">
+              <ListGroupItem />
               <ListGroupItem>
                 <Row>
                   <Col xs={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>
@@ -90,7 +99,7 @@ class UserCard extends Component {
               <ListGroupItem>
                 <Row>
                   <Col xs={1}><FontAwesomeIcon icon={faEnvelope} /></Col>
-                  <Col xs={8}>{this.state.userData.email}</Col>
+                  <Col xs={10}>{this.state.userData.email}</Col>
                 </Row>
               </ListGroupItem>
             </ListGroup>
@@ -98,6 +107,8 @@ class UserCard extends Component {
           <div className="mt-3" />
           {this.state.success &&
           <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>{this.state.successMessage[0]}</Alert>}
+          {this.state.errorType &&
+          <Alert variant='warning' dismissible onClose={() => this.setState({errorType: false})}>Plik nie jest obrazem.</Alert>}
           {this.state.errorWarning &&
           <Alert variant='danger' dismissible onClose={() => this.setState({errorWarning: false})}>
             {this.state.errorMessage.map((msg, i) =>

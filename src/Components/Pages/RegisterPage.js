@@ -166,7 +166,7 @@ class RegisterPage extends Component {
               </Alert>}
               {this.state.succesfulRegister &&
               <Alert variant='success' dismissible onClose={() => this.setState({succesfulRegister: false})}>
-                Rejestracja pomyślna, możesz się teraz <Link to='/login'>zalogować</Link>.
+                Rejestracja pomyślna, możesz się teraz <Link to='/login/registerpage'>zalogować</Link>.
               </Alert>}
               <Button variant="primary" type={'submit'}>
                 Zarejestruj

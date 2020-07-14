@@ -5,24 +5,15 @@
 .avatar-image {
     transition: opacity linear .3s;
     cursor: pointer;
+    z-index: 2;
 }
 .avatar-image:hover {
     opacity: 0.5;
 }
-.avatar::after {
-    transition: all linear .3s;
+.addButton {
+    font-size: 64px;
     position: absolute;
     top: 33%;
     left: 45%;
-    font-size: 64px;
-    content: "+";
-    opacity: 0;
-}
-.avatar:hover::after {
-    opacity: 1;
-    position: absolute;
-    top: 33%;
-    left: 45%;
-    font-size: 64px;
-    content: "+";
+    z-index: 1;
 }

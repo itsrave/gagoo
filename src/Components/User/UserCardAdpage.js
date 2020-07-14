@@ -30,6 +30,7 @@ class UserCardAdpage extends Component {
             </div>
           </Card.Body>
           <ListGroup className="list-group-flush">
+            <ListGroupItem />
             <ListGroupItem>
               <Row>
                 <Col xs={1}><FontAwesomeIcon icon={faPhoneAlt}/></Col>

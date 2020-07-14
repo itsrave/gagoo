@@ -7,7 +7,7 @@ import {withCookies, Cookies} from 'react-cookie';
 import Loading from "../Various/Loading";
 import {instanceOf} from "prop-types";
 import Alert from "react-bootstrap/Alert";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import path from "../../api";
 
 class LoginPage extends Component {
@@ -17,30 +17,23 @@ class LoginPage extends Component {
 
   constructor(props) {
     super(props);
-    this.username = React.createRef();
-    this.password = React.createRef();
+    this.email = React.createRef();
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       isLoading: false,
-      usernameWarning: false,
-      passwordWarning: false,
+      emailWarning: false,
       wrongCredentials: false,
       unexpectedError: false,
-      succesfulLogin: false,
-      noLogin: false,
       redirect: false,
     }
   }
   getInitialState() {
     this.setState({
       isLoading: false,
-      usernameWarning: false,
-      passwordWarning: false,
+      emailWarning: false,
       wrongCredentials: false,
       unexpectedError: false,
-      succesfulLogin: false,
-      noLogin: false,
       redirect: false,
     })
   }
@@ -65,25 +58,16 @@ class LoginPage extends Component {
     this.getInitialState();
     this.toggleLoading();
     let user = {
-      username: this.username.current.value,
-      password: this.password.current.value
+      email: this.email.current.value,
     };
-    if (user.username === '') {
-      this.setState({usernameWarning: true, isLoading: false});
-      return
-    }
-    if (user.password === '') {
-      this.setState({passwordWarning: true, isLoading: false});
+    if (user.email === '') {
+      this.setState({emailWarning: true, isLoading: false});
       return
     }
     axios
-        .post(path + 'api/login_check', user)
+        .post(path + 'api/login_check', user.email)
         .then(res => {
-          const {cookies} = this.props;
-          cookies.set('token', res.data.token, {path: '/'});
-          cookies.set('refreshToken', res.data.refresh_token, {path: '/'});
-          this.props.setToken();
-          this.setState({succesfulLogin: true, isLoading: false, redirect: true});
+          this.setState({succesfulSent: true, isLoading: false});
         })
         .catch(err => {
           if (err.response.status === 401) {
@@ -98,41 +82,31 @@ class LoginPage extends Component {
   toggleLoading() {
     this.setState({isLoading: !this.state.isLoading});
   }
+
   render() {
     return (
         <Container className='my-3'>
           <Form className='d-flex justify-content-sm-center' onSubmit={this.onSubmit}>
             <Col md={5}>
-             <Form.Group controlId="formBasicEmail">
+              <h3>Zapomniałem hasła</h3>
+              <Form.Label>Jeżeli zapomniałeś hasła wprowadź swój email, na który wyślemy link z resetowaniem hasła</Form.Label>
+              <Form.Group controlId="formEmail">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="text" name='username' ref={this.username}
-                              placeholder="Email lub nazwa użytkownika"/>
+                <Form.Control type="text" name='username' ref={this.email}
+                              placeholder="Email"/>
                 {this.state.usernameWarning &&
-                <Alert variant='warning' dismissible onClose={() => this.setState({usernameWarning: false})}>Nazwa
+                <Alert variant='warning' dismissible onClose={() => this.setState({emailWarning: false})}>Nazwa
                   użytkownika nie może być pusta.</Alert>}
               </Form.Group>
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Hasło</Form.Label>
-                <Form.Control type="password" ref={this.password} name='password' placeholder="Hasło"/>
-                {this.state.passwordWarning &&
-                <Alert variant='warning' dismissible onClose={() => this.setState({passwordWarning: false})}>Hasło nie
-                  może być puste.</Alert>}
-                <Form.Text className="text-muted">
-                  <Link to={'/forgotpassword'}>Nie pamiętasz hasła?</Link>
-                </Form.Text>
-              </Form.Group>
-              <Button variant="primary" type='submit'>Zaloguj</Button>
+              <Button variant="primary" type='submit'>Wyślij</Button>
               <Form.Group />
               {this.state.isLoading && <Loading/>}
-              {this.state.succesfulLogin &&
-              <Alert variant='success' dismissible onClose={() => this.setState({succesfulLogin: false})}>Pomyślnie
-                zalogowano, za chwilę zostaniesz przekierowany...</Alert>}
+              {this.state.succesfulSent &&
+              <Alert variant='success' dismissible onClose={() => this.setState({succesfulSent: false})}>Na podany email wysłano wiadomość dotycząca resetowania hasła</Alert>}
               {this.state.wrongCredentials &&
-              <Alert variant='danger' dismissible onClose={() => this.setState({wrongCredentials: false})}>Błędne hasło lub nazwa użytkownika.</Alert>}
+              <Alert variant='danger' dismissible onClose={() => this.setState({wrongCredentials: false})}>Nie ma użytkownika z takim adresem email</Alert>}
               {this.state.unexpectedError &&
               <Alert variant='danger' dismissible onClose={() => this.setState({unexpectedError: false})}>Niespodziewany błąd, spróbuj ponownie później.</Alert>}
-              {this.state.noLogin &&
-              <Alert variant='warning' dismissible onClose={() => this.setState({noLogin: false})}>Musisz się zalogować aby wyświetlić tę stronę.</Alert>}
             </Col>
           </Form>
           { this.state.redirect && <Redirect to="/" />}

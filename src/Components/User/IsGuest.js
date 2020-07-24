@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Nav from "react-bootstrap/Nav";
-import {Link} from "react-router-dom";
-import { LinkContainer } from 'react-router-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 
 class IsGuest extends Component {
   render() {

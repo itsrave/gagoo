@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Container, Jumbotron, Col } from "react-bootstrap";
+import React, {Component} from 'react';
+import {Col, Container} from "react-bootstrap";
 import Cards from "../Various/Cards";
 import axios from 'axios';
 import path from "../../api";

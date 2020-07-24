@@ -3,9 +3,9 @@ import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Row from "react-bootstrap/Row";
-import {Col, Container} from "react-bootstrap";
+import {Col} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser, faEnvelope, faPhoneAlt, faMapMarker} from "@fortawesome/free-solid-svg-icons";
+import {faEnvelope, faMapMarker, faPhoneAlt, faUser} from "@fortawesome/free-solid-svg-icons";
 import path from "../../api";
 import './UserCard.css'
 

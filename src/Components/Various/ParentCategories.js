@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-import { LinkContainer } from 'react-router-bootstrap'
-import { Link } from "react-router-dom";
+import React, {Component} from 'react';
+import {LinkContainer} from 'react-router-bootstrap'
+import {Link} from "react-router-dom";
 import '../Css/Additional.css';
 
 class ParentCategories extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <>

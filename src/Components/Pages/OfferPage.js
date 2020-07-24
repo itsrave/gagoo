@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 import {Card, Col, Container} from "react-bootstrap";
 import Carousel from "react-bootstrap/Carousel";
-import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Row from "react-bootstrap/Row";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faWrench, faDollarSign, faMapMarkerAlt, faClock, faInfo} from "@fortawesome/free-solid-svg-icons";
-import UserCard from "../User/UserCard";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faClock, faDollarSign, faMapMarkerAlt, faWrench} from "@fortawesome/free-solid-svg-icons";
 import UserCardAdpage from "../User/UserCardAdpage";
-import Button from "react-bootstrap/Button";
-import queryString from "query-string";
 import axios from "axios";
 import path from "../../api";
 import Loading from "../Various/Loading";

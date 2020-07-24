@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from 'axios';
-import {withCookies, Cookies} from 'react-cookie';
+import {Cookies, withCookies} from 'react-cookie';
 import Loading from "../Various/Loading";
 import {instanceOf} from "prop-types";
 import Alert from "react-bootstrap/Alert";

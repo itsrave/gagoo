@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Row} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faMapMarkerAlt, faClock, faWrench, faInfo, faDollarSign} from "@fortawesome/free-solid-svg-icons";
-import { LinkContainer } from 'react-router-bootstrap'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faClock, faDollarSign, faInfo, faMapMarkerAlt, faWrench} from "@fortawesome/free-solid-svg-icons";
+import {LinkContainer} from 'react-router-bootstrap'
 import {Link} from "react-router-dom";
 import '../Css/AdListItem.css'
 

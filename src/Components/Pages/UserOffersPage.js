@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
 import axios from "axios";
 import path from "../../api";
-import queryString from "query-string";
 import OfferCard from "../Various/OfferCard";
 import {Breadcrumb, Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import SortBy from "../Various/SortBy";
-import CategoryChooser from "../Various/CategoryChooser";
 import PaginationComponent from "../Various/PaginationComponent";
 import Loading from "../Various/Loading";
 

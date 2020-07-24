@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import CookiesProvider from "react-cookie/cjs/CookiesProvider";
 import ScrollToTop from "./Components/Various/ScrollToTop";
 

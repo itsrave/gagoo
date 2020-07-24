@@ -1,11 +1,11 @@
-import React, {Component } from 'react';
+import React, {Component} from 'react';
 import './Components/Css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navigation from "./Components/Navbar/Navigation";
 import Homepage from "./Components/Pages/Homepage";
 import FooterComponent from "./Components/Footer/FooterComponent";
 import SearchBar from "./Components/SearchBar";
-import {Redirect, Route, Switch } from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import RegisterPage from "./Components/Pages/RegisterPage";
 import LoginPage from "./Components/Pages/LoginPage";
 import OfferPage from "./Components/Pages/OfferPage";
@@ -104,18 +104,15 @@ class App extends Component {
 
   refreshSession() {
     const {cookies} = this.props;
-    console.log('mam ciastka')
     let token = {
       refresh_token: cookies.get('refreshToken'),
     };
-    console.log('wysylam req')
     axios
       .post(path + 'api/token/refresh', token)
       .then(res => {
         cookies.set('token', res.data.token, {path: '/'});
         cookies.set('refreshToken', res.data.refresh_token, {path: '/'});
         this.setToken();
-        console.log('ez token ');
       })
       .catch(err => {
         console.log(err.response.data);

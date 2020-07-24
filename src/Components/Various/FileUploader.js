@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import ImageUploader from 'react-images-upload';
 import '../Css/FileUploader.css'
-import FormData from "form-data";
-import axios from "axios";
-import path from "../../api";
 
 class FileUploader extends Component {
   constructor(props) {

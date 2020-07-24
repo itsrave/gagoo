@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Link } from "react-router-dom";
-import { Card, Col, Container, Row, Carousel, Breadcrumb, Button } from "react-bootstrap";
+import React, {Component} from 'react';
+import {Link} from "react-router-dom";
+import {Breadcrumb, Button, Card, Carousel, Col, Container, Row} from "react-bootstrap";
 import axios from "axios";
 import path from "../../api";
 import Loading from "../Various/Loading";
@@ -8,9 +8,7 @@ import My404Component from "./My404Component";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faDollarSign, faMapMarkerAlt, faWrench} from "@fortawesome/free-solid-svg-icons";
 import UserCardAdpage from "../User/UserCardAdpage";
-import { acceptOffer, deleteOffer } from "../Admin/OfferFunctionsAdmin";
-import { getStandardAjaxConfig } from "../User/UserFunctions";
-import FlashMessage from '../Various/FlashMessage';
+import {getStandardAjaxConfig} from "../User/UserFunctions";
 
 class AdminOfferPage extends Component {
   constructor(props) {
@@ -45,10 +43,10 @@ class AdminOfferPage extends Component {
   }
 
   componentDidMount() {
-    this.getOffers()
+    this.getOffer()
   }
 
-  getOffers() {
+  getOffer() {
     this.setState({isLoading: true});
     axios
       .get(
@@ -56,17 +54,13 @@ class AdminOfferPage extends Component {
         getStandardAjaxConfig(this.props.token)
       )
       .then(res => {
-        const offerData = res.data['offer'];
-
-        let categories = offerData.categoryHierarchy.map((category) => category.name);
-        offerData.description = offerData.description.split("<br />").map(
-          (value, index) => <Card.Text key={index}>{value}</Card.Text>
-        );
-        offerData.categoryHierarchy = categories.filter(Boolean).join(' > ');
-        this.setState({ offer: offerData, owner: offerData.owner, isLoading: false, offerFound: true });
+        let categories = res.data.categoryHierarchy.map((category) => category.name);
+        let offer = res.data;
+        offer.description = offer.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
+        offer.categoryHierarchy = categories.filter(Boolean).join(' > ');
+        this.setState({ offer: offer, owner: offer.owner, isLoading: false, offerFound: true });
       })
       .catch(err => {
-        console.log(err);
         switch (err.response.status) {
           case 404:
             this.setState({ noOffers: true, isLoading: false, offerFound: false });
@@ -77,35 +71,12 @@ class AdminOfferPage extends Component {
   }
 
   acceptOffer() {
-    this.setState({
-      showToast: true,
-      toastHeader: 'Usunięto ogłoszenie',
-      toastBody: 'Pomyślnie usunięto ogłoszenie'
-    });
-    //this.props.history.goBack();
-    // acceptOffer(
-    //   this.props.match.params.offerPublicIdentifier,
-    //   this.props.token,
-    //   (response) => {
-    //     alert(response.data);
-    //     this.props.history.goBack();
-    //   },
-    //   (error) => {
-    //     alert(error);
-    //   }
-    // );
+    this.props.history.goBack();
   }
 
   deleteOffer() {
+    this.props.history.goBack();
     alert('delete offer');
-  }
-
-  renderToast(show, header, body) {
-    return <FlashMessage
-      show={show}
-      header={header}
-      body={body}
-    />;
   }
 
   render() {
@@ -116,7 +87,6 @@ class AdminOfferPage extends Component {
     if (this.state.offerFound) {
       return (
         <>
-          {this.renderToast(this.state.showToast, 'hh', 'bbb')}
           <Container className="pb-3">
             <Row>
               <Col md={12}>
@@ -124,7 +94,7 @@ class AdminOfferPage extends Component {
                   <Container>
                     <Row>
                       <Col md={3}><Button variant={"success"} block onClick={this.acceptOffer}>Akceptuj</Button></Col>
-                      <Col md={3}><Button variant={"danger"} block>Usuń</Button></Col>
+                      <Col md={3}><Button variant={"danger"} block onClick={this.deleteOffer}>Usuń</Button></Col>
                     </Row>
                   </Container>
                 </Breadcrumb>

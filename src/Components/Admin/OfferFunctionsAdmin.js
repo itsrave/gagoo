@@ -1,6 +1,6 @@
 import axios from 'axios';
 import path from "../../api";
-import { getStandardAjaxConfig } from '../User/UserFunctions';
+import {getStandardAjaxConfig} from '../User/UserFunctions';
 
 function acceptOffer(offerPublicIdentifier, bearerToken, onSuccess, onError)
 {

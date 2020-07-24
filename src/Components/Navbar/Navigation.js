@@ -1,16 +1,13 @@
 import React, {Component} from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
 import {Link, Redirect} from "react-router-dom";
 import IsGuest from "../User/IsGuest";
 import IsUser from "../User/IsUser";
-import axios from "axios";
 import Loading from "../Various/Loading";
-import { LinkContainer } from 'react-router-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 import '../Css/Navigation.css'
-import path from "../../api";
 import Button from "react-bootstrap/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Col, Container, Row } from "react-bootstrap";
+import React, {Component} from 'react';
+import {Col, Container} from "react-bootstrap";
 
 class My404Component extends Component
 {

@@ -7,7 +7,6 @@ import axios from 'axios'
 import Alert from "react-bootstrap/Alert";
 import path from "../../api";
 import {Link} from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
 
 class RegisterPage extends Component {
   constructor(props) {

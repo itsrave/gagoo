@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import Card from "react-bootstrap/Card";
-import {Button, Carousel, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
+import {Button, Carousel, OverlayTrigger, Popover, Row} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { LinkContainer } from 'react-router-bootstrap'
-import {faClock, faDollarSign, faInfo, faMapMarkerAlt, faWrench} from "@fortawesome/free-solid-svg-icons";
+import {faClock, faDollarSign, faMapMarkerAlt, faWrench} from "@fortawesome/free-solid-svg-icons";
 import '../Css/AdListItem.css'
 import {Link} from "react-router-dom";
 import path from "../../api";
-import axios from "axios";
 import Alert from "react-bootstrap/Alert";
-import { acceptOffer, deleteOffer } from "./OfferFunctionsAdmin";
+import {acceptOffer} from "./OfferFunctionsAdmin";
 
 class OfferToAccept extends Component {
   constructor(props) {

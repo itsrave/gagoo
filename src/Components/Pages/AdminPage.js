@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import OfferToAccept from "../Admin/OfferToAccept";
-import { Container, Jumbotron, Alert } from "react-bootstrap";
-import OfferCard from "../Various/OfferCard";
+import {Alert, Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Pagination from "react-bootstrap/Pagination";
 import axios from "axios";
 import path from "../../api";
-import Button from "react-bootstrap/Button";
 import PaginationComponent from "../Various/PaginationComponent";
 import Loading from "../Various/Loading";
 

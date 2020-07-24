@@ -3,7 +3,6 @@ import {CardColumns, Container} from "react-bootstrap";
 import OfferCardHomepage from "./OfferCardHomepage";
 import axios from "axios";
 import path from "../../api";
-import Col from "react-bootstrap/Col";
 import Loading from "./Loading";
 
 class Cards extends Component {

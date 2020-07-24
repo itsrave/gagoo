@@ -4,8 +4,9 @@ import {Link} from "react-router-dom";
 import path from "../../api";
 import {faDollarSign} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { LinkContainer } from 'react-router-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 import '../Css/AdListItem.css'
+
 const imageStyle = {
   display: 'block',
   maxHeight: '100%',

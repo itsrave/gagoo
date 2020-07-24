@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import axios from "axios";
 import path from "../../api";
 import OfferCard from "./OfferCard";
-import {Breadcrumb, Container} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PaginationComponent from "./PaginationComponent";

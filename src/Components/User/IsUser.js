@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import NavDropdown from "react-bootstrap/NavDropdown";
 import PropTypes from 'prop-types'
-import { LinkContainer } from 'react-router-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 
 class IsUser extends Component {
   static propTypes = {

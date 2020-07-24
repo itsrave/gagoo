@@ -3,8 +3,8 @@ import {Container, Form, InputGroup} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import './Css/SearchBar.css'
 import Button from "react-bootstrap/Button";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faMapMarkedAlt, faSearch} from "@fortawesome/free-solid-svg-icons";
 import {Redirect, withRouter} from "react-router-dom";
 
 class SearchBar extends Component {

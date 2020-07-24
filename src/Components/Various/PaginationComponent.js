@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Pagination from "react-bootstrap/Pagination";
 import PropTypes from 'prop-types';
-import { LinkContainer } from 'react-router-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 
 const pageArray = n => [...Array(n)].map((_, index) => index + 1);
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, ButtonGroup, DropdownButton, Dropdown} from "react-bootstrap";
+import {Button, ButtonGroup, Dropdown, DropdownButton} from "react-bootstrap";
 
 class SortBy extends Component {
   constructor(props) {

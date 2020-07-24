@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import Form from "react-bootstrap/Form";
-import {Col, Container, Row} from "react-bootstrap";
-import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
-import Loading from "../Various/Loading";
+import {Container} from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Settings from "../User/Settings";
 import MyOffers from "../Various/MyOffers";

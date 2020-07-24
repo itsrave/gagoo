@@ -15,40 +15,68 @@ class OfferCard extends Component {
     let categories = this.props.categories.map((category) => category.name);
     return categories.filter(Boolean).join(' > ');
   }
+
   componentDidMount() {
     this.renderCategories()
   }
+
+  acceptedLink() {
+    //console.log("accepted: " + this.props.accepted );
+    return this.props.accepted ?
+      <LinkContainer to={`/offerpage/${this.props.publicId}`}>
+        <Link to={'/offerpage'}><Card.Title>{this.props.title}</Card.Title></Link>
+      </LinkContainer>
+      :
+      <Card.Title>[Niezaakceptowana] {this.props.title}</Card.Title>;
+  }
+
+  imageLink() {
+    return this.props.accepted ?
+      <LinkContainer to={`/offerpage/${this.props.publicId}`}>
+        <Col lg={4} className="offer-image offer-image-fit">
+          <img
+            className="d-block mx-auto img-fluid carousel-image"
+            src={path + 'upload/offer-imgs/' + this.props.photos[0]}
+            alt={"Zdjęcie oferty"}
+          />
+        </Col>
+      </LinkContainer>
+      :
+      <Col lg={4} className="offer-image offer-image-fit" style={{cursor: "default"}}>
+        <img
+          className="d-block mx-auto img-fluid carousel-image"
+          src={path + 'upload/offer-imgs/' + this.props.photos[0]}
+          alt={"Zdjęcie oferty"}
+        />
+      </Col>;
+  }
+
+  getTitle() {
+    return this.props.accepted ? "" : "To ogłoszenie czeka na zaakceptowanie przez administrację.";
+  }
+
   render() {
     return (
-        <Card className="my-2">
-          <Row className='no-gutters'>
-            <LinkContainer to={`/offerpage/${this.props.publicId}`}>
-            <Col lg={4} className="offer-image offer-image-fit">
-              <img
-                  className="d-block mx-auto img-fluid carousel-image"
-                  src={path + 'upload/offer-imgs/' + this.props.photos[0]}
-                  alt={"Zdjęcie oferty"}
-              />
-            </Col>
-            </LinkContainer>
-            <Col lg={8}>
-              <Card.Body>
-                    <LinkContainer to={`/offerpage/${this.props.publicId}`}>
-                      <Link to={'/offerpage'}><Card.Title>{this.props.title}</Card.Title></Link>
-                    </LinkContainer>
-                    <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {this.props.price}zł</Card.Text>
-                    <Card.Text className="text-muted">{this.renderCategories()}</Card.Text>
-              </Card.Body>
-            </Col>
+      <Card className="my-2" title={this.getTitle()}>
+        <Row className='no-gutters'>
+          {this.imageLink()}
+          <Col lg={8}>
+            <Card.Body>
+              {this.acceptedLink()}
+              <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {this.props.price}zł</Card.Text>
+              <Card.Text className="text-muted">{this.renderCategories()}</Card.Text>
+            </Card.Body>
+          </Col>
+        </Row>
+
+        <Card.Footer className="text-muted">
+          <Row>
+            <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> {this.props.userData.city}</Col>
+            <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> {this.props.created}</Col>
+            <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> {this.props.condition}</Col>
           </Row>
-          <Card.Footer className="text-muted">
-            <Row>
-              <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> {this.props.userData.city}</Col>
-              <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> {this.props.created}</Col>
-              <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> {this.props.condition}</Col>
-            </Row>
-          </Card.Footer>
-        </Card>
+        </Card.Footer>
+      </Card>
     );
   }
 }

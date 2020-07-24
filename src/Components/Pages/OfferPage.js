@@ -14,6 +14,7 @@ import axios from "axios";
 import path from "../../api";
 import Loading from "../Various/Loading";
 import {Link} from "react-router-dom";
+import My404Component from "./My404Component";
 
 class OfferPage extends Component {
   constructor(props) {
@@ -21,48 +22,67 @@ class OfferPage extends Component {
     this.state = {
       offer: [],
       owner: {publicIdentifier: ''},
-      isLoading: false,
+      isLoading: true,
+      offerFound: true,
     }
   }
+
   renderImages() {
     if (this.state.offer.photos === undefined) {
       return <img className="d-block mx-auto img-fluid carousel-image" src="/img/loading.png" alt='Ładowanie'/>
     } else {
       return this.state.offer.photos.map((photo, index) => (
-          <Carousel.Item className={'text-center'} key={index}>
-            <img
-                className="d-block mx-auto img-fluid carousel-image"
-                src={path + 'upload/offer-imgs/' + photo}
-                alt={"Zdjęcie oferty nr " + (index+1)}
-            />
-          </Carousel.Item>
+        <Carousel.Item className={'text-center'} key={index}>
+          <img
+            className="d-block mx-auto img-fluid carousel-image"
+            src={path + 'upload/offer-imgs/' + photo}
+            alt={"Zdjęcie oferty nr " + (index+1)}
+          />
+        </Carousel.Item>
       ))
     }
   }
+
   componentDidMount() {
     this.getOffers()
   }
+
   getOffers() {
     this.setState({isLoading: true});
     axios
-        .get(path + 'public-api/offer/' + this.props.match.params.offerId)
-        .then(res => {
-          let categories = res.data.categoryHierarchy.map((category) => category.name);
-          let offer = res.data;
-          offer.description = offer.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
-          offer.categoryHierarchy = categories.filter(Boolean).join(' > ');
-          this.setState({offer: offer, owner: offer.owner, isLoading: false});
-        })
-        .catch(err => {
-          if (err.response.status === 404) {
-            this.setState({noOffers: true, isLoading: false});
-          } else {
-            this.setState({isLoading: false});
-          }
-        });
+      .get(path + 'public-api/offer/' + this.props.match.params.offerId)
+      .then(res => {
+        let categories = res.data.categoryHierarchy.map((category) => category.name);
+        let offer = res.data;
+        //offer.description = offer.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
+        offer.description = offer.description.split("<br />").map(
+          (value, index) => <Card.Text key={index}>{value}</Card.Text>
+        );
+        offer.categoryHierarchy = categories.filter(Boolean).join(' > ');
+        this.setState({ offer: offer, owner: offer.owner, isLoading: false, offerFound: true });
+      })
+      .catch(err => {
+        // if (err.response.status === 404) {
+        //   this.setState({noOffers: true, isLoading: false});
+        // } else {
+        //   this.setState({isLoading: false});
+        // }
+        switch (err.response.status) {
+          case 404:
+            this.setState({ noOffers: true, isLoading: false, offerFound: false });
+            break;
+          default: this.setState({isLoading: false});
+        }
+      });
   }
+
   render() {
-    return (
+    if (this.state.isLoading) {
+      return (<div>...</div>);
+    }
+
+    if (this.state.offerFound) {
+      return (
         <Container className="pb-3">
           <Row>
             <Col md={8}>
@@ -83,9 +103,10 @@ class OfferPage extends Component {
                   </Row>
                 </Card.Footer>
                 <Card.Body>
-                  <Card.Text>
-                    {this.state.offer.description}
-                  </Card.Text>
+                  {/*<Card.Text>*/}
+                  {/*  {this.state.offer.description}*/}
+                  {/*</Card.Text>*/}
+                  {this.state.offer.description}
                 </Card.Body>
               </Card>
             </Col>
@@ -94,7 +115,9 @@ class OfferPage extends Component {
               <Container className={'pt-2'}>
                 <Row>
                   <Col className="text-center">
-                    <Link className="btn btn-primary" to={`/useroffers/${this.state.owner.publicIdentifier}/1`}>Pokaż ogłoszenia użytkownika</Link>
+                    <Link className="btn btn-primary" to={`/useroffers/${this.state.owner.publicIdentifier}/1`}>
+                      Pokaż ogłoszenia użytkownika
+                    </Link>
                   </Col>
                 </Row>
               </Container>
@@ -102,7 +125,10 @@ class OfferPage extends Component {
           </Row>
           {this.state.isLoading && <Loading full={true}/>}
         </Container>
-    );
+      );
+    } else {
+      return (<My404Component />);
+    }
   }
 }
 

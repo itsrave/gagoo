@@ -233,118 +233,118 @@ class AddOfferPage extends Component {
   };
   render() {
     return (
-        <Container className="my-3">
-          <Row>
-            <Col />
-            <Col md={8}>
-              <Form onSubmit={this.handleSubmit}>
-                <Form.Group>
-                  <Form.Label><h3>Tytuł</h3></Form.Label>
-                  <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" name={'title'} onChange={this.handleFormChange} />
-                  {this.state.titleError &&
-                  <Alert variant='warning' dismissible onClose={() => this.setState({titleError: false})}>{this.state.errors.title}</Alert>}
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>
-                    <h3>Kategoria</h3>
-                    <Button variant="primary" onClick={this.handleModal}>
-                      Wybierz kategorie
-                    </Button>
-                  </Form.Label>
+      <Container className="my-3">
+        <Row>
+          <Col />
+          <Col md={8}>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Group>
+                <Form.Label><h3>Tytuł</h3></Form.Label>
+                <Form.Control type="text" placeholder="Wpisz tytuł (maksymalnie 80 znaków)" name={'title'} onChange={this.handleFormChange} />
+                {this.state.titleError &&
+                <Alert variant='warning' dismissible onClose={() => this.setState({titleError: false})}>{this.state.errors.title}</Alert>}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>
+                  <h3>Kategoria</h3>
+                  <Button variant="primary" onClick={this.handleModal}>
+                    Wybierz kategorie
+                  </Button>
+                </Form.Label>
+                <Row>
+                  <Col>
+                    <Form.Control plaintext readOnly defaultValue={this.state.categoryChosen} />
+                  </Col>
+                </Row>
+                {this.state.categoryError &&
+                <Alert variant='warning' dismissible onClose={() => this.setState({categoryError: false})}>{this.state.errors.category}</Alert>}
+                <CategoryChooser category={this.handleCategory} opened={this.state.isModalOpen} toggleModal={this.handleModal} />
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col>
+                  <Form.Label>Cena</Form.Label>
                   <Row>
-                    <Col>
-                      <Form.Control plaintext readOnly defaultValue={this.state.categoryChosen} />
-                    </Col>
+                    <Col xs={10}><Form.Control type="number" name={'price'} onChange={this.handleFormChange} /></Col>
+                    <Col xs={2} ><Form.Label>zł</Form.Label></Col>
                   </Row>
-                  {this.state.categoryError &&
-                  <Alert variant='warning' dismissible onClose={() => this.setState({categoryError: false})}>{this.state.errors.category}</Alert>}
-                  <CategoryChooser category={this.handleCategory} opened={this.state.isModalOpen} toggleModal={this.handleModal} />
-                </Form.Group>
-                <Form.Group as={Row}>
-                  <Col>
-                    <Form.Label>Cena</Form.Label>
-                    <Row>
-                      <Col xs={10}><Form.Control type="number" name={'price'} onChange={this.handleFormChange} /></Col>
-                      <Col xs={2} ><Form.Label>zł</Form.Label></Col>
-                    </Row>
-                    {this.state.priceError &&
-                    <Alert variant='warning' dismissible onClose={() => this.setState({priceError: false})}>{this.state.errors.price}</Alert>}
+                  {this.state.priceError &&
+                  <Alert variant='warning' dismissible onClose={() => this.setState({priceError: false})}>{this.state.errors.price}</Alert>}
+                </Col>
+                <Col>
+                  <Form.Label>Stan</Form.Label>
+                  <Form.Control as="select" name={'condition'} value={this.state.formData.condition} onChange={this.handleFormChange} >
+                    <option value={''}>Wybierz stan przedmiotu</option>
+                    <option>Nowy</option>
+                    <option>Używany</option>
+                    <option>Uszkodzony</option>
+                  </Form.Control>
+                  {this.state.conditionError &&
+                  <Alert variant='warning' dismissible onClose={() => this.setState({conditionError: false})}>{this.state.errors.condition}</Alert>}
+                </Col>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label><h3>Opis</h3></Form.Label>
+                <Form.Control as="textarea" rows="4" placeholder="Wpisz opis" name={'description'} onChange={this.handleFormChange} />
+                {this.state.descriptionError &&
+                <Alert variant='warning' dismissible onClose={() => this.setState({descriptionError: false})}>{this.state.errors.description}</Alert>}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label><h3>Zdjęcia</h3></Form.Label>
+                <FileUploader handlePictures={this.handlePictures} />
+                <Form.Text className="text-muted">
+                  Oferty ze zdjęciami otrzymują nawet trzy razy więcej odpowiedzi.
+                </Form.Text>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label><h3>Twoje dane</h3></Form.Label>
+                <Form.Group as={Row} controlId="formName">
+                  <Form.Label column md={5}>Imię: </Form.Label>
+                  <Col md={7}><Form.Control required type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleUserDataChange} value={this.state.userData.name} />
                   </Col>
-                  <Col>
-                    <Form.Label>Stan</Form.Label>
-                    <Form.Control as="select" name={'condition'} value={this.state.formData.condition} onChange={this.handleFormChange} >
-                      <option value={''}>Wybierz stan przedmiotu</option>
-                      <option>Nowy</option>
-                      <option>Używany</option>
-                      <option>Uszkodzony</option>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formPhone">
+                  <Form.Label column md={5}>Numer telefonu: </Form.Label>
+                  <Col md={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleUserDataChange} value={this.state.userData.phoneNumber} />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formCity">
+                  <Form.Label column md={5}>Miasto: </Form.Label>
+                  <Col md={7}><Form.Control required type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleUserDataChange} value={this.state.userData.city} />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formState">
+                  <Form.Label column md={5}>Województwo: </Form.Label>
+                  <Col md={7}>
+                    <Form.Control as="select" name={'state'} onChange={this.handleUserDataChange} value={this.state.userData.state} >
+                      <option value={''}>Wybierz województwo</option>
+                      {states.map((state, i) => <option key={i}>{state}</option>)}
                     </Form.Control>
-                    {this.state.conditionError &&
-                    <Alert variant='warning' dismissible onClose={() => this.setState({conditionError: false})}>{this.state.errors.condition}</Alert>}
                   </Col>
                 </Form.Group>
-                <Form.Group>
-                  <Form.Label><h3>Opis</h3></Form.Label>
-                  <Form.Control as="textarea" rows="4" placeholder="Wpisz opis" name={'description'} onChange={this.handleFormChange} />
-                  {this.state.descriptionError &&
-                  <Alert variant='warning' dismissible onClose={() => this.setState({descriptionError: false})}>{this.state.errors.description}</Alert>}
+                <Form.Group as={Row} controlId="formZipCode">
+                  <Form.Label column md={5}>Kod pocztowy: </Form.Label>
+                  <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleUserDataChange} value={this.state.userData.zipCode} />
+                  </Col>
                 </Form.Group>
-                <Form.Group>
-                  <Form.Label><h3>Zdjęcia</h3></Form.Label>
-                  <FileUploader handlePictures={this.handlePictures} />
-                  <Form.Text className="text-muted">
-                    Oferty ze zdjęciami otrzymują nawet trzy razy więcej odpowiedzi.
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label><h3>Twoje dane</h3></Form.Label>
-                  <Form.Group as={Row} controlId="formName">
-                    <Form.Label column md={5}>Imię: </Form.Label>
-                    <Col md={7}><Form.Control required type="text" placeholder="Wpisz imię" name={'name'} onChange={this.handleUserDataChange} value={this.state.userData.name} />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="formPhone">
-                    <Form.Label column md={5}>Numer telefonu: </Form.Label>
-                    <Col md={7}><Form.Control type="tel" placeholder="Wpisz numer telefonu" name={'phoneNumber'} onChange={this.handleUserDataChange} value={this.state.userData.phoneNumber} />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="formCity">
-                    <Form.Label column md={5}>Miasto: </Form.Label>
-                    <Col md={7}><Form.Control required type="text" placeholder="Wpisz miejscowość" name={'city'} onChange={this.handleUserDataChange} value={this.state.userData.city} />
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="formState">
-                    <Form.Label column md={5}>Województwo: </Form.Label>
-                    <Col md={7}>
-                      <Form.Control as="select" name={'state'} onChange={this.handleUserDataChange} value={this.state.userData.state} >
-                        <option value={''}>Wybierz województwo</option>
-                        {states.map((state, i) => <option key={i}>{state}</option>)}
-                      </Form.Control>
-                    </Col>
-                  </Form.Group>
-                  <Form.Group as={Row} controlId="formZipCode">
-                    <Form.Label column md={5}>Kod pocztowy: </Form.Label>
-                    <Col md={7}><Form.Control type="text" placeholder="00-000" name={'zipCode'} onChange={this.handleUserDataChange} value={this.state.userData.zipCode} />
-                    </Col>
-                  </Form.Group>
-                  <Form.Text className="text-muted">
-                    Twoje dane zostaną zapisane w ustawieniach, możesz je później zmienić.
-                  </Form.Text>
-                  {this.state.validateMessage &&
-                  <Alert variant='warning' dismissible onClose={() => this.setState({validateMessage: false})}>Pola z danymi nie mogą być puste.</Alert>}
-                  {this.state.failure &&
-                  <Alert variant='danger' dismissible onClose={() => this.setState({failure: false})}>Nieznany błąd, spróbuj ponownie później.</Alert>}
-                </Form.Group>
-                {this.state.success &&
-                <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>{this.state.successMessages.output + ' ' + this.state.successMessages.offerPublicIdentifier}</Alert>}
-                <Button variant="primary" type={'submit'}>
-                  Dodaj ogłoszenie
-                </Button>
-                {this.state.isLoading && <Loading />}
-              </Form>
-            </Col>
-            <Col />
-          </Row>
-        </Container>
+                <Form.Text className="text-muted">
+                  Twoje dane zostaną zapisane w ustawieniach, możesz je później zmienić.
+                </Form.Text>
+                {this.state.validateMessage &&
+                <Alert variant='warning' dismissible onClose={() => this.setState({validateMessage: false})}>Pola z danymi nie mogą być puste.</Alert>}
+                {this.state.failure &&
+                <Alert variant='danger' dismissible onClose={() => this.setState({failure: false})}>Nieznany błąd, spróbuj ponownie później.</Alert>}
+              </Form.Group>
+              {this.state.success &&
+              <Alert variant='success' dismissible onClose={() => this.setState({success: false})}>{this.state.successMessages.output + ' ' + this.state.successMessages.offerPublicIdentifier}</Alert>}
+              <Button variant="primary" type={'submit'}>
+                Dodaj ogłoszenie
+              </Button>
+              {this.state.isLoading && <Loading />}
+            </Form>
+          </Col>
+          <Col />
+        </Row>
+      </Container>
     );
   }
 }

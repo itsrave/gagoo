@@ -52,17 +52,17 @@ class MyAccountPage extends Component {
   }
   render() {
     return (
-        <Container>
-          <Nav variant="tabs">
+      <Container>
+        <Nav variant="tabs">
           <Nav.Item>
             <Nav.Link onClick={this.toggleOffersActive} className={this.state.offersActive ? 'active' : null}>Moje ogłoszenia</Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link onClick={this.toggleSettingsActive} className={this.state.settingsActive ? 'active' : null}>Ustawienia</Nav.Link>
           </Nav.Item>
-          </Nav>
-          { this.renderTab() }
-        </Container>
+        </Nav>
+        { this.renderTab() }
+      </Container>
     );
   }
 }

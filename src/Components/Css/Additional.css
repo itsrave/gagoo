@@ -1,0 +1,29 @@
+.homePage__parentCategories
+{
+    list-style: none;
+    /*margin: 2rem 0 0 0;*/
+    padding: 0;
+    -moz-column-count: 3;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 20px;
+    column-count: 3;
+    column-gap: 20px;
+}
+.homePage__parentCategories-category
+{
+    font-size: 1.1rem;
+}
+.homePage__parentCategories-small
+{
+    font-size: .95rem;
+    font-weight: 600;
+    color: #37474F;
+    margin: 0 0 0 .5rem;
+}
+.homePage__categories
+{
+    margin: 0 0 1rem 0;
+    padding: 3rem 0 3rem 0;
+    background-color: #e9ecef;
+}

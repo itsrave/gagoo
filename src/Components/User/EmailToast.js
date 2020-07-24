@@ -22,29 +22,28 @@ function EmailToast(props) {
     e.preventDefault();
     const AuthStr = 'Bearer ' + token;
     axios
-        .post(path + 'email/resend-confirmation', {headers: {Authorization: AuthStr}})
-        .then(res => {
-          closeToast()
-        })
-
+      .post(path + 'email/resend-confirmation', {headers: {Authorization: AuthStr}})
+      .then(res => {
+        closeToast()
+      });
   }
 
   return (
-      <Toast style={{
-        position: 'absolute',
-        top: '25px',
-        right: '25px',
-        zIndex: 2,
-        display: showToast ? 'block' : 'none'
-      }} show={showToast} onClose={closeToast}>
-        <Toast.Header>
-          <FontAwesomeIcon icon={faEnvelope}/>
-          <Col><strong className="mr-auto">Potwierdź swój email</strong></Col>
-        </Toast.Header>
-        <Toast.Body>Jeszcze nie potwierdziłeś swojego emaila, aby wysłać wiadomość jeszcze raz możesz kliknąć
-          <Link to={'#'} onClick={send}> tutaj</Link>.
-        </Toast.Body>
-      </Toast>
+    <Toast style={{
+      position: 'absolute',
+      top: '25px',
+      right: '25px',
+      zIndex: 2,
+      display: showToast ? 'block' : 'none'
+    }} show={showToast} onClose={closeToast}>
+      <Toast.Header>
+        <FontAwesomeIcon icon={faEnvelope}/>
+        <Col><strong className="mr-auto">Potwierdź swój email</strong></Col>
+      </Toast.Header>
+      <Toast.Body>Jeszcze nie potwierdziłeś swojego emaila, aby wysłać wiadomość jeszcze raz możesz kliknąć
+        <Link to={'#'} onClick={send}> tutaj</Link>.
+      </Toast.Body>
+    </Toast>
   );
 }
 

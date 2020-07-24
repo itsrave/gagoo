@@ -77,22 +77,22 @@ class LoginPage extends Component {
       return
     }
     axios
-        .post(path + 'api/login_check', user)
-        .then(res => {
-          const {cookies} = this.props;
-          cookies.set('token', res.data.token, {path: '/'});
-          cookies.set('refreshToken', res.data.refresh_token, {path: '/'});
-          this.props.setToken();
-          this.setState({succesfulLogin: true, isLoading: false, redirect: true});
-        })
-        .catch(err => {
-          if (err.response.status === 401) {
-            this.setState({wrongCredentials: true, isLoading: false});
-          } else {
-            this.setState({unexpectedError: true, isLoading: false});
-            console.log(err);
-          }
-        });
+      .post(path + 'api/login_check', user)
+      .then(res => {
+        const {cookies} = this.props;
+        cookies.set('token', res.data.token, {path: '/'});
+        cookies.set('refreshToken', res.data.refresh_token, {path: '/'});
+        this.props.setToken();
+        this.setState({succesfulLogin: true, isLoading: false, redirect: true});
+      })
+      .catch(err => {
+        if (err.response.status === 401) {
+          this.setState({wrongCredentials: true, isLoading: false});
+        } else {
+          this.setState({unexpectedError: true, isLoading: false});
+          console.log(err);
+        }
+      });
   }
 
   toggleLoading() {
@@ -100,43 +100,50 @@ class LoginPage extends Component {
   }
   render() {
     return (
-        <Container className='my-3'>
-          <Form className='d-flex justify-content-sm-center' onSubmit={this.onSubmit}>
-            <Col md={5}>
-             <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="text" name='username' ref={this.username}
-                              placeholder="Email lub nazwa użytkownika"/>
-                {this.state.usernameWarning &&
-                <Alert variant='warning' dismissible onClose={() => this.setState({usernameWarning: false})}>Nazwa
-                  użytkownika nie może być pusta.</Alert>}
-              </Form.Group>
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Hasło</Form.Label>
-                <Form.Control type="password" ref={this.password} name='password' placeholder="Hasło"/>
-                {this.state.passwordWarning &&
-                <Alert variant='warning' dismissible onClose={() => this.setState({passwordWarning: false})}>Hasło nie
-                  może być puste.</Alert>}
-                <Form.Text className="text-muted">
-                  <Link to={'/forgotpassword'}>Nie pamiętasz hasła?</Link>
-                </Form.Text>
-              </Form.Group>
-              <Button variant="primary" type='submit'>Zaloguj</Button>
-              <Form.Group />
-              {this.state.isLoading && <Loading/>}
-              {this.state.succesfulLogin &&
-              <Alert variant='success' dismissible onClose={() => this.setState({succesfulLogin: false})}>Pomyślnie
-                zalogowano, za chwilę zostaniesz przekierowany...</Alert>}
-              {this.state.wrongCredentials &&
-              <Alert variant='danger' dismissible onClose={() => this.setState({wrongCredentials: false})}>Błędne hasło lub nazwa użytkownika.</Alert>}
-              {this.state.unexpectedError &&
-              <Alert variant='danger' dismissible onClose={() => this.setState({unexpectedError: false})}>Niespodziewany błąd, spróbuj ponownie później.</Alert>}
-              {this.state.noLogin &&
-              <Alert variant='warning' dismissible onClose={() => this.setState({noLogin: false})}>Musisz się zalogować aby wyświetlić tę stronę.</Alert>}
-            </Col>
-          </Form>
-          { this.state.redirect && <Redirect to="/" />}
-        </Container>
+      <Container className='my-3'>
+        <Form className='d-flex justify-content-sm-center' onSubmit={this.onSubmit}>
+          <Col md={5}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="text"
+                name='username'
+                ref={this.username}
+                placeholder="Email lub nazwa użytkownika"
+              />
+              {this.state.usernameWarning &&
+              <Alert
+                variant='warning'
+                dismissible
+                onClose={() => this.setState({usernameWarning: false})}>Nazwa użytkownika nie może być pusta.
+              </Alert>}
+            </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Hasło</Form.Label>
+              <Form.Control type="password" ref={this.password} name='password' placeholder="Hasło"/>
+              {this.state.passwordWarning &&
+              <Alert variant='warning' dismissible onClose={() => this.setState({passwordWarning: false})}>Hasło nie
+                może być puste.</Alert>}
+              <Form.Text className="text-muted">
+                <Link to={'/forgotpassword'}>Nie pamiętasz hasła?</Link>
+              </Form.Text>
+            </Form.Group>
+            <Button variant="primary" type='submit'>Zaloguj</Button>
+            <Form.Group />
+            {this.state.isLoading && <Loading/>}
+            {this.state.succesfulLogin &&
+            <Alert variant='success' dismissible onClose={() => this.setState({succesfulLogin: false})}>Pomyślnie
+              zalogowano, za chwilę zostaniesz przekierowany...</Alert>}
+            {this.state.wrongCredentials &&
+            <Alert variant='danger' dismissible onClose={() => this.setState({wrongCredentials: false})}>Błędne hasło lub nazwa użytkownika.</Alert>}
+            {this.state.unexpectedError &&
+            <Alert variant='danger' dismissible onClose={() => this.setState({unexpectedError: false})}>Niespodziewany błąd, spróbuj ponownie później.</Alert>}
+            {this.state.noLogin &&
+            <Alert variant='warning' dismissible onClose={() => this.setState({noLogin: false})}>Musisz się zalogować aby wyświetlić tę stronę.</Alert>}
+          </Col>
+        </Form>
+        { this.state.redirect && <Redirect to="/" />}
+      </Container>
     );
   }
 }

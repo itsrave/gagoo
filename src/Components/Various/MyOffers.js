@@ -12,6 +12,9 @@ import {withRouter} from "react-router-dom";
 class MyOffers extends Component {
   constructor(props) {
     super(props);
+
+    this.onOfferRemove = this.onOfferRemove.bind(this);
+
     this.state = {
       isLoading: false,
       offers: [],
@@ -56,9 +59,16 @@ class MyOffers extends Component {
         condition={offer.condition}
         publicId={offer.publicIdentifier}
         accepted={offer.accepted}
+        removalPossibility={true}
+        onRemove={this.onOfferRemove}
       />
     ));
   }
+
+  onOfferRemove() {
+    this.getOffers();
+  }
+
   render() {
     return (
       <Container>

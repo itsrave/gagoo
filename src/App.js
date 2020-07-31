@@ -22,6 +22,7 @@ import ForgotPassword from "./Components/Pages/ForgotPassword";
 import EmailToast from "./Components/User/EmailToast";
 import AdminOfferPage from "./Components/Pages/AdminOfferPage";
 import My404Component from "./Components/Pages/My404Component";
+import { getStandardAjaxConfig } from "./Components/User/UserFunctions";
 
 
 class App extends Component {
@@ -64,9 +65,13 @@ class App extends Component {
   }
 
   getUserData() {
-    const AuthStr = 'Bearer ' + this.state.token;
+    // if (this.state.token) {
+    //   return;
+    // }
+    //console.log('getUserData');
+
     axios
-      .get(path + 'api/user/get-data', {headers: {Authorization: AuthStr}})
+      .get(path + 'api/user/get-data', getStandardAjaxConfig(this.state.token))
       .then(res => {
         this.setState({userData: res.data});
         let admin = this.state.userData.roles.includes("ROLE_MODERATOR");
@@ -86,7 +91,7 @@ class App extends Component {
   }
 
   handleLogout() {
-    const {cookies} = this.props;
+    const { cookies } = this.props;
     cookies.remove('token');
     cookies.remove('refreshToken');
     this.getInitialState();
@@ -94,7 +99,7 @@ class App extends Component {
   }
 
   setToken() {
-    const {cookies} = this.props;
+    const { cookies } = this.props;
     this.setState({token: cookies.get('token')})
   }
 
@@ -124,7 +129,8 @@ class App extends Component {
       <div className="App bg-light">
         <EmailToast emailVerification={this.state.userData.emailVerification} token={this.state.token} />
         <Navigation token={this.state.token} userData={this.state.userData} onLogout={() => this.handleLogout()}/>
-        <SearchBar/>
+        <SearchBar />
+
         <Switch className='main-content'>
           <Route path='/' component={Homepage} exact/>
           <Route path='/adminpanel/:page' render={(props) => (this.state.isAdminAuthed === true ?
@@ -145,6 +151,7 @@ class App extends Component {
             <MyAccountPage {...props} token={this.state.token}/> : <Redirect to='/login/nologin'/>)}/>
           <Route path='*' exact={true} component={My404Component} />
         </Switch>
+
         <FooterComponent/>
       </div>
     );

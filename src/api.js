@@ -1,2 +1,2 @@
-const path = 'http://127.0.0.1:8000/';
+const path = 'http://gagoo.x/';
 export default path

@@ -47,6 +47,7 @@ class AdminPage extends Component {
         }
       });
   }
+
   renderOffers() {
     let offers = this.state.offers;
     return offers.map((offer, index) => (

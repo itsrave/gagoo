@@ -11,6 +11,7 @@ import path from "../../api";
 import FormData from "form-data";
 import Loading from "../Various/Loading";
 import Alert from "react-bootstrap/Alert";
+import { getStandardAjaxConfig, isUserDataEmpty, isUserDataEqual } from "../User/UserFunctions";
 
 const states = [
   'dolnośląskie',
@@ -69,6 +70,7 @@ class AddOfferPage extends Component {
       }
     }
   }
+
   getInitialWarningState() {
     this.setState({
       successMessages: {},
@@ -84,99 +86,104 @@ class AddOfferPage extends Component {
       errors: [],
     })
   }
+
   componentDidMount() {
     this.setState({isLoading: true});
     this.getUserData();
     this.setState({isLoading: false});
   }
+
   // TODO avatar upload request in get data settings
   getUserData() {
     const AuthStr = 'Bearer ' + this.props.token;
     axios
-        .get(path + 'api/user/get-data',{ headers: { Authorization: AuthStr } })
-        .then(res => this.setState({userData: res.data, isLoading: false}))
-        .catch(err => {
-          this.setState({isLoading: false});
-          console.log(err);
-        });
+      .get(path + 'api/user/get-data',{ headers: { Authorization: AuthStr } })
+      .then(res => this.setState({userData: res.data, isLoading: false}))
+      .catch(err => {
+        this.setState({isLoading: false});
+        console.log(err);
+      });
   }
+
+  // TODO: naprawa submita
   handleSubmit = (e) => {
     e.preventDefault();
+    const userData = this.state.userData;
+
     this.getInitialWarningState();
     this.setState({isLoading: true});
+
     this.submitUserData();
+
     this.submitPhotos().then(() => this.submitOffer());
   };
+
   submitOffer() {
-    let formData = this.state.formData;
-    const AuthStr = 'Bearer ' + this.props.token;
     axios
-        .post(path + 'api/offer/add', formData,{ headers: { Authorization: AuthStr, } })
-        .then(res => {
-          this.setState({successMessages: res.data, isLoading: false});
-          this.handleMessages()
-        })
-        .catch(err => {
-          if (err.response.status === 406) {
-            this.setState({errors: err.response.data, isLoading: false})
-          }
-          this.setState({errors: err.response.data, isLoading: false});
-          this.handleMessages()
-        });
+      .post(
+        `${path}api/offer/add`,
+        this.state.formData,
+        getStandardAjaxConfig(this.props.token)
+      )
+      .then(res => {
+        this.setState({successMessages: res.data, isLoading: false});
+        this.handleMessages()
+      })
+      .catch(err => {
+        if (err.response.status === 406) {
+          this.setState({errors: err.response.data, isLoading: false})
+        }
+        this.setState({errors: err.response.data, isLoading: false});
+        this.handleMessages()
+      });
   }
+
   submitPhoto(picture) {
     const AuthStr = 'Bearer ' + this.props.token;
     let data = new FormData();
     data.append('image', picture, picture.fileName);
+
     return axios
-        .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
-        .then(res => {
-          let formData = this.state.formData;
-          formData.photos.push(res.data[0]);
-          this.setState({formData: formData})
-        })
-        .catch(err => {
-          console.log(err.response.data);
-          this.setState({failure: true, isLoading: false});
-        });
+      .post(path + 'api/photo/upload', data,{ headers: { Authorization: AuthStr, } })
+      .then(res => {
+        let formData = this.state.formData;
+        formData.photos.push(res.data[0]);
+        this.setState({formData: formData})
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        this.setState({failure: true, isLoading: false});
+      });
   }
+
   submitPhotos() {
     let formData = this.state.formData;
     formData.photos = [];
     this.setState({formData: formData});
     return Promise.all(this.state.pictures.map(this.submitPhoto.bind(this)));
   }
+
   submitUserData() {
     const userData = this.state.userData;
-    if (userData.name === ''){
-      this.setState({validateMessage: true, isLoading: false});
-      return
+
+    if (isUserDataEmpty(userData)) {
+      this.setState({ validateMessage: true, isLoading: false });
+      return;
     }
-    if (userData.phoneNumber === ''){
-      this.setState({validateMessage: true, isLoading: false});
-      return
-    }
-    if (userData.city === ''){
-      this.setState({validateMessage: true, isLoading: false});
-      return
-    }
-    if (userData.state === ''){
-      this.setState({validateMessage: true, isLoading: false});
-      return
-    }
-    if (userData.zipCode === ''){
-      this.setState({validateMessage: true, isLoading: false});
-      return
-    }
-    const AuthStr = 'Bearer ' + this.props.token;
+
     axios
-        .patch(path + 'api/user/update', userData, { headers: { Authorization: AuthStr } })
-        .then(res => {
-        })
-        .catch(err => {
-          this.setState({isLoading: false, failure: true});
-        })
+      .patch(`${path}api/user/update`,
+        userData,
+        getStandardAjaxConfig(this.props.token)
+      )
+      .then(res => {
+
+      })
+      .catch(err => {
+        this.setState({isLoading: false, failure: true});
+      });
   }
+
   handleMessages() {
     let errors = this.state.errors;
     let success = this.state.successMessages;
@@ -199,18 +206,22 @@ class AddOfferPage extends Component {
       this.setState({success: true});
     }
   }
+
   handlePictures = (pic) => {
     this.setState({pictures: pic});
   };
+
   handleModal() {
     this.setState({isModalOpen: !this.state.isModalOpen});
   }
+
   handleCategory = (id, names) => {
     let form = this.state.formData;
     form.categoryUid = id;
     let category = names.filter(Boolean).join(' > ');
     this.setState({formData: form, categoryChosen: category})
   };
+
   handleFormChange = (event) => {
     const formData = this.state.formData;
     const target = event.target;
@@ -221,6 +232,7 @@ class AddOfferPage extends Component {
       formData: formData
     });
   };
+
   handleUserDataChange = (event) => {
     const userData = this.state.userData;
     const target = event.target;
@@ -231,6 +243,7 @@ class AddOfferPage extends Component {
       userData: userData
     });
   };
+
   render() {
     return (
       <Container className="my-3">

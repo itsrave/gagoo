@@ -11,7 +11,7 @@ class ParentCategories extends Component {
           {this.props.categories.map(
             category => <li key={category.uniqueId} className="homePage__parentCategories-category">
               <LinkContainer to={`/offers/date/asc/${category.uniqueId}/1`}>
-                <Link to={`/offers/date/asc/${category.uniqueId}/1`}>{ category.name }</Link>
+                <Link to={`/offers/date/asc/${category.uniqueId}/1`} className="homePage__link">{ category.name }</Link>
               </LinkContainer>
               <small className="homePage__parentCategories-small" title="Suma wszystkich ogłoszeń w tej kategorii i pochodnych">
                 ({ category.offerCount })

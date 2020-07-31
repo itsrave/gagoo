@@ -9,6 +9,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faClock, faDollarSign, faMapMarkerAlt, faWrench} from "@fortawesome/free-solid-svg-icons";
 import UserCardAdpage from "../User/UserCardAdpage";
 import {getStandardAjaxConfig} from "../User/UserFunctions";
+import { acceptOffer, deleteOffer } from "../Admin/OfferFunctionsAdmin";
 
 class AdminOfferPage extends Component {
   constructor(props) {
@@ -53,12 +54,18 @@ class AdminOfferPage extends Component {
         `${path}api/offer/${this.props.match.params.offerPublicIdentifier}`,
         getStandardAjaxConfig(this.props.token)
       )
-      .then(res => {
-        let categories = res.data.categoryHierarchy.map((category) => category.name);
-        let offer = res.data;
-        offer.description = offer.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
-        offer.categoryHierarchy = categories.filter(Boolean).join(' > ');
-        this.setState({ offer: offer, owner: offer.owner, isLoading: false, offerFound: true });
+      .then(result => {
+        const offerData = result.data['offer'];
+
+        let categories = offerData.categoryHierarchy.map((category) => category.name);
+        offerData.description = offerData.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
+        offerData.categoryHierarchy = categories.filter(Boolean).join(' > ');
+        this.setState({
+          offer: offerData,
+          owner: offerData.owner,
+          isLoading: false,
+          offerFound: true
+        });
       })
       .catch(err => {
         switch (err.response.status) {
@@ -71,12 +78,31 @@ class AdminOfferPage extends Component {
   }
 
   acceptOffer() {
-    this.props.history.goBack();
+    acceptOffer(
+      this.props.match.params.offerPublicIdentifier,
+      this.props.token,
+      (response) => {
+        alert(response.data);
+        this.props.history.goBack();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
   deleteOffer() {
-    this.props.history.goBack();
-    alert('delete offer');
+    deleteOffer(
+      this.props.match.params.offerPublicIdentifier,
+      this.props.token,
+      (response) => {
+        alert(response.data);
+        this.props.history.goBack();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
   render() {

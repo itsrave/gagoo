@@ -47,42 +47,44 @@ class Navigation extends Component {
       return <IsUser username={this.props.userData.username} onLogout={() => this.handleLogout()} />;
     }
     return <IsGuest />;
-
   }
 
   render() {
     return (
-        <Container>
-          <Navbar bg="light" expand="lg">
-            <Link to='/'><Navbar.Brand>Gagoo</Navbar.Brand></Link>
-            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <LinkContainer to='/offers/date/asc/1'>
-                  <Nav.Link active={false}>Przeglądaj oferty</Nav.Link>
-                </LinkContainer>
-                {this.state.isAdmin &&
-                <LinkContainer to='/adminpanel/1'>
-                  <Nav.Link active={false}>Panel Administatora</Nav.Link>
-                </LinkContainer>
-                }
-              </Nav>
-              <Nav>
-                <LinkContainer to='/addoffer'>
-                  <Nav.Link><Button variant="primary">
-                    <FontAwesomeIcon icon={faPlusSquare} />  Dodaj ogłoszenie
-                  </Button></Nav.Link>
-                </LinkContainer>
-
-              </Nav>
-              <Nav>
-                { this.renderGreeting() }
-                {this.state.isLoading && <Loading />}
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-          { this.state.redirect && <Redirect to="/" />}
-        </Container>
+      <Container>
+        <Navbar bg="light" expand="lg">
+          <Link to='/'>
+            <Navbar.Brand>
+              <img src={require('../../img/gagoo-logo.png')} alt="Logo serwisu" />
+            </Navbar.Brand>
+          </Link>
+          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <LinkContainer to='/offers/date/asc/1'>
+                <Nav.Link active={false}>Przeglądaj oferty</Nav.Link>
+              </LinkContainer>
+              {this.state.isAdmin &&
+              <LinkContainer to='/adminpanel/1'>
+                <Nav.Link active={false}>Panel Administatora</Nav.Link>
+              </LinkContainer>
+              }
+            </Nav>
+            <Nav>
+              <LinkContainer to='/addoffer'>
+                <Nav.Link><Button variant="primary">
+                  <FontAwesomeIcon icon={faPlusSquare} />  Dodaj ogłoszenie
+                </Button></Nav.Link>
+              </LinkContainer>
+            </Nav>
+            <Nav>
+              { this.renderGreeting() }
+              {this.state.isLoading && <Loading />}
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        {this.state.redirect && <Redirect to="/" />}
+      </Container>
     );
   }
 }

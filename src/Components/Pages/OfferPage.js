@@ -10,6 +10,8 @@ import path from "../../api";
 import Loading from "../Various/Loading";
 import {Link} from "react-router-dom";
 import My404Component from "./My404Component";
+import '../Css/Additional.css';
+import DOMPurify from 'dompurify';
 
 class OfferPage extends Component {
   constructor(props) {
@@ -49,10 +51,12 @@ class OfferPage extends Component {
       .then(res => {
         let categories = res.data.categoryHierarchy.map((category) => category.name);
         let offer = res.data;
+
         //offer.description = offer.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
-        offer.description = offer.description.split("<br />").map(
-          (value, index) => <Card.Text key={index}>{value}</Card.Text>
-        );
+        // offer.description = offer.description.split("<br />").map(
+        //   (value, index) => <Card.Text key={index}>{value}</Card.Text>
+        // );
+
         offer.categoryHierarchy = categories.filter(Boolean).join(' > ');
         this.setState({ offer: offer, owner: offer.owner, isLoading: false, offerFound: true });
       })
@@ -73,7 +77,7 @@ class OfferPage extends Component {
 
   render() {
     if (this.state.isLoading) {
-      return (<div>...</div>);
+      return (<Loading full={true} />);
     }
 
     if (this.state.offerFound) {
@@ -87,21 +91,33 @@ class OfferPage extends Component {
                   {this.renderImages()}
                 </Carousel>
                 <Card.Body>
-                  <Card.Title as="h4">{this.state.offer.title}</Card.Title>
-                  <Card.Text as="h5"><FontAwesomeIcon icon={faDollarSign} /> {this.state.offer.price}zł</Card.Text>
+                  <Card.Title as="h4">{DOMPurify.sanitize(this.state.offer.title)}</Card.Title>
+                  <Card.Text as="h5">
+                    <FontAwesomeIcon icon={faDollarSign} />
+                    {DOMPurify.sanitize(this.state.offer.price)} zł
+                  </Card.Text>
                 </Card.Body>
                 <Card.Footer className="text-muted">
                   <Row>
-                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt}/> {this.state.owner.city}</Col>
-                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock}/> {this.state.offer.created}</Col>
-                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench}/> {this.state.offer.condition}</Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faMapMarkerAlt} />
+                      {DOMPurify.sanitize(this.state.owner.city)}
+                    </Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faClock} />
+                      {DOMPurify.sanitize(this.state.offer.created)}
+                    </Col>
+                    <Col className="py-1" md={3}><FontAwesomeIcon icon={faWrench} />
+                      {DOMPurify.sanitize(this.state.offer.condition)}
+                    </Col>
                   </Row>
                 </Card.Footer>
                 <Card.Body>
                   {/*<Card.Text>*/}
                   {/*  {this.state.offer.description}*/}
                   {/*</Card.Text>*/}
-                  {this.state.offer.description}
+                  {/*{this.state.offer.description}*/}
+                  <div
+                    dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.state.offer.description)}}
+                  />
                 </Card.Body>
               </Card>
             </Col>

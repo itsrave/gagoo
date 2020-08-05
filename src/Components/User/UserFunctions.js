@@ -7,27 +7,6 @@ function getStandardAjaxConfig(bearerToken)
 
 function isUserDataEmpty(userData)
 {
-  // if (userData.name === ''){
-  //   this.setState({validateMessage: true, isLoading: false});
-  //   return
-  // }
-  // if (userData.phoneNumber === ''){
-  //   this.setState({validateMessage: true, isLoading: false});
-  //   return
-  // }
-  // if (userData.city === ''){
-  //   this.setState({validateMessage: true, isLoading: false});
-  //   return
-  // }
-  // if (userData.state === ''){
-  //   this.setState({validateMessage: true, isLoading: false});
-  //   return
-  // }
-  // if (userData.zipCode === ''){
-  //   this.setState({validateMessage: true, isLoading: false});
-  //   return
-  // }
-
   return !userData.name
     || !userData.phoneNumber
     || !userData.city

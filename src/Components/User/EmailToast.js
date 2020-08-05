@@ -40,7 +40,7 @@ function EmailToast(props) {
         <FontAwesomeIcon icon={faEnvelope}/>
         <Col><strong className="mr-auto">Potwierdź swój email</strong></Col>
       </Toast.Header>
-      <Toast.Body>Jeszcze nie potwierdziłeś swojego emaila, aby wysłać wiadomość jeszcze raz możesz kliknąć
+      <Toast.Body>Jeszcze nie potwierdziłeś swojego e-maila, aby wysłać wiadomość jeszcze raz możesz kliknąć
         <Link to={'#'} onClick={send}> tutaj</Link>.
       </Toast.Body>
     </Toast>

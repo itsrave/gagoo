@@ -5,13 +5,13 @@ import Navigation from "./Components/Navbar/Navigation";
 import Homepage from "./Components/Pages/Homepage";
 import FooterComponent from "./Components/Footer/FooterComponent";
 import SearchBar from "./Components/SearchBar";
-import {Redirect, Route, Switch} from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import RegisterPage from "./Components/Pages/RegisterPage";
 import LoginPage from "./Components/Pages/LoginPage";
 import OfferPage from "./Components/Pages/OfferPage";
 import OffersPage from "./Components/Pages/OffersPage";
-import {Cookies, withCookies} from 'react-cookie';
-import {instanceOf} from "prop-types";
+import { Cookies, withCookies } from 'react-cookie';
+import { instanceOf } from "prop-types";
 import MyAccountPage from "./Components/Pages/MyAccountPage";
 import AddOfferPage from "./Components/Pages/AddOfferPage";
 import AdminPage from "./Components/Pages/AdminPage";
@@ -23,7 +23,6 @@ import EmailToast from "./Components/User/EmailToast";
 import AdminOfferPage from "./Components/Pages/AdminOfferPage";
 import My404Component from "./Components/Pages/My404Component";
 import { getStandardAjaxConfig } from "./Components/User/UserFunctions";
-
 
 class App extends Component {
   static propTypes = {
@@ -54,7 +53,7 @@ class App extends Component {
         username: '...',
         emailVerification: true,
       }
-    })
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -84,17 +83,28 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const { cookies } = this.props;
+    const refreshToken = cookies.get('refreshToken');
+
     this.setToken();
     this.getUserData();
-    this.refreshSession();
+
+    if (refreshToken !== undefined) {
+      this.refreshSession();
+    }
+
     this.startTimer();
   }
 
   handleLogout() {
+    console.log("Handle logout");
+
     const { cookies } = this.props;
     cookies.remove('token');
     cookies.remove('refreshToken');
+
     this.getInitialState();
+
     localStorage.clear();
   }
 
@@ -108,7 +118,7 @@ class App extends Component {
   }
 
   refreshSession() {
-    const {cookies} = this.props;
+    const { cookies } = this.props;
     let token = {
       refresh_token: cookies.get('refreshToken'),
     };
@@ -120,6 +130,7 @@ class App extends Component {
         this.setToken();
       })
       .catch(err => {
+        console.log('lol');
         console.log(err.response.data);
       });
   }

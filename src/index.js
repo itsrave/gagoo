@@ -7,15 +7,14 @@ import {BrowserRouter} from "react-router-dom";
 import CookiesProvider from "react-cookie/cjs/CookiesProvider";
 import ScrollToTop from "./Components/Various/ScrollToTop";
 
-
 ReactDOM.render(
+  <CookiesProvider>
     <BrowserRouter>
       <ScrollToTop/>
-      <CookiesProvider>
-        <App />
-      </CookiesProvider>
-    </BrowserRouter>,
-    document.getElementById('root')
+      <App />
+    </BrowserRouter>
+  </CookiesProvider>,
+  document.getElementById('root')
 );
 
 

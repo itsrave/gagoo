@@ -10,6 +10,7 @@ import '../Css/AdListItem.css'
 import path from "../../api";
 import axios from 'axios';
 import { getStandardAjaxConfig } from "../User/UserFunctions";
+import DOMPurify from 'dompurify';
 
 class OfferCard extends Component {
   constructor(props) {
@@ -30,10 +31,10 @@ class OfferCard extends Component {
     //console.log("accepted: " + this.props.accepted );
     return this.props.accepted ?
       <LinkContainer to={`/offerpage/${this.props.publicId}`}>
-        <Link to={'/offerpage'}><Card.Title>{this.props.title}</Card.Title></Link>
+        <Link to={'/offerpage'}><Card.Title>{DOMPurify.sanitize(this.props.title)}</Card.Title></Link>
       </LinkContainer>
       :
-      <Card.Title>[Niezaakceptowana] {this.props.title}</Card.Title>;
+      <Card.Title>[Niezaakceptowana] {DOMPurify.sanitize(this.props.title)}</Card.Title>;
   }
 
   imageLink() {
@@ -102,7 +103,7 @@ class OfferCard extends Component {
           <Col lg={8}>
             <Card.Body>
               {this.acceptedLink()}
-              <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {this.props.price}zł</Card.Text>
+              <Card.Text><FontAwesomeIcon icon={faDollarSign}/> {DOMPurify.sanitize(this.props.price)}zł</Card.Text>
               <Card.Text className="text-muted">{this.renderCategories()}</Card.Text>
               {this.renderDeleteButton()}
             </Card.Body>

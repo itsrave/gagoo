@@ -58,7 +58,7 @@ class AdminOfferPage extends Component {
         const offerData = result.data['offer'];
 
         let categories = offerData.categoryHierarchy.map((category) => category.name);
-        offerData.description = offerData.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
+        //offerData.description = offerData.description.split("<br />").map((t ,i) => {return <p key={i}>{t}</p>});
         offerData.categoryHierarchy = categories.filter(Boolean).join(' > ');
         this.setState({
           offer: offerData,
@@ -107,7 +107,7 @@ class AdminOfferPage extends Component {
 
   render() {
     if (this.state.isLoading) {
-      return (<div>...</div>);
+      return (<Loading full={true} />);
     }
 
     if (this.state.offerFound) {
@@ -145,7 +145,8 @@ class AdminOfferPage extends Component {
                     </Row>
                   </Card.Footer>
                   <Card.Body>
-                    {this.state.offer.description}
+                    {/*{this.state.offer.description}*/}
+                    <div dangerouslySetInnerHTML={{__html: this.state.offer.description }} />
                   </Card.Body>
                 </Card>
               </Col>

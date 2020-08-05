@@ -9,6 +9,8 @@ import Loading from "../Various/Loading";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { getStandardAjaxConfig, isUserDataEmpty } from "./UserFunctions";
+import { Cookies } from 'react-cookie';
+import DOMPurify from 'dompurify';
 
 const states = [
   'dolnośląskie',
@@ -63,27 +65,43 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    this.setState({isLoading: true});
-    this.getUserData();
-    setTimeout(function() {
-      this.setState({isLoading: false});
-    }.bind(this), 2000)
+    // ten kod jest totalnie bez sensu XD
+    // this.setState({isLoading: true});
+    // this.getUserData();
+    // setTimeout(function() {
+    //   this.setState({isLoading: false});
+    // }.bind(this), 2000)
+
+    if (this.props.token !== '') {
+      this.setState({ isLoading: true });
+      this.getUserData();
+    }
+
+    // await ?
+    // this.setState({ isLoading: false });
   }
 
   getUserData() {
-    const AuthStr = 'Bearer ' + this.props.token;
     axios
-      .get(path + 'api/user/get-data',{ headers: { Authorization: AuthStr } })
-      .then(res => this.setState({userData: res.data, isLoading: false}))
-      .catch(err => {
-        this.setState({isLoading: false});
-        console.log(err);
+      .get(
+        `${path}api/user/get-data`,
+        getStandardAjaxConfig(this.props.token)
+      )
+      .then(result => {
+        this.setState({
+          userData: result.data,
+          isLoading: false
+        });
+      })
+      .catch(error => {
+        this.setState({ isLoading: false });
+        console.log(error);
       });
   }
 
   handleSubmit(e) {
     this.setState({ isLoading: true, validateMessage: false, success: false });
-    const userData = this.state.userData;
+    const userData = Object.assign({ }, this.state.userData);
 
     if (isUserDataEmpty(userData)) {
       this.setState({ validateMessage: true, isLoading: false });
@@ -93,7 +111,13 @@ class Settings extends Component {
     axios
       .patch(
         `${path}api/user/update`,
-        userData,
+        {
+          name: DOMPurify.sanitize(userData.name),
+          phoneNumber: DOMPurify.sanitize(userData.phoneNumber),
+          city: DOMPurify.sanitize(userData.city),
+          state: DOMPurify.sanitize(userData.state),
+          zipCode: DOMPurify.sanitize(userData.zipCode),
+        },
         getStandardAjaxConfig(this.props.token)
       )
       .then(res => {

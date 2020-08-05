@@ -16,7 +16,7 @@ class Loading extends Component {
         <div className='loading-image-container'>
           <ReactLoading className='loading-image' type='spin' color='#000000' />
         </div>
-        </div>
+      </div>
     }
 
   }
